@@ -1,9 +1,59 @@
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';   
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Error from './pages/Error';
+import { UserDashboard } from './dashboard/UserDashboard';
+import CheckOut from './pages/CheckOut';
+import PrivateRoute from './components/route/PrivateRoute';
+import Blogs from './pages/blogs/Blogs';
+import Blog from './pages/blogs/Blog';
+import Faq from './components/Faq';
+import Courses from './pages/courses/Courses';
+import Course from './pages/courses/Course';
+import Home from './pages/Home';
+import Layout from './components/route/Layout';
+import type { FC } from 'react';
 
+const App: FC = () => {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        { path: "/", element: <Home /> },
+        {
+          path: "/courses",
+          loader: async () => {
+            return fetch('https://assignment-ten-server-sage.vercel.app/courses');
+          },
+          element: <Courses />,
+        },
+        {
+          path: "/course/:id",
+          loader: async ({ params }) => {
+            return fetch(`https://assignment-ten-server-sage.vercel.app/courses/${params.id}`);
+          },
+          element: <Course />,
+        },
+        { path: "/faq", element: <Faq /> },
+        { path: "/blog", element: <Blogs /> },
+        { path: "/blog/:title", element: <Blog/> },
+        {
+          path: "/checkout",
+          element: <PrivateRoute><CheckOut /></PrivateRoute>,
+        },
+        { path: "/register", element: <Register /> },
+        { path: "/login", element: <Login /> },
+        { path: "/dashboard", element: <UserDashboard /> },
+        { path: "*", element: <Error /> },
+      ],
+    },
+  ]);
 
-const App = () => {
-  return (
-    <div>App</div>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
