@@ -12,16 +12,16 @@ const ContactUs = () => {
         <li className="flex items-start gap-3">
           <FaMapMarkerAlt className="text-yellow-500 mt-1" />
           <span>
-            Address: 9015 Sunset Boulevard <br /> United Kingdom
+            Address: 1000 Mirpur, Dhaka <br /> Bangladesh
           </span>
         </li>
         <li className="flex items-center gap-3">
           <FaPhoneAlt className="text-yellow-500" />
-          <span>Call: +215 623 7532</span>
+          <span>Call: +88 123-456-7890</span>
         </li>
         <li className="flex items-center gap-3">
           <FaEnvelope className="text-yellow-500" />
-          <span>Email: info@Studylms.com</span>
+          <span>Email: info@coursedeep.com</span>
         </li>
       </ul>
     </div>

@@ -13,7 +13,7 @@ const menuList = [
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <nav className="bg-yellow-400 py-3 sm:py-0">
+    <nav className="bg-yellow-400 py-3">
       <div className="lg:max-w-7xl mx-auto px-4 ">
         <div className="flex justify-between items-center">
           {/* <!-- mobile menu button --> */}
