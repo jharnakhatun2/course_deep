@@ -1,1 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Lobster&family=Poppins:wght@300;400&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --font-garamond: "EB Garamond", serif; 
+  --font-lobster: "Lobster", cursive; 
+  --font-poppins: "Poppins", sans-serif; 
+}
