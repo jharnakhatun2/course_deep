@@ -6,10 +6,10 @@ import Search from "./Search";
 
 const menuList = [
   { name: "Home", path: "/" },
-  { name: "Courses", path: "/" },
-  { name: "Events", path: "/" },
-  { name: "Blog", path: "/" },
-  { name: "Contact", path: "/" },
+  { name: "Courses", path: "/courses" },
+  { name: "Events", path: "/events" },
+  { name: "Blog", path: "/blog" },
+  { name: "Contact", path: "/contact" },
 ];
 
 const Menu = () => {

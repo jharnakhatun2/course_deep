@@ -1,7 +1,7 @@
 
 const CheckOut = () => {
   return (
-    <div>CheckOut</div>
+    <div className="lg:max-w-7xl mx-auto px-4 ">CheckOut</div>
   )
 }
 

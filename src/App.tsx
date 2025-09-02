@@ -16,6 +16,9 @@ import Course from './pages/courses/Course';
 import Home from './pages/Home';
 import Layout from './components/route/Layout';
 import type { FC } from 'react';
+import Contact from './pages/Contact';
+import Events from './pages/events/Events';
+import Event from './pages/events/Event';
 
 const App: FC = () => {
   const router = createBrowserRouter([
@@ -38,6 +41,9 @@ const App: FC = () => {
           },
           element: <Course />,
         },
+        { path: "/events", element: <Events /> },
+        { path: "/events/:title", element: <Event/> },
+
         { path: "/faq", element: <Faq /> },
         { path: "/blog", element: <Blogs /> },
         { path: "/blog/:title", element: <Blog/> },
@@ -48,6 +54,7 @@ const App: FC = () => {
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
         { path: "/dashboard", element: <UserDashboard /> },
+        { path: "/contact", element: <Contact /> },
         { path: "*", element: <Error /> },
       ],
     },

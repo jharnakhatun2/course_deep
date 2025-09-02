@@ -1,7 +1,7 @@
 
 const Course = () => {
   return (
-    <div>Course</div>
+    <div className="lg:max-w-7xl mx-auto px-4 ">Course</div>
   )
 }
 

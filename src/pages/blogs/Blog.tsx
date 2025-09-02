@@ -2,7 +2,7 @@
 
 const Blog = () => {
   return (
-    <div>Blog</div>
+    <div className="lg:max-w-7xl mx-auto px-4 ">Blog</div>
   )
 }
 

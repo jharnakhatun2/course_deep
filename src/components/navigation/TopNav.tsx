@@ -1,16 +1,18 @@
 import { FaBookReader } from "react-icons/fa";
 import { FiPhoneCall, FiMail, FiMapPin } from "react-icons/fi";
+import { Link } from "react-router";
 
 const TopNav = () => {
   return (
     <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between px-4 py-3">
       {/* Logo */}
-      <div className="flex items-center space-x-2">
+
+      <Link to="/" className="flex items-center space-x-2">
         <FaBookReader className="text-yellow-500 w-6 h-6" />
         <span className="font-lobster font-bold text-2xl text-zinc-800">
           Course Deep
         </span>
-      </div>
+      </Link>
 
       {/* Contact Info */}
       <div className="hidden sm:flex flex-col sm:flex-row sm:space-x-8 mt-2 sm:mt-0 text-gray-600 text-sm">

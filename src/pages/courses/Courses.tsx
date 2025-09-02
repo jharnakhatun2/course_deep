@@ -13,7 +13,7 @@ const Courses = () => {
   const { query, setQuery, filteredItems } = useSearchFilter(courses, ["name"]);
 
   return (
-    <div>
+    <div className="lg:max-w-7xl mx-auto px-4 ">
       <Search onSearch={setQuery} />
 
       <ul className="mt-4">
