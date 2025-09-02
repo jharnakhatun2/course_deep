@@ -15,6 +15,12 @@ const menuList = [
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
+
+  // Filter menu items dynamically based on query
+  const filteredMenu = menuList.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <nav className="bg-yellow-400 py-3">
@@ -42,7 +48,7 @@ const Menu = () => {
           <div className="flex space-x-10">
             {/* <!-- primary nav --> */}
             <div className="hidden md:flex items-center space-x-10 text-white">
-              {menuList.map((item, index) => (
+              {filteredMenu.map((item, index) => (
                 <Link
                   key={index}
                   to={item.path}
@@ -80,11 +86,11 @@ const Menu = () => {
 
       {/* Search input dropdown */}
       <div
-        className={`absolute transform -translate-y-1/2 transition-smooth overflow-hidden left-1/4 top-32 sm:right-5/12 ${
+        className={` w-60 absolute transform -translate-y-1/2 transition-smooth overflow-hidden left-1/4 top-32 sm:right-7/12 ${
           showSearch ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <Search />
+        <Search onSearch={setQuery} />
       </div>
 
       {/* <!-- Mobile menu --> */}

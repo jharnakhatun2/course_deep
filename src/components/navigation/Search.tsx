@@ -1,10 +1,15 @@
 import { IoIosSearch } from "react-icons/io";
 
-const Search = () => {
+interface SearchProps {
+  onSearch: (value: string) => void;
+}
+
+const Search: React.FC<SearchProps> = ({ onSearch }) => {
   return (
     <div className="relative mr-6 my-1">
       <input
         type="text"
+         onChange={(e) => onSearch(e.target.value)}
         className="w-full bg-white shadow-2xl rounded border border-gray-300 p-2 pl-5 pr-10 focus:outline-none focus:ring-1 focus:ring-zinc-400"
         placeholder="Search by name..."
       />
