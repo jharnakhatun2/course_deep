@@ -5,4 +5,11 @@
   --font-garamond: "EB Garamond", serif; 
   --font-lobster: "Lobster", cursive; 
   --font-poppins: "Poppins", sans-serif; 
+  
+}
+
+@layer utilities {
+  .transition-smooth {
+    @apply transition-all duration-[600ms] ease-in-out;
+  }
 }
