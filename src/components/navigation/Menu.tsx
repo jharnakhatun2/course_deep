@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -9,27 +11,22 @@ const menuList = [
 ];
 
 const Menu = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <nav className="bg-yellow-400 py-3 sm:py-0">
       <div className="lg:max-w-7xl mx-auto px-4 ">
         <div className="flex justify-between items-center">
-          {/* <!-- mobile button goes here --> */}
+          {/* <!-- mobile menu button --> */}
           <div className="md:hidden flex items-center">
-            <button className="mobile-menu-button cursor-pointer">
-              <svg
-                className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="mobile-menu-button cursor-pointer"
+            >
+              {isOpen ? (
+                <FiX className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700" />
+              ) : (
+                <FiMenu className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700" />
+              )}
             </button>
           </div>
 
@@ -67,17 +64,24 @@ const Menu = () => {
         </div>
       </div>
 
-      {/* <!-- mobile menu --> */}
-      <div className="mobile-menu md:hidden space-y-3 pl-4 text-zinc-700 pt-5 pb-3">
-        {menuList.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.path}
-                  className="flex hover:font-bold transition-smooth uppercase text-[12px] "
-                >
-                  {item.name}
-                </Link>
-              ))}
+      {/* <!-- Mobile menu --> */}
+      <div
+        className={`md:hidden overflow-hidden transition-smooth ${
+          isOpen ? "max-h-60" : "max-h-0"
+        }`}
+      >
+        <div className="space-y-3 pl-4 text-zinc-700 pt-5 pb-3">
+          {menuList.map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              className="flex hover:font-bold transition-smooth uppercase text-[12px]"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
       </div>
     </nav>
   );
