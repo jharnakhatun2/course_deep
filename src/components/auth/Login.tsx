@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "./UserContext";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
+import Button from "../../ult/button/Button";
+import { FcGoogle } from 'react-icons/fc';
 
 interface FormData {
   name?: string;
@@ -16,7 +18,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const { createUser, userLogIn } = useAuth();
+  const { createUser, userLogIn, googleSignIn } = useAuth();
   const navigate = useNavigate();
 
   // Sync input data structure when newAccount toggles
@@ -68,6 +70,15 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((result) => {
+        showSuccessToast("Logged in successfully!");
+        console.log("User Login Successfully", result);
+        navigate("/");
+      })
+      .catch((error) => showErrorToast(error.message));
+  };
   return (
     <div className="relative py-3 sm:max-w-xl sm:mx-auto my-4 sm:my-20">
       <div className="absolute inset-0 bg-gradient-to-r from-teal-300 to-teal-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
@@ -174,7 +185,6 @@ const Login = () => {
               </div>
             </form>
 
-            <div className="divider">OR</div>
             <div className="text-center">
               {newAccount ? (
                 <p>
@@ -200,6 +210,9 @@ const Login = () => {
                 </p>
               )}
             </div>
+            <div className="divider">OR</div>
+            {/* Google signin */}
+              <button onClick={handleGoogleSignIn} className="border w-full flex items-center justify-center gap-2 rounded p-2 bg-zinc-200 border-zinc-200 cursor-pointer hover:bg-zinc-100 shadow-lg hover:shadow transition-smooth"><FcGoogle className="text-xl"/>Google SignIn</button>
           </div>
         </div>
       </div>
