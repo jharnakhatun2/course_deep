@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import Search from "./Search";
+import Modal from "../auth/Modal";
+
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -16,6 +18,11 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  // open & close modal
+  const openModal = () => dialogRef.current?.showModal();
+  const closeModal = () => dialogRef.current?.close();
 
   // Filter menu items dynamically based on query
   const filteredMenu = menuList.filter((item) =>
@@ -67,19 +74,12 @@ const Menu = () => {
 
           {/* <!-- Login & Signup --> */}
           <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8 rounded">
-            <Link
-              to="/login"
+            <button
               className="cursor-pointer hover:text-black transition-smooth"
+              onClick={openModal}
             >
-              Login
-            </Link>
-            <span>|</span>
-            <Link
-              to="/signup"
-              className="cursor-pointer hover:text-black transition-smooth"
-            >
-              Signup
-            </Link>
+              Login | Signup
+            </button>
           </div>
         </div>
       </div>
@@ -112,6 +112,8 @@ const Menu = () => {
           ))}
         </div>
       </div>
+      {/* Login form modal */}
+        <Modal dialogRef={dialogRef} closeModal={closeModal} />
     </nav>
   );
 };
