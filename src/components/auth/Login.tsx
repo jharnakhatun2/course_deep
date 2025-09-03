@@ -1,36 +1,85 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "./UserContext";
 
 interface ModalProps {
   closeModal: () => void;
 }
 
+interface FormData {
+  name?: string;
+  email: string;
+  password: string;
+}
+
 const Login = ({ closeModal }: ModalProps) => {
   const [newAccount, setNewAccount] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const { createUser, userLogIn } = useAuth();
+  const navigate = useNavigate();
 
-  //handle toggle form
+  // toggle between login/register
   const handleToggleForm = () => {
-    setNewAccount((pre) => !pre);
+    setNewAccount((prev) => !prev);
   };
 
+  // handle input change dynamically
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Sync input data structure when newAccount toggles
+  useEffect(() => {
+    setFormData(
+      newAccount
+        ? { name: "", email: "", password: "" }
+        : { email: "", password: "" }
+    );
+  }, [newAccount]);
+
   // handle form submit
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // here you can collect form data
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    console.log("Form Data:", Object.fromEntries(formData.entries()));
-    closeModal();
+    console.log("Form Data:", formData);
+    const { email, password } = formData;
+
+    if (newAccount) {
+      //create user
+      createUser(email, password)
+        .then((result) => {
+          console.log("Create User Successfully", result);
+          setFormData({ name: "", email: "", password: "" });
+          closeModal();
+          navigate("/");
+        })
+        .catch((error) => console.error(error));
+    } else {
+      //login user
+      userLogIn(email, password)
+        .then((result) => {
+          console.log("User Login Successfully", result);
+          setFormData({ email: "", password: "" }); 
+          closeModal(); 
+          navigate("/");
+        })
+        .catch((error) => console.error(error));
+    }
   };
 
   return (
     <div className="w-full mx-auto px-3">
-      <h1 className="text-3xl"></h1>
       <h2 className="text-sm lg:text-lg font-bold text-center uppercase">
         {newAccount ? "Create an account" : "User Login"}
       </h2>
+
       <form onSubmit={handleSubmit}>
-        {/* Name field */}
-        {newAccount ? (
+        {/* Name field (only for register) */}
+        {newAccount && (
           <div className="form-control mt-4">
             <label className="label">
               <span className="label-text">Name</span>
@@ -44,15 +93,20 @@ const Login = ({ closeModal }: ModalProps) => {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm4 1H4a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Enter Name" />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="grow"
+                placeholder="Enter Name"
+              />
             </label>
           </div>
-        ) : (
-          ""
         )}
 
         {/* Email field */}
-        <div className="form-control">
+        <div className="form-control mt-4">
           <label className="label">
             <span className="label-text">Email</span>
           </label>
@@ -68,13 +122,17 @@ const Login = ({ closeModal }: ModalProps) => {
             </svg>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="grow"
               placeholder="email@example.com"
+              required
             />
           </label>
         </div>
 
-        {/* password field */}
+        {/* Password field */}
         <div className="form-control mt-4">
           <label className="label">
             <span className="label-text">Password</span>
@@ -94,13 +152,15 @@ const Login = ({ closeModal }: ModalProps) => {
             </svg>
             <input
               type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               className="grow"
               placeholder="Enter password"
+              required
             />
           </label>
-          {newAccount ? (
-            ""
-          ) : (
+          {!newAccount && (
             <label className="label">
               <Link
                 to="/forgot-pass"
@@ -112,25 +172,24 @@ const Login = ({ closeModal }: ModalProps) => {
           )}
         </div>
 
-        {/* submit button */}
-        <div className="form-control mt-6 cursor-pointer ">
-          {newAccount ? (
-            <button className="btn bg-yellow-500 w-full uppercase rounded">
-              Register
-            </button>
-          ) : (
-            <button className="btn bg-yellow-500 w-full uppercase rounded">
-              Login
-            </button>
-          )}
+        {/* Submit button */}
+        <div className="form-control mt-6">
+          <button
+            type="submit"
+            className="btn bg-yellow-500 w-full uppercase rounded"
+          >
+            {newAccount ? "Register" : "Login"}
+          </button>
         </div>
       </form>
+
       <div className="divider">OR</div>
       <div className="text-center">
         {newAccount ? (
           <p>
             Already have an account?{" "}
             <button
+              type="button"
               className="text-teal-600 underline cursor-pointer"
               onClick={handleToggleForm}
             >
@@ -141,6 +200,7 @@ const Login = ({ closeModal }: ModalProps) => {
           <p>
             No account?{" "}
             <button
+              type="button"
               className="text-teal-600 underline cursor-pointer"
               onClick={handleToggleForm}
             >

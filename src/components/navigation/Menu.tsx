@@ -4,7 +4,8 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import Search from "./Search";
 import Modal from "../auth/Modal";
-
+import { useAuth } from "../auth/UserContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -19,6 +20,7 @@ const Menu = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { user, logOut } = useAuth();
 
   // open & close modal
   const openModal = () => dialogRef.current?.showModal();
@@ -71,16 +73,28 @@ const Menu = () => {
               className="hidden sm:block w-5 h-5 text-white cursor-pointer hover:text-zinc-600 transition-smooth"
             />
           </div>
-
           {/* <!-- Login & Signup --> */}
-          <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8 rounded">
-            <button
-              className="cursor-pointer hover:text-black transition-smooth"
-              onClick={openModal}
-            >
-              Login | Signup
-            </button>
-          </div>
+          {user ? (
+            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8 rounded">
+              <button
+                className="cursor-pointer hover:text-black transition-smooth"
+                onClick={logOut}
+              >
+                Logout
+              </button>
+              <span>|</span>
+              <FaUserCircle  className="cursor-pointer"/>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8 rounded">
+              <button
+                className="cursor-pointer hover:text-black transition-smooth"
+                onClick={openModal}
+              >
+                Login | Signup
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -113,7 +127,7 @@ const Menu = () => {
         </div>
       </div>
       {/* Login form modal */}
-        <Modal dialogRef={dialogRef} closeModal={closeModal} />
+      <Modal dialogRef={dialogRef} closeModal={closeModal} />
     </nav>
   );
 };
