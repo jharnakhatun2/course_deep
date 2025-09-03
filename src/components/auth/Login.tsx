@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "./UserContext";
+import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 
 interface ModalProps {
   closeModal: () => void;
@@ -52,6 +54,7 @@ const Login = ({ closeModal }: ModalProps) => {
       //create user
       createUser(email, password)
         .then((result) => {
+          showSuccessToast("Account created successfully!")
           console.log("Create User Successfully", result);
           setFormData({ name: "", email: "", password: "" });
           closeModal();
@@ -62,12 +65,13 @@ const Login = ({ closeModal }: ModalProps) => {
       //login user
       userLogIn(email, password)
         .then((result) => {
+          showSuccessToast("Logged in successfully!")
           console.log("User Login Successfully", result);
           setFormData({ email: "", password: "" }); 
           closeModal(); 
           navigate("/");
         })
-        .catch((error) => console.error(error));
+        .catch((error) => showErrorToast(error.message));
     }
   };
 

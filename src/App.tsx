@@ -2,8 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';   
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
 import Error from './pages/Error';
 import { UserDashboard } from './dashboard/UserDashboard';
 import CheckOut from './pages/CheckOut';
@@ -19,6 +17,7 @@ import type { FC } from 'react';
 import Contact from './pages/Contact';
 import Events from './pages/events/Events';
 import Event from './pages/events/Event';
+import { ToastContainer } from "react-toastify";
 
 const App: FC = () => {
   const router = createBrowserRouter([
@@ -51,8 +50,6 @@ const App: FC = () => {
           path: "/checkout",
           element: <PrivateRoute><CheckOut /></PrivateRoute>,
         },
-        { path: "/register", element: <Register /> },
-        { path: "/login", element: <Login /> },
         { path: "/dashboard", element: <UserDashboard /> },
         { path: "/contact", element: <Contact /> },
         { path: "*", element: <Error /> },
@@ -60,7 +57,12 @@ const App: FC = () => {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;
