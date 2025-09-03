@@ -18,6 +18,7 @@ import Contact from './pages/Contact';
 import Events from './pages/events/Events';
 import Event from './pages/events/Event';
 import { ToastContainer } from "react-toastify";
+import Login from './components/auth/Login';
 
 const App: FC = () => {
   const router = createBrowserRouter([
@@ -50,6 +51,7 @@ const App: FC = () => {
           path: "/checkout",
           element: <PrivateRoute><CheckOut /></PrivateRoute>,
         },
+        { path: "/login", element: <Login /> },
         { path: "/dashboard", element: <UserDashboard /> },
         { path: "/contact", element: <Contact /> },
         { path: "*", element: <Error /> },
