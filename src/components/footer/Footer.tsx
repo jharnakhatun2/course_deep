@@ -13,7 +13,7 @@ const quickLinks = [
 
 const Footer = () => {
   const headerClass =
-    "font-bold tracking-wide pb-2 border-b border-zinc-600 uppercase text-sm";
+    "font-bold tracking-wide pb-2 border-b border-zinc-600 uppercase text-sm text-gray-400";
 
   return (
     <div className="bg-zinc-800 text-zinc-500 text-md">

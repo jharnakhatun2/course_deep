@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "./UserContext";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import Button from "../../ult/button/Button";
-import { FcGoogle } from 'react-icons/fc';
+import { FcGoogle } from "react-icons/fc";
 
 interface FormData {
   name?: string;
@@ -82,7 +82,7 @@ const Login = () => {
   return (
     <div className="relative py-3 sm:max-w-xl sm:mx-auto my-4 sm:my-20">
       <div className="absolute inset-0 bg-gradient-to-r from-teal-300 to-teal-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-      <div className="relative px-4 py-10 bg-white shadow-2xl sm:rounded-3xl sm:p-8">
+      <div className="relative px-4 py-10 bg-white shadow-2xl sm:rounded-3xl sm:p-8 text-zinc-700">
         <div className="max-w-md mx-auto">
           <div className="w-full mx-auto px-3">
             <h2 className="text-sm lg:text-lg font-bold text-center uppercase">
@@ -92,11 +92,11 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
               {/* Name field (only for register) */}
               {newAccount && (
-                <div className="form-control mt-4">
+                <div className="form-control mt-4 ">
                   <label className="label">
                     <span className="label-text">Name</span>
                   </label>
-                  <label className="input input-bordered flex items-center gap-2 w-full">
+                  <label className="input input-bordered flex items-center gap-2 w-full bg-white border border-zinc-200 focus:outline-yellow-700">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 16 16"
@@ -110,7 +110,7 @@ const Login = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="grow"
+                      className="grow pl-2"
                       placeholder="Enter Name"
                     />
                   </label>
@@ -122,7 +122,7 @@ const Login = () => {
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
-                <label className="input input-bordered flex items-center gap-2 w-full">
+                <label className="input input-bordered flex items-center gap-2 w-full bg-white border border-zinc-200 focus:border-black">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -137,7 +137,7 @@ const Login = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="grow"
+                    className="grow pl-2"
                     placeholder="email@example.com"
                     required
                   />
@@ -149,7 +149,7 @@ const Login = () => {
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
-                <label className="input input-bordered flex items-center gap-2 w-full">
+                <label className="input input-bordered flex items-center gap-2 w-full bg-white border border-zinc-200">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -167,7 +167,7 @@ const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="grow"
+                    className="grow pl-2"
                     placeholder="Enter password"
                     required
                   />
@@ -178,7 +178,7 @@ const Login = () => {
               <div className="form-control mt-6">
                 <button
                   type="submit"
-                  className="btn bg-yellow-500 w-full uppercase rounded"
+                  className="btn bg-yellow-500 w-full uppercase rounded border-0"
                 >
                   {newAccount ? "Register" : "Login"}
                 </button>
@@ -212,7 +212,16 @@ const Login = () => {
             </div>
             <div className="divider">OR</div>
             {/* Google signin */}
-              <button onClick={handleGoogleSignIn} className="border w-full flex items-center justify-center gap-2 rounded p-2 bg-zinc-200 border-zinc-200 cursor-pointer hover:bg-zinc-100 shadow-lg hover:shadow transition-smooth"><FcGoogle className="text-xl"/>Google SignIn</button>
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full flex items-center justify-center gap-2 rounded p-2 
+             border border-zinc-200 bg-zinc-200 text-black shadow-lg cursor-pointer 
+             hover:bg-zinc-100 hover:border-zinc-100 hover:text-zinc-500 hover:shadow
+             transition duration-300 ease-in-out"
+            >
+              <FcGoogle className="text-xl" />
+              Google SignIn
+            </button>
           </div>
         </div>
       </div>
