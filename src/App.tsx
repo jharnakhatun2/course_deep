@@ -19,8 +19,10 @@ import Events from './pages/events/Events';
 import Event from './pages/events/Event';
 import { ToastContainer } from "react-toastify";
 import Login from './components/auth/Login';
+import { useCurrentUser } from './components/auth/useCurrentUser';
 
 const App: FC = () => {
+  useCurrentUser(); // Custom hook to fetch current user on app load
   const router = createBrowserRouter([
     {
       path: "/",

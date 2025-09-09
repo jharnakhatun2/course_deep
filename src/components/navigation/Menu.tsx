@@ -3,8 +3,10 @@ import { Link } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import Search from "./Search";
-import { useAuth } from "../auth/UserContext";
 import { FaUserCircle } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useLogoutMutation } from "../../features/auth/authApi";
+import { logout } from "../../features/auth/authSlice";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -18,14 +20,23 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
-  const { user, logOut } = useAuth();
-
+  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
+  const [logoutApi] = useLogoutMutation();
 
   // Filter menu items dynamically based on query
   const filteredMenu = menuList.filter((item) =>
     item.name.toLowerCase().includes(query.toLowerCase())
   );
-
+  // logout function
+  const logOut = async () => {
+    try {
+      await logoutApi().unwrap(); // call API logout
+      dispatch(logout()); // clear user from state
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   return (
     <nav className="bg-yellow-400 py-3">
       <div className="lg:max-w-7xl mx-auto px-4 ">
@@ -78,14 +89,13 @@ const Menu = () => {
                 Logout
               </button>
               <span>|</span>
-              <FaUserCircle  className="cursor-pointer"/>
+              <FaUserCircle className="cursor-pointer" />
             </div>
           ) : (
             <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8 rounded">
               <Link
                 to="/login"
                 className="cursor-pointer hover:text-black transition-smooth"
-                
               >
                 Login | Signup
               </Link>

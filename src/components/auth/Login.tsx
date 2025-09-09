@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRegisterMutation, useLoginMutation } from "../../features/auth/authApi";
-import { setCredentials } from "../../features/auth/authSlice";
+import { setUser } from "../../features/auth/authSlice";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAppDispatch } from "../../app/hooks";
 
@@ -70,7 +70,7 @@ const Login = () => {
 
         // Save user + token in Redux
         dispatch(
-          setCredentials({
+          setUser({
             user: { email, name, role: "user" }, // server returns role in token
             token: res.token,
           })
