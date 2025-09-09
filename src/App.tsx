@@ -54,7 +54,7 @@ const App: FC = () => {
           element: <PrivateRoute><CheckOut /></PrivateRoute>,
         },
         { path: "/login", element: <Login /> },
-        { path: "/dashboard", element: <UserDashboard /> },
+        { path: "/dashboard", element: <PrivateRoute><UserDashboard /></PrivateRoute> },
         { path: "/contact", element: <Contact /> },
         { path: "*", element: <Error /> },
       ],

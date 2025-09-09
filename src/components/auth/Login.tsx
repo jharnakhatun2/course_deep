@@ -4,6 +4,7 @@ import { useRegisterMutation, useLoginMutation } from "../../features/auth/authA
 import { setUser } from "../../features/auth/authSlice";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAppDispatch } from "../../app/hooks";
+import Loader from "../../ult/loader/Loader";
 
 interface FormData {
   name?: string;
@@ -85,6 +86,9 @@ const Login = () => {
     }
   };
 
+  // Loading state
+  if (isRegistering || isLoggingIn) return <Loader />;
+
   return (
     <div className="relative py-3 sm:max-w-xl sm:mx-auto my-4 sm:my-20">
       <div className="absolute inset-0 bg-gradient-to-r from-teal-300 to-teal-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
@@ -153,11 +157,7 @@ const Login = () => {
                   className="btn bg-yellow-500 w-full uppercase rounded border-0"
                   disabled={isRegistering || isLoggingIn}
                 >
-                  {isRegistering || isLoggingIn
-                    ? "Processing..."
-                    : newAccount
-                    ? "Register"
-                    : "Login"}
+                  {isRegistering || isLoggingIn ? "Processing..." : newAccount ? "Register" : "Login"}
                 </button>
               </div>
             </form>

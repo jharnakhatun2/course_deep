@@ -1,5 +1,9 @@
+// src/components/PrivateRoute.tsx
 import { Navigate, useLocation } from "react-router";
 import { useAppSelector } from "../../app/hooks";
+import { useCurrentUser } from "../auth/useCurrentUser";
+import Loader from "../../ult/loader/Loader";
+
 
 
 interface PrivateRouteProps {
@@ -7,11 +11,15 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const { user, isAuthenticated, loading } = useAppSelector(
+    (state) => state.auth
+  );
+  useCurrentUser(); // fetch current user on mount
   const location = useLocation();
 
-  // Optional: you can have a loading state if you want
-  // For now, assume Redux is ready after App.js restores user
+  if (loading) {
+    return <Loader />; // show loader while fetching
+  }
 
   if (isAuthenticated && user) {
     return <>{children}</>;
