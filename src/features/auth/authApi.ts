@@ -1,6 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
 
-
 //Get url : /users , /users/:id , /users (patch), /users/:id (delete)
 //post url :  /auth/register , /auth/login ,  /auth/logout
 
@@ -32,7 +31,10 @@ export interface LogoutResponse {
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Register new user
-    register: builder.mutation<RegisterResponse, Partial<User> & { password: string }>({
+    register: builder.mutation<
+      RegisterResponse,
+      Partial<User> & { password: string }
+    >({
       query: (body) => ({
         url: "/auth/register",
         method: "POST",
@@ -41,14 +43,16 @@ export const authApi = apiSlice.injectEndpoints({
     }),
 
     // Login user
-    login: builder.mutation<LoginResponse, { email: string; password: string }>({
-      query: (body) => ({
-        url: "/auth/login",
-        method: "POST",
-        body,
-        credentials: "include", // ✅ send/receive cookies
-      }),
-    }),
+    login: builder.mutation<LoginResponse, { email: string; password: string }>(
+      {
+        query: (body) => ({
+          url: "/auth/login",
+          method: "POST",
+          body,
+          credentials: "include", // ✅ send/receive cookies
+        }),
+      }
+    ),
 
     // Logout user
     logout: builder.mutation<LogoutResponse, void>({
@@ -59,13 +63,14 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    //Get current logged-in user
     getCurrentUser: builder.query<User, void>({
-  query: () => ({
-    url: "/users/me",
-    method: "GET",
-    credentials: "include",
-  }),
-}),
+      query: () => ({
+        url: "/users/me",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
 
     // Get all users (admin use)
     getUsers: builder.query<User[], void>({
@@ -86,7 +91,10 @@ export const authApi = apiSlice.injectEndpoints({
     }),
 
     // Update logged-in user info
-    updateUser: builder.mutation<{ success: boolean; message: string }, Partial<User>>({
+    updateUser: builder.mutation<
+      { success: boolean; message: string },
+      Partial<User>
+    >({
       query: (body) => ({
         url: `/users`,
         method: "PATCH",
@@ -96,13 +104,15 @@ export const authApi = apiSlice.injectEndpoints({
     }),
 
     // Delete user
-    deleteUser: builder.mutation<{ success: boolean; message: string }, string>({
-      query: (id) => ({
-        url: `/users/${id}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-    }),
+    deleteUser: builder.mutation<{ success: boolean; message: string }, string>(
+      {
+        query: (id) => ({
+          url: `/users/${id}`,
+          method: "DELETE",
+          credentials: "include",
+        }),
+      }
+    ),
   }),
 });
 
