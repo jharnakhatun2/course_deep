@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useRegisterMutation, useLoginMutation } from "../../features/auth/authApi";
+import {
+  useRegisterMutation,
+  useLoginMutation,
+} from "../../features/auth/authApi";
 import { setUser } from "../../features/auth/authSlice";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAppDispatch } from "../../app/hooks";
@@ -72,7 +75,7 @@ const Login = () => {
         // Save user + token in Redux
         dispatch(
           setUser({
-            user: { email, name, role: "user" }, // server returns role in token
+            user: { name: name!, email: email!, role: "user" }, // server returns role in token
             token: res.token,
           })
         );
@@ -157,7 +160,11 @@ const Login = () => {
                   className="btn bg-yellow-500 w-full uppercase rounded border-0"
                   disabled={isRegistering || isLoggingIn}
                 >
-                  {isRegistering || isLoggingIn ? "Processing..." : newAccount ? "Register" : "Login"}
+                  {isRegistering || isLoggingIn
+                    ? "Processing..."
+                    : newAccount
+                    ? "Register"
+                    : "Login"}
                 </button>
               </div>
             </form>

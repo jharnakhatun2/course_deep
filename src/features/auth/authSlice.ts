@@ -1,20 +1,21 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { User } from "./authApi";
 
 interface AuthState {
-  user: {
-    name?: string;
-    email?: string;
-    role?: "user" | "admin";
-  } | null;
+  user: User | null;
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
 }
 
+// Rehydrate from localStorage
+const tokenFromStorage = localStorage.getItem("token");
+const userFromStorage = localStorage.getItem("user");
+
 const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: userFromStorage ? JSON.parse(userFromStorage) : null,
+  token: tokenFromStorage,
+  isAuthenticated: !!tokenFromStorage,
   loading: true,
 };
 
@@ -24,19 +25,27 @@ const authSlice = createSlice({
   reducers: {
     setUser: (
       state,
-      action: PayloadAction<{ user: AuthState["user"]; token: string }>
+      action: PayloadAction<{ user: AuthState["user"]; token: AuthState["token"] }>
     ) => {
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
-      state.isAuthenticated = true;
+      state.isAuthenticated = !!token;
       state.loading = false;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+      }
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
       state.loading = false;
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;

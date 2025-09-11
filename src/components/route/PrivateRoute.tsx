@@ -4,8 +4,6 @@ import { useAppSelector } from "../../app/hooks";
 import { useCurrentUser } from "../auth/useCurrentUser";
 import Loader from "../../ult/loader/Loader";
 
-
-
 interface PrivateRouteProps {
   children: React.ReactNode;
 }

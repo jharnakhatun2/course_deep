@@ -9,7 +9,7 @@ export interface User {
   _id?: string;
   name: string;
   email: string;
-  role?: "user" | "admin";
+  role?: string;
   createdAt?: string;
   lastSignInTime?: string;
 }
@@ -59,6 +59,14 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    getCurrentUser: builder.query<User, void>({
+  query: () => ({
+    url: "/users/me",
+    method: "GET",
+    credentials: "include",
+  }),
+}),
+
     // Get all users (admin use)
     getUsers: builder.query<User[], void>({
       query: () => ({
@@ -99,6 +107,7 @@ export const authApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetCurrentUserQuery,
   useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
