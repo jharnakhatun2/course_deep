@@ -2,8 +2,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
-
 import type { FC } from "react";
+import image1 from "../../assets/img/hero/hero-1.webp";
+import image2 from "../../assets/img/hero/hero-2.webp";
+import image3 from "../../assets/img/hero/hero-3.webp";
 
 type Props = {
   children?: React.ReactNode; // static overlay content
@@ -26,21 +28,21 @@ const HeroSlider: FC<Props> = ({ children }) => {
         {/* ✅ Background slides */}
         <SwiperSlide>
           <img
-            src="https://i.ibb.co.com/Zp4HyzdS/hero-2.webp"
+            src={image1}
             className="w-full h-full object-cover"
             alt="hero-2"
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
-            src="https://i.ibb.co.com/ZzpZHBgT/hero-1.webp"
+            src={image2}
             className="w-full h-full object-cover"
             alt="hero-1"
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
-            src="https://i.ibb.co.com/HTDqRhMF/hero-3.webp"
+            src={image3}
             className="w-full h-full object-cover"
             alt="hero-3"
           />

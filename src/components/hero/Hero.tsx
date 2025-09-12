@@ -21,8 +21,8 @@ const Hero = () => {
         <div className="flex gap-3 justify-center sm:py-5">
           <Button
             url="/login"
-            className="bg-yellow-500 hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,221,51,0.8)]
- hover:shadow-[0_0_25px_rgba(255,221,51,1)] border border-yellow-400"
+            className="bg-yellow-500 hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,221,51,0.3)]
+ hover:shadow-[0_0_25px_rgba(255,221,51,0.5)] border border-yellow-400"
           >
             Start Learning Now
           </Button>
