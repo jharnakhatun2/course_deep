@@ -12,6 +12,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const { user, isAuthenticated, loading } = useAppSelector(
     (state) => state.auth
   );
+  
   useCurrentUser(); // fetch current user on mount
   const location = useLocation();
 

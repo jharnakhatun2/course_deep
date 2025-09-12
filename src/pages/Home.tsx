@@ -1,14 +1,13 @@
-
+import Hero from "../components/hero/Hero";
 
 
 const Home = () => {
   return (
-     <div className="lg:max-w-7xl mx-auto px-4 ">
-      Home
-      
+    <>
+      <Hero/>
+      <div className="lg:max-w-7xl mx-auto px-4 "></div>
+    </>
+  );
+};
 
-     </div>
-  )
-}
-
-export default Home
+export default Home;
