@@ -1,5 +1,5 @@
-import { FiClock, FiUser } from "react-icons/fi";
-import { FaStar } from "react-icons/fa";
+import { FiClock } from "react-icons/fi";
+import { FaStar, FaUserTie } from "react-icons/fa";
 
 type TeacherProps = {
   name: string;
@@ -19,7 +19,7 @@ const TeacherCard: React.FC<TeacherProps> = ({
       {/* Teacher Image as React Icon */}
       <div className="flex gap-3">
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">
-          <FiUser className="w-6 h-6 text-gray-600" />
+          <FaUserTie  className="w-6 h-6 text-gray-600" />
         </div>
 
         {/* Teacher Details */}
