@@ -18,6 +18,11 @@ type Course = {
   imageUrl: string;
   lessons: number;
   students: number;
+  price: number;
+  time: string;
+  teacherName: string;
+  teacherProfession: string;
+  rating: number;
 };
 
 const courses: Course[] = [
@@ -27,6 +32,11 @@ const courses: Course[] = [
     imageUrl: img3,
     lessons: 18,
     students: 950,
+    price: 25.00,
+    time: "5 hours",
+    teacherName: "Abul Kolim",
+    teacherProfession: "Instructor",
+    rating: 5
   },
   {
     title: "React for Beginners",
@@ -34,6 +44,11 @@ const courses: Course[] = [
     imageUrl: img1,
     lessons: 20,
     students: 1200,
+    price: 25.00,
+    time: "5 hours",
+    teacherName: "Abul Kolim",
+    teacherProfession: "Instructor",
+    rating: 5
   },
   {
     title: "Tailwind CSS Mastery",
@@ -41,6 +56,11 @@ const courses: Course[] = [
     imageUrl: img2,
     lessons: 15,
     students: 850,
+    price: 25.00,
+    time: "5 hours",
+    teacherName: "Abul Kolim",
+    teacherProfession: "Instructor",
+    rating: 5
   },
   {
     title: "Node.js & Express",
@@ -48,6 +68,11 @@ const courses: Course[] = [
     imageUrl: img3,
     lessons: 18,
     students: 950,
+    price: 25.00,
+    time: "5 hours",
+    teacherName: "Abul Kolim",
+    teacherProfession: "Instructor",
+    rating: 5
   },
   {
     title: "Full Stack MERN",
@@ -55,6 +80,11 @@ const courses: Course[] = [
     imageUrl: img4,
     lessons: 25,
     students: 1500,
+    price: 25.00,
+    time: "5 hours",
+    teacherName: "Abul Kolim",
+    teacherProfession: "Instructor",
+    rating: 5
   },
 ];
 
@@ -88,7 +118,7 @@ const CourseCards: React.FC = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/10"></div>
+      <div className="absolute inset-0 bg-black/5"></div>
 
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
         <SectionTitle title="Popular Courses" />
@@ -116,9 +146,14 @@ const CourseCards: React.FC = () => {
                 <Card
                   title={course.title}
                   description={course.description}
+                  rating={course.rating}
+                  time={course.time}
+                  teacherName={course.teacherName}
+                  teacherProfession={course.teacherProfession}
                   imageUrl={course.imageUrl}
                   lessons={course.lessons}
                   students={course.students}
+                  price={course.price}
                 />
               </div>
             ))}
