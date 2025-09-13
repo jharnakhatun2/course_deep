@@ -25,3 +25,14 @@
     -webkit-text-fill-color: #000 !important;
   }
 }
+
+@layer base {
+  /* Hide default slick arrows */
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+  .slick-list{
+    border-radius: 8px !important;
+  }
+}

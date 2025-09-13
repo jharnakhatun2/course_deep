@@ -26,8 +26,8 @@ const Card: React.FC<CourseCardProps> = ({
         />
         {/* Overlay slides down */}
         <div
-          className="absolute top-0 left-0 w-full h-0 bg-yellow-500/30 
-          group-hover:h-full transition-all duration-500 ease-in-out"
+          className="absolute top-0 left-0 w-full h-0 bg-yellow-100/70 
+          group-hover:h-full transition-smooth"
         />
       </div>
 
