@@ -61,7 +61,7 @@ const Category: FC = () => {
   return (
     <section className="py-8 lg:py-12 bg-gray-50">
       <div className="lg:max-w-7xl mx-auto px-4">
-        <SectionTitle title="All Categories"/>
+        <SectionTitle title="All Categories" className="text-zinc-700"/>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 py-8 sm:py-10">
           {categories.map((cat) => (
             <div

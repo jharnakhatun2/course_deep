@@ -1,6 +1,7 @@
 import React from "react";
-import { FiBookOpen, FiUsers } from "react-icons/fi";
+import { FiBookOpen } from "react-icons/fi";
 import TeacherCard from "./TeacherCard";
+import { FaUsers } from "react-icons/fa";
 
 type CourseCardProps = {
   title: string;
@@ -56,7 +57,7 @@ const Card: React.FC<CourseCardProps> = ({
             <FiBookOpen className="text-teal-500" /> <span className="font-bold text-gray-600">{lessons}</span> Lessons
           </span>
           <span className="flex items-center gap-1">
-            <FiUsers className="text-teal-500" /> <span className="font-bold text-gray-600">{students}</span> Students
+            <FaUsers className="text-teal-500" /> <span className="font-bold text-gray-600">{students}</span> Students
           </span>
         </div>
 

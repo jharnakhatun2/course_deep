@@ -121,7 +121,7 @@ const CourseCards: React.FC = () => {
       <div className="absolute inset-0 bg-black/5"></div>
 
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
-        <SectionTitle title="Popular Courses" />
+        <SectionTitle title="Popular Courses"  className="text-zinc-700"/>
 
         {/* buttons + link */}
         <div className="flex justify-between items-center">
