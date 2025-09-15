@@ -65,7 +65,7 @@ const Testimonial: React.FC = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="aspect-auto p-8 border border-gray-700 rounded-3xl bg-gray-800 shadow-2xl shadow-gray-600/10 dark:shadow-none">
+          <div className="aspect-auto p-8 border border-gray-700 rounded-3xl bg-gray-800 shadow-2xl shadow-gray-600/10">
             <div className="flex gap-4">
               <img
                 className="w-12 h-12 rounded-full"

@@ -6,8 +6,9 @@ import {
   FiDatabase,
   FiCpu,
   FiCode,
-} from "react-icons/fi"; 
+} from "react-icons/fi";
 import SectionTitle from "../../ult/title/SectionTitle";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 type Category = {
   name: string;
@@ -59,23 +60,47 @@ const iconMap: Record<string, ReactNode> = {
 
 const Category: FC = () => {
   return (
-    <section className="py-8 lg:py-12 bg-gray-50">
+    <section className="text-zinc-800 bg-gray-100 py-8 lg:py-12">
       <div className="lg:max-w-7xl mx-auto px-4">
-        <SectionTitle title="All Categories" className="text-zinc-700"/>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 py-8 sm:py-10">
-          {categories.map((cat) => (
-            <div
-              key={cat.name}
-              className="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow hover:shadow-lg transition-shadow"
-            >
-              {iconMap[cat.name]}
-              <h3 className="mt-4 text-md font-semibold text-gray-900 uppercase">
-                {cat.name}
-              </h3>
-              <div className="w-12 h-[2px] bg-gray-200 my-2"></div>
-              <p className="text-sm text-gray-500 font-poppins">{cat.description}</p>
-            </div>
-          ))}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16 ">
+          {/* Left text area */}
+          <div className="flex-1 flex flex-col justify-center">
+            <span className="text-xs uppercase text-teal-500 tracking-wider">
+              Explore, Learn & Grow
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-bold mt-2 text-zinc-600 uppercase">
+              Featured Categories
+            </h3>
+            <p className="my-4 sm:my-6 text-gray-400 leading-relaxed">
+              Course Deep is your gateway to mastering in-demand skills. Whether
+              you’re a beginner starting your coding journey, a professional
+              upgrading your expertise, or someone exploring cutting-edge fields
+              like AI & Machine Learning — we’ve got you covered.
+            </p>
+            
+          </div>
+
+          {/* Category cards */}
+          <div className="flex-2 flex flex-wrap justify-center  gap-5 sm:gap-7 py-8 lg:py-12">
+            {categories.map((cat) => (
+              <div
+                key={cat.name}
+                className="aspect-auto w-full sm:w-[48%] md:w-[30%] lg:w-[45%] xl:w-[30%] flex flex-col items-center text-center p-4 rounded-2xl 
+             border border-white backdrop-blur-lg bg-white/10 shadow-2xl shadow-gray-600/10
+             transform transition-transform duration-300 hover:scale-105 hover:shadow-gray-500/15 cursor-pointer"
+              >
+                {iconMap[cat.name]}
+                <h3 className="mt-4 text-md font-semibold text-zinc-600 uppercase">
+                  {cat.name}
+                </h3>
+                <div className="w-12 h-[2px] bg-gray-200 my-2"></div>
+                <p className="text-sm text-gray-400">{cat.description}</p>
+                <button className="flex gap-1 items-center text-teal-500 hover:text-yellow-500 uppercase text-xs pt-3 cursor-pointer">
+                  View More <FaArrowUpRightFromSquare />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
