@@ -7,7 +7,6 @@ import {
   FiCpu,
   FiCode,
 } from "react-icons/fi";
-import SectionTitle from "../../ult/title/SectionTitle";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 type Category = {

@@ -32,11 +32,11 @@ const courses: Course[] = [
     imageUrl: img3,
     lessons: 18,
     students: 950,
-    price: 25.00,
+    price: 25.0,
     time: "5 hours",
     teacherName: "Abul Kolim",
     teacherProfession: "Instructor",
-    rating: 5
+    rating: 5,
   },
   {
     title: "React for Beginners",
@@ -44,11 +44,11 @@ const courses: Course[] = [
     imageUrl: img1,
     lessons: 20,
     students: 1200,
-    price: 25.00,
+    price: 25.0,
     time: "5 hours",
     teacherName: "Abul Kolim",
     teacherProfession: "Instructor",
-    rating: 5
+    rating: 5,
   },
   {
     title: "Tailwind CSS Mastery",
@@ -56,11 +56,11 @@ const courses: Course[] = [
     imageUrl: img2,
     lessons: 15,
     students: 850,
-    price: 25.00,
+    price: 25.0,
     time: "5 hours",
     teacherName: "Abul Kolim",
     teacherProfession: "Instructor",
-    rating: 5
+    rating: 5,
   },
   {
     title: "Node.js & Express",
@@ -68,11 +68,11 @@ const courses: Course[] = [
     imageUrl: img3,
     lessons: 18,
     students: 950,
-    price: 25.00,
+    price: 25.0,
     time: "5 hours",
     teacherName: "Abul Kolim",
     teacherProfession: "Instructor",
-    rating: 5
+    rating: 5,
   },
   {
     title: "Full Stack MERN",
@@ -80,11 +80,11 @@ const courses: Course[] = [
     imageUrl: img4,
     lessons: 25,
     students: 1500,
-    price: 25.00,
+    price: 25.0,
     time: "5 hours",
     teacherName: "Abul Kolim",
     teacherProfession: "Instructor",
-    rating: 5
+    rating: 5,
   },
 ];
 
@@ -121,7 +121,10 @@ const CourseCards: React.FC = () => {
       <div className="absolute inset-0 bg-black/40"></div>
 
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
-        <SectionTitle title="Popular Courses"  className="text-white"/>
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
+          Master New Skills With Ease
+        </span>
+        <SectionTitle title="Popular Courses" className="text-white" />
 
         {/* buttons + link */}
         <div className="flex justify-between items-center">
@@ -133,7 +136,11 @@ const CourseCards: React.FC = () => {
               <NextBtn />
             </button>
           </div>
-          <LinkText to="/courses" text="Browse All Courses" className="text-white hover:text-yellow-500"/>
+          <LinkText
+            to="/courses"
+            text="Browse All Courses"
+            className="text-white hover:text-yellow-500"
+          />
         </div>
 
         {/* Slider */}

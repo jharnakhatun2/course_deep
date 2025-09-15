@@ -2,7 +2,9 @@ import React from "react";
 import image1 from "../../assets/img/offer/1.webp";
 import image2 from "../../assets/img/offer/2.webp";
 import image3 from "../../assets/img/offer/3.webp";
-import image4 from "../../assets/img/offer/4.webp";
+import SectionTitle from "../../ult/title/SectionTitle";
+import LinkText from "../../ult/linkText/LinkText";
+import { Link } from "react-router";
 
 type Event = {
   id: number;
@@ -50,46 +52,60 @@ const events: Event[] = [
 
 const EventList: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 py-10">
-      <div className="space-y-8">
-        {events.map((event) => (
+    <div className="container mx-auto py-8 lg:py-12 bg-gray-100">
+      <div className="lg:max-w-7xl mx-auto px-4 space-y-8">
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-teal-400 text-center">
+          Educational events listed here
+        </span>
+        <SectionTitle title="Upcoming Events" className="text-zinc-600" />
+
+        <LinkText
+          to="/courses"
+          text="Browse All Events"
+          className="text-teal-500 hover:text-yellow-500"
+        />
+
+        {events.map((event, index) => (
           <div
             key={event.id}
-            className="flex flex-col md:flex-row items-center justify-between border-b pb-6 gap-6"
+            className={`flex flex-col lg:flex-row-reverse items-center justify-between gap-10 ${
+              index !== events.length - 1 ? "border-b border-gray-300 pb-6" : ""
+            }`}
           >
-            {/* Date Section */}
-            <div className="flex-1 text-center md:text-left">
-              <div className="text-4xl font-bold text-yellow-500">
-                {event.day}
-              </div>
-              <div className="uppercase text-sm text-gray-500 tracking-wide">
-                {event.month}
-              </div>
-              <div className="uppercase text-sm font-semibold text-gray-600">
-                {event.weekday}
-              </div>
-            </div>
-
-            {/* Content Section */}
-            <div className="flex-2 text-center md:text-left">
-              <h3 className="text-lg font-semibold text-gray-800">
-                {event.title}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {event.time} | {event.location}
-              </p>
-              <button className="mt-3 px-4 py-2 border border-gray-400 text-sm font-medium rounded hover:bg-gray-100 transition">
-                REGISTER
-              </button>
-            </div>
-
             {/* Image Section */}
-            <div className="w-full md:w-50 h-28 flex-shrink-0">
+            <div className="flex flex-1 justify-center lg:justify-end">
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-full h-full object-cover rounded"
+                className="w-1/2 object-cover inline-block"
               />
+            </div>
+            <div className="lg:flex items-center flex-3">
+              {/* Date Section */}
+              <div className="flex-1 text-left">
+                <div className="flex items-baseline-last">
+                  <div className="text-5xl text-yellow-500">{event.day}</div>
+                  <div className="uppercase text-gray-400 font-light">
+                    {event.month}
+                  </div>
+                </div>
+                <div className="uppercase text-2xl text-zinc-400 font-light">
+                  {event.weekday}
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="flex-2 text-left ">
+                <h3 className="w-full text-xl text-zinc-800 font-poppins py-3 lg:py-1">
+                  {event.title}
+                </h3>
+                <p className="text-zinc-500">
+                  {event.time} | {event.location}
+                </p>
+                <button className="mt-5 px-4 py-2 border border-gray-400 text-sm font-medium rounded hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-smooth cursor-pointer">
+                  REGISTER
+                </button>
+              </div>
             </div>
           </div>
         ))}
