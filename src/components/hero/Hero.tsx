@@ -14,7 +14,7 @@ const Hero = () => {
         <p className="text-gray-300">
           <span className="text-teal-500 font-bold">300,000+</span> Students,{" "}
           <span className="text-white underline font-bold">180</span>{" "}
-          Instructors , <span className="text-yellow-500 font-bold">56</span>{" "}
+          Instructors , <span className="text-yellow-500 font-bold">150</span>{" "}
           Courses, <span className="text-teal-500 font-bold">1million</span>{" "}
           hours of Teaching
         </p>

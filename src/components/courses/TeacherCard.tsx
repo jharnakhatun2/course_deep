@@ -24,7 +24,7 @@ const TeacherCard: React.FC<TeacherProps> = ({
 
         {/* Teacher Details */}
         <div>
-          <h4 className="text-sm font-semibold">{name}</h4>
+          <h4 className="text-sm font-semibold text-zinc-400">{name}</h4>
           <p className="text-xs text-teal-600">{profession}</p>
         </div>
       </div>
@@ -33,7 +33,7 @@ const TeacherCard: React.FC<TeacherProps> = ({
       <div className="items-center gap-1 ml-auto">
         <p className="flex items-center gap-1">
           <FiClock className="text-teal-500" />{" "}
-          <span className="font-bold">{time}</span>
+          <span className="font-bold text-white">{time}</span>
         </p>
         <div className="flex items-center gap-1 ml-auto">
           {Array.from({ length: 1 }).map((_, i) => (
@@ -44,8 +44,8 @@ const TeacherCard: React.FC<TeacherProps> = ({
               }`}
             />
           ))}
-          <span className="text-sm text-gray-600">
-            (<span className="font-bold">{rating}</span> ratings)
+          <span className="text-sm text-zinc-400">
+            (<span className="font-bold text-white">{rating}</span> ratings)
           </span>
         </div>
       </div>

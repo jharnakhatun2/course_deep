@@ -19,7 +19,6 @@ const Home = () => {
       <BannerStats/>
       <Category/>
       <CourseCards/>
-      
       <EventList/>     
       <Instructor/>
       <Banner2/>

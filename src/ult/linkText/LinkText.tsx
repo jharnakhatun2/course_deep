@@ -4,14 +4,15 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 type LinkProps = {
   to: string;
   text: string;
+  className?: string;
 };
 
-const LinkText = ({ to, text }: LinkProps) => {
+const LinkText = ({ to, text, className }: LinkProps) => {
   return (
     <div className="relative flex items-center gap-1">
       <Link
         to={to}
-        className=" text-zinc-500 hover:text-teal-500 font-medium group uppercase text-sm"
+        className={`transition-smooth font-medium group uppercase text-sm ${className}`}
       >
         {text}
       </Link>

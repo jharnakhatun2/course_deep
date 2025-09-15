@@ -3,7 +3,7 @@ import Slider, { type Settings } from "react-slick";
 
 import SectionTitle from "../../ult/title/SectionTitle";
 import Card from "./Card";
-import bgImage from "../../assets/img/coursebg.webp";
+import bgImage from "../../assets/img/course-bg.webp";
 import img1 from "../../assets/img/portfolio/1.webp";
 import img2 from "../../assets/img/portfolio/2.webp";
 import img3 from "../../assets/img/portfolio/3.webp";
@@ -114,18 +114,18 @@ const CourseCards: React.FC = () => {
 
   return (
     <section
-      className="py-8 lg:py-12 bg-fixed bg-cover bg-center relative"
+      className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/5"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
 
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
-        <SectionTitle title="Popular Courses"  className="text-zinc-700"/>
+        <SectionTitle title="Popular Courses"  className="text-white"/>
 
         {/* buttons + link */}
         <div className="flex justify-between items-center">
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             <button onClick={() => sliderRef.current?.slickPrev()}>
               <PrevBtn />
             </button>
@@ -133,7 +133,7 @@ const CourseCards: React.FC = () => {
               <NextBtn />
             </button>
           </div>
-          <LinkText to="/courses" text="Browse All Courses" />
+          <LinkText to="/courses" text="Browse All Courses" className="text-white hover:text-yellow-500"/>
         </div>
 
         {/* Slider */}

@@ -39,25 +39,25 @@ const Card: React.FC<CourseCardProps> = ({
         />
         {/* Overlay slides down */}
         <div
-          className="absolute top-0 left-0 w-full h-0 bg-yellow-100/70 
+          className="absolute top-0 left-0 w-full h-0 bg-gray-100/70 
           group-hover:h-full transition-smooth"
         />
       </div>
 
       {/* Course Content */}
       <div className="p-4 relative z-10">
-        <h3 className="text-lg font-bold mb-2 text-gray-800 uppercase">
+        <h3 className="text-lg font-bold mb-2 text-white uppercase">
           {title}
         </h3>
-        <p className="text-gray-500">{description}</p>
+        <p className="text-zinc-400">{description}</p>
 
         {/* Info row with icons */}
-        <div className="flex gap-3 text-gray-500 text-sm pt-1">
+        <div className="flex gap-3 text-zinc-400 text-sm pt-1">
           <span className="flex items-center gap-1">
-            <FiBookOpen className="text-teal-500" /> <span className="font-bold text-gray-600">{lessons}</span> Lessons
+            <FiBookOpen className="text-teal-500" /> <span className="font-bold text-zinc-300">{lessons}</span> Lessons
           </span>
           <span className="flex items-center gap-1">
-            <FaUsers className="text-teal-500" /> <span className="font-bold text-gray-600">{students}</span> Students
+            <FaUsers className="text-teal-500" /> <span className="font-bold text-zinc-300">{students}</span> Students
           </span>
         </div>
 
@@ -77,7 +77,7 @@ const Card: React.FC<CourseCardProps> = ({
         <div className="h-[1px] w-full bg-zinc-400/30 shadow my-4"></div>
         {/* footer */}
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-2xl">$<span className="text-zinc-800 font-bold">{price}.00</span></h3>
+          <h3 className="font-semibold text-2xl">$<span className="text-white font-bold">{price}.00</span></h3>
           <button className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
             View More
           </button>
