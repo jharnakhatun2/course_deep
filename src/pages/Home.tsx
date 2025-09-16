@@ -11,6 +11,7 @@ import Instructor from "../components/instructor/Instructor";
 import InstructorSlide from "../components/instructor/InstructorSlide";
 import LatestBlog from "../components/latestBlog/LatestBlog";
 import Pricing from "../components/pricing/Pricing";
+import ToggleSection from "../components/testimonial/Exam";
 import Testimonials from "../components/testimonial/Testimonial";
 
 
@@ -23,7 +24,8 @@ const Home = () => {
       <CourseCards/>
       <EventList/>    
       <Instructor/>
-      <BannerEvent/> 
+      <BannerEvent/>
+      <ToggleSection/> 
       <Testimonials/>
       <LatestBlog/>
       <Pricing/>
