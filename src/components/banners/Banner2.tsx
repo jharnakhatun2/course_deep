@@ -1,34 +1,29 @@
+import imageIns from "../../assets/img/instructorBc.webp";
+import Button from "../../ult/button/Button";
+
 const Banner2 = () => {
   return (
     <div
-      className="w-full bg-gray-500"
-      style={{
-        backgroundImage: "url('https://source.unsplash.com/random/640x480')",
-        backgroundPosition: "center center",
-        backgroundBlendMode: "multiply",
-        backgroundSize: "cover",
-      }}
+      className="w-full bg-center bg-cover relative" 
+      style={{ backgroundImage: `url(${imageIns})` }}
     >
-      <div className="container flex flex-col flex-wrap content-center justify-center p-4 py-20 mx-auto md:p-10">
-        <h1 className="text-5xl antialiased font-semibold leading-none text-center text-gray-800">
-          Get Our Updates
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="relative z-10 flex flex-col flex-wrap content-center justify-center p-4 py-20 lg:py-22 mx-auto md:p-10">
+        <h1 className="text-5xl font-semibold leading-none text-center text-white">
+         Become an Instructor?
         </h1>
-        <p className="pt-2 pb-8 text-xl antialiased text-center text-gray-800">
-          Find out about events and other news
+        <p className="pt-2 pb-8 text-xl text-center text-gray-200">
+          Join thousand of instructors and earn money hassle free!
         </p>
-        <div className="flex flex-row">
-          <input
-            type="text"
-            placeholder="example@email.com"
-            className="w-3/5 p-3 rounded-l-lg sm:w-2/3 bg-white"
-          />
-          <button
-            type="button"
-            className="w-2/5 p-3 font-semibold rounded-r-lg sm:w-1/3 bg-violet-600 text-gray-50"
+        <div  className="flex justify-center">
+        <Button
+            url="/courses"
+            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
           >
-            Subscribe
-          </button>
-        </div>
+            Get Started Now
+          </Button>
+          </div>
       </div>
     </div>
   );

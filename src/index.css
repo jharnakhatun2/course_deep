@@ -2,12 +2,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-
 @theme {
-  --font-garamond: "EB Garamond", serif; 
-  --font-lobster: "Lobster", cursive; 
-  --font-poppins: "Poppins", sans-serif; 
-  --font-Ubuntu: "Ubuntu", sans-serif;   
+  --font-garamond: "EB Garamond", serif;
+  --font-lobster: "Lobster", cursive;
+  --font-poppins: "Poppins", sans-serif;
+  --font-Ubuntu: "Ubuntu", sans-serif;
 }
 
 @layer utilities {
@@ -32,7 +31,8 @@
   .slick-next {
     display: none !important;
   }
-  .slick-list{
+  .slick-list {
     border-radius: 8px !important;
   }
+  
 }

@@ -1,0 +1,29 @@
+import Button from "../../ult/button/Button"
+import { GiProgression } from "react-icons/gi";
+
+const BannerEvent = () => {
+  return (
+    <div className="p-6 py-10 bg-yellow-500 text-gray-50">
+	<div className="max-w-7xl mx-auto px-4">
+		<div className="flex flex-col lg:flex-row items-center justify-between">
+			<div className="flex items-center gap-5">
+                <GiProgression className="w-20 h-20"/>
+                <div>
+                <h2 className="text-3xl font-semibold">New Student Join Every Week</h2>
+                <h3 className="text-xl">New courses, interesting posts, popular books and much more!</h3>
+                </div>
+            </div>
+            <Button
+            url="/courses"
+            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
+          >
+            Enroll Now
+          </Button>
+			
+		</div>
+	</div>
+</div>
+  )
+}
+
+export default BannerEvent

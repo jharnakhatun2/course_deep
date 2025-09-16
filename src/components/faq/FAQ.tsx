@@ -46,19 +46,14 @@ const faqs: FaqItem[] = [
   },
 ];
 
-
 const Faq: React.FC = () => {
   const [openId, setOpenId] = useState<number | null>(null);
-
-  // store refs to each content element
   const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   useEffect(() => {
     if (openId !== null) {
       const el = contentRefs.current[openId];
-      if (el) {
-        el.style.maxHeight = `${el.scrollHeight}px`;
-      }
+      if (el) el.style.maxHeight = `${el.scrollHeight}px`;
     }
 
     Object.keys(contentRefs.current).forEach((key) => {
@@ -82,52 +77,56 @@ const Faq: React.FC = () => {
   const toggleFaq = (id: number) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="bg-gray-50 py-10">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex gap-10">
-        <FeatureCourse/>
-        <div>
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-gray-800 relative inline-block">
-            FAQ
-            <span className="absolute left-0 bottom-0 w-full h-1 bg-yellow-400 blur-sm" />
-          </h2>
-          <p className="text-gray-500 mt-4">Answered Frequently Asked Questions, Still Confused?</p>
-        </div>
-
-        <div className="space-y-4 max-w-3xl mx-auto">
-          {faqs.map((faq) => (
-            <div key={faq.id} className="border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-              <button
-                onClick={() => toggleFaq(faq.id)}
-                aria-expanded={openId === faq.id}
-                className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-100 focus:outline-none"
-              >
-                <span>{faq.question}</span>
-                <span
-                  className={`ml-2 inline-block transform transition-transform duration-300 ${
-                    openId === faq.id ? "rotate-45" : "rotate-0"
-                  }`}
-                  aria-hidden
-                >
-                  +
-                </span>
-              </button>
-
-              {/* content wrapper */}
-              <div
-                ref={(el) => {
-                  contentRefs.current[faq.id] = el;
-                }}
-                className="max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-white text-gray-600"
-              >
-                <div className="p-4">{faq.answer}</div>
-              </div>
+    <div className="bg-gray-50 py-8 lg:pt-12 lg:pb-30">
+      <div className="lg:max-w-7xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-10 my-10">
+          <FeatureCourse />
+          <div className="w-full lg:w-2/3">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-gray-800 relative inline-block">
+                FAQ
+                <span className="absolute left-0 bottom-0 w-full h-1 bg-yellow-400 blur-sm" />
+              </h2>
+              <p className="text-gray-500 mt-4">
+                Answered Frequently Asked Questions, Still Confused?
+              </p>
             </div>
-          ))}
+
+            <div className="space-y-4 max-w-full lg:max-w-3xl mx-auto">
+              {faqs.map((faq) => (
+                <div
+                  key={faq.id}
+                  className="border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+                >
+                  <button
+                    onClick={() => toggleFaq(faq.id)}
+                    aria-expanded={openId === faq.id}
+                    className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-100 focus:outline-none"
+                  >
+                    <span>{faq.question}</span>
+                    <span
+                      className={`ml-2 inline-block transform transition-transform duration-300 ${
+                        openId === faq.id ? "rotate-45" : "rotate-0"
+                      }`}
+                      aria-hidden
+                    >
+                      +
+                    </span>
+                  </button>
+
+                  <div
+                    ref={(el) => {
+                      contentRefs.current[faq.id] = el;
+                    }}
+                    className="max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-white text-gray-600"
+                  >
+                    <div className="p-4">{faq.answer}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
       </div>
     </div>
   );

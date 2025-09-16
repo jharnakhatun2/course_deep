@@ -98,18 +98,24 @@ const CourseCards: React.FC = () => {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1024, // large screens
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-        },
+          slidesToShow: 3,
+        }
       },
       {
-        breakpoint: 640, // mobile
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
-        },
-      },
-    ],
+        }
+      }
+    ]
   };
 
   return (

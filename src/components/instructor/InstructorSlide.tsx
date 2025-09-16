@@ -1,16 +1,17 @@
 import React, { useRef } from "react";
-import img1 from "../../assets/img/team/1.webp";
-import img2 from "../../assets/img/team/2.webp";
-import img3 from "../../assets/img/team/3.webp";
+import Slider, { type Settings } from "react-slick";
 import SectionTitle from "../../ult/title/SectionTitle";
-import type { Settings } from "react-slick";
+import img1 from "../../assets/img/portfolio/1.webp";
+import img2 from "../../assets/img/portfolio/2.webp";
+import img3 from "../../assets/img/portfolio/3.webp";
 import LinkText from "../../ult/linkText/LinkText";
-import NextBtn from "../../ult/slideButton/nextBtn";
 import PrevBtn from "../../ult/slideButton/preBtn";
-import Slider from "react-slick";
-import InstructorCard from "./InstructorCard";
+import NextBtn from "../../ult/slideButton/nextBtn";
+import InsSlideCard from "./InsSlideCard";
+
 
 type InstructorType = {
+  id: number;
   name: string;
   role: string;
   image: string;
@@ -21,6 +22,7 @@ type InstructorType = {
 
 const instructors: InstructorType[] = [
   {
+    id: 1,
     name: "Parveen Anand",
     role: "Lead Designer",
     image: img1,
@@ -29,6 +31,7 @@ const instructors: InstructorType[] = [
     linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
   },
   {
+    id: 2,
     name: "Diana Petersen",
     role: "Lead Marketer",
     image: img2,
@@ -37,6 +40,7 @@ const instructors: InstructorType[] = [
     linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
   },
   {
+    id: 3,
     name: "Larry Parker",
     role: "Lead Developer",
     image: img3,
@@ -45,6 +49,7 @@ const instructors: InstructorType[] = [
     linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
   },
   {
+    id: 4,
     name: "Larry Parker",
     role: "Lead Developer",
     image: img3,
@@ -52,18 +57,9 @@ const instructors: InstructorType[] = [
     facebookProfile: "https://www.facebook.com/jharnakhatun2/",
     linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
   },
-  {
-    name: "Diana Petersen",
-    role: "Lead Marketer",
-    image: img2,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  }
-  
 ];
 
-const Instructor: React.FC = () => {
+const InstructorSlide: React.FC = () => {
   const sliderRef = useRef<Slider | null>(null);
 
   const settings: Settings = {
@@ -73,37 +69,36 @@ const Instructor: React.FC = () => {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1172,
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 769,
+        breakpoint: 1024, // large screens
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
       {
-        breakpoint: 480,
+        breakpoint: 640, // mobile
         settings: {
           slidesToShow: 1,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   return (
-    <section className="py-8 lg:py-12 bg-gradient-to-b from-gray-100 to-zinc-500">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Section Title */}
+    <section
+      className="py-8 lg:py-12 "
+      
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40"></div>
+
+      <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
         <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
           Master New Skills With Ease
         </span>
-        <SectionTitle title="Best Instructors" className="text-zinc-700" />
+        <SectionTitle title="Popular Courses" className="text-white" />
 
         {/* buttons + link */}
-        <div className="flex justify-between items-center pt-10">
+        <div className="flex justify-between items-center">
           <div className="flex gap-2">
             <button onClick={() => sliderRef.current?.slickPrev()}>
               <PrevBtn />
@@ -120,14 +115,13 @@ const Instructor: React.FC = () => {
         </div>
 
         {/* Slider */}
-        <div className="py-8 my-4">
+        <div className="py-8">
           <Slider ref={sliderRef} {...settings}>
             {instructors.map((instructor, index) => (
-              <div
-                key={index}
-                className="px-8"
-              >
-                <InstructorCard
+              <div key={index} className="px-2">
+                {" "}
+                {/* ✅ spacing between slides */}
+                <InsSlideCard
                   name={instructor.name}
                   image={instructor.image}
                   role={instructor.role}
@@ -144,4 +138,4 @@ const Instructor: React.FC = () => {
   );
 };
 
-export default Instructor;
+export default InstructorSlide;
