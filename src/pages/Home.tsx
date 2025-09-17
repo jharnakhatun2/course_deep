@@ -22,7 +22,7 @@ const Home = () => {
       <CourseCards/>
       <EventList/>    
       <Instructor/>
-      {/* <BannerEvent/>  */}
+      <BannerEvent/> 
       {/* <Testimonials/> */}
       {/* <LatestBlog/> */}
       {/* <Pricing/> */}
