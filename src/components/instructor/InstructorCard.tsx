@@ -18,7 +18,7 @@ const InstructorCard: React.FC<InstructorCardProps> = ({
   const iconTransition =
     "text-yellow-500 hover:text-teal-300 transform hover:scale-120 transition-smooth";
   return (
-    <div className="hover:shadow-2xl my-12 flex flex-col justify-center items-center transition-shadow transition-smooth bg-white/10 backdrop-blur-lg w-full text-center rounded-md sm:w-42 md:w-72 lg:w-70 xl:w-64 border border-white/30">
+    <div className="hover:shadow-2xl mt-12 flex flex-col justify-center items-center transition-shadow transition-smooth bg-white/10 backdrop-blur-lg w-full text-center rounded-md sm:w-42 md:w-72 lg:w-70 xl:w-64 border border-white/30">
       <img
         alt={name}
         className="self-center flex-shrink-0 w-24 h-24 -mt-12 bg-center bg-cover rounded-full bg-gray-500 shadow-[0_0_5px_#ffffff]"

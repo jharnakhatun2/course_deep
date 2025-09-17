@@ -119,7 +119,7 @@ const Instructor: React.FC = () => {
         </div>
 
         {/* Slider */}
-        <div className="py-8 my-4">
+        <div className="py-8 mt-4">
           <Slider ref={sliderRef} {...settings}>
             {instructors.map((instructor, index) => (
               <div key={index} className="px-8">

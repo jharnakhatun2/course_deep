@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { Link } from "react-router";
 import img1 from "../../assets/img/portfolio/1.webp";
 import img2 from "../../assets/img/portfolio/2.webp";
 import img3 from "../../assets/img/portfolio/3.webp";
@@ -79,7 +78,7 @@ const blogData: BlogPost[] = [
     author: "Arif Hasan",
     date: "Sep 5, 2025",
     readTime: "6 min read",
-  }
+  },
 ];
 
 const LatestBlog: React.FC = () => {
@@ -96,74 +95,68 @@ const LatestBlog: React.FC = () => {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-        }
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   return (
     <section
-      className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
-      style={{ backgroundImage: `url(${imgBg})` }}
-    >
-      <div className="container mx-auto px-4">
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40"></div>
-        {/* Section Title */}
-        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
-          Master New Skills With Ease
-        </span>
-        <SectionTitle title="Latest Blogs" className="text-zinc-700" />
+  className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
+  style={{ backgroundImage: `url(${imgBg})` }}
+>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/70"></div>
 
-        {/* buttons + link */}
-        <div className="flex justify-between items-center">
-          <div className="flex gap-2">
-            <button onClick={() => sliderRef.current?.slickPrev()}>
-              <PrevBtn />
-            </button>
-            <button onClick={() => sliderRef.current?.slickNext()}>
-              <NextBtn />
-            </button>
-          </div>
-          <LinkText
-            to="/courses"
-            text="Browse All Courses"
-            className="text-white hover:text-yellow-500"
-          />
-        </div>
+  {/* Content wrapper with higher z-index */}
+  <div className="container mx-auto px-4 relative z-10">
+    <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
+      Master New Skills With Ease
+    </span>
+    <SectionTitle title="Latest Blogs" className="text-zinc-100 pb-8" />
 
-        {/* Slider */}
-        <div className="py-8">
-          <Slider ref={sliderRef} {...settings}>
-            {latestBlogs.map((post) => (
-              <div key={post.id} className="px-4">
-                <BlogCard
-                  image={post.image}
-                  category={post.category}
-                  title={post.title}
-                  content={post.content}
-                  author={post.author}
-                  date={post.date}
-                  readTime={post.readTime}
-                />
-              </div>
-            ))}
-          </Slider>
-        </div>
+    {/* buttons + link */}
+    <div className="flex justify-between items-center">
+      <div className="flex gap-2">
+        <button onClick={() => sliderRef.current?.slickPrev()}>
+          <PrevBtn />
+        </button>
+        <button onClick={() => sliderRef.current?.slickNext()}>
+          <NextBtn />
+        </button>
       </div>
-    </section>
+      <LinkText
+        to="/courses"
+        text="Browse All Courses"
+        className="text-white hover:text-yellow-500"
+      />
+    </div>
+
+    {/* Slider */}
+    <div className="py-8">
+      <Slider ref={sliderRef} {...settings}>
+        {latestBlogs.map((post) => (
+          <div key={post.id} className="px-4">
+            <BlogCard {...post} />
+          </div>
+        ))}
+      </Slider>
+    </div>
+  </div>
+</section>
+
   );
 };
 
