@@ -124,7 +124,7 @@ const CourseCards: React.FC = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/70"></div>
 
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
         <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
