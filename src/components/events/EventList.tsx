@@ -4,7 +4,7 @@ import image2 from "../../assets/img/offer/2.webp";
 import image3 from "../../assets/img/offer/3.webp";
 import SectionTitle from "../../ult/title/SectionTitle";
 import LinkText from "../../ult/linkText/LinkText";
-import { Link } from "react-router";
+import Button from "../../ult/button/Button";
 
 type Event = {
   id: number;
@@ -52,9 +52,9 @@ const events: Event[] = [
 
 const EventList: React.FC = () => {
   return (
-    <div className="container mx-auto py-8 lg:py-12 bg-gray-100">
+    <div className="py-8 lg:py-12 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 space-y-8">
-        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-teal-400 text-center">
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-500 text-center">
           Educational events listed here
         </span>
         <SectionTitle title="Upcoming Events" className="text-zinc-600" />
@@ -102,9 +102,12 @@ const EventList: React.FC = () => {
                 <p className="text-zinc-500">
                   {event.time} | {event.location}
                 </p>
-                <button className="mt-5 px-4 py-2 border border-gray-400 text-sm font-medium rounded hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-smooth cursor-pointer">
+                <Button
+                  url="/login"
+                  className="mt-5 w-full sm:w-1/4 text-center bg-zinc-100 hover:bg-zinc-300 text-zinc-800 hover:text-white border border-gray-300"
+                >
                   REGISTER
-                </button>
+                </Button>
               </div>
             </div>
           </div>

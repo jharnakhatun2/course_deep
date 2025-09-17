@@ -59,8 +59,7 @@ const instructors: InstructorType[] = [
     twitterProfile: "https://twitter.com/javaScripLogic",
     facebookProfile: "https://www.facebook.com/jharnakhatun2/",
     linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  }
-  
+  },
 ];
 
 const Instructor: React.FC = () => {
@@ -76,28 +75,28 @@ const Instructor: React.FC = () => {
         breakpoint: 1172,
         settings: {
           slidesToShow: 3,
-        }
+        },
       },
       {
         breakpoint: 769,
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   return (
-    <section className="py-8 lg:py-12 bg-gradient-to-b from-gray-100 to-zinc-500">
+    <section className="py-8 lg:py-12 bg-gradient-to-b from-gray-200 to-zinc-500">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Title */}
-        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-gray-500 text-center">
           Master New Skills With Ease
         </span>
         <SectionTitle title="Best Instructors" className="text-zinc-700" />
@@ -115,7 +114,7 @@ const Instructor: React.FC = () => {
           <LinkText
             to="/courses"
             text="Browse All Courses"
-            className="text-white hover:text-yellow-500"
+            className="text-white hover:text-teal-300"
           />
         </div>
 
@@ -123,10 +122,7 @@ const Instructor: React.FC = () => {
         <div className="py-8 my-4">
           <Slider ref={sliderRef} {...settings}>
             {instructors.map((instructor, index) => (
-              <div
-                key={index}
-                className="px-8"
-              >
+              <div key={index} className="px-8">
                 <InstructorCard
                   name={instructor.name}
                   image={instructor.image}

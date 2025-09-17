@@ -20,8 +20,8 @@ const Home = () => {
       <BannerStats/>
       <Category/>
       <CourseCards/>
-      {/* <EventList/>     */}
-      {/* <Instructor/> */}
+      <EventList/>    
+      <Instructor/>
       {/* <BannerEvent/>  */}
       {/* <Testimonials/> */}
       {/* <LatestBlog/> */}
