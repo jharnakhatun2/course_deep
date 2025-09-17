@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import FeatureCourse from "./FeatureCourse";
+import SectionTitle from "../../ult/title/SectionTitle";
 
 type FaqItem = {
   id: number;
@@ -74,25 +75,22 @@ const Faq: React.FC = () => {
     return () => window.removeEventListener("resize", onResize);
   }, [openId]);
 
-  const toggleFaq = (id: number) => setOpenId((prev) => (prev === id ? null : id));
+  const toggleFaq = (id: number) =>
+    setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="bg-gray-50 py-8 lg:pt-12 lg:pb-30">
+    <div className="bg-gray-100 py-8 lg:py-12">
       <div className="lg:max-w-7xl mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-10 my-10">
           <FeatureCourse />
           <div className="w-full lg:w-2/3">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-gray-800 relative inline-block">
-                FAQ
-                <span className="absolute left-0 bottom-0 w-full h-1 bg-yellow-400 blur-sm" />
-              </h2>
-              <p className="text-gray-500 mt-4">
-                Answered Frequently Asked Questions, Still Confused?
-              </p>
-            </div>
+            
+            <SectionTitle title="FAQ" className="text-zinc-600" />
+            <span className="flex justify-center text-xs uppercase text-teal-400 text-center pb-8">
+              Still Confused?
+            </span>
 
-            <div className="space-y-4 max-w-full lg:max-w-3xl mx-auto">
+            <div className="space-y-4 max-w-full lg:max-w-3xl mx-auto border border-gray-100 p-5 shadow-xl">
               {faqs.map((faq) => (
                 <div
                   key={faq.id}
@@ -103,7 +101,7 @@ const Faq: React.FC = () => {
                     aria-expanded={openId === faq.id}
                     className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-100 focus:outline-none"
                   >
-                    <span>{faq.question}</span>
+                    <span className="font-garamond text-lg">{faq.question}</span>
                     <span
                       className={`ml-2 inline-block transform transition-transform duration-300 ${
                         openId === faq.id ? "rotate-45" : "rotate-0"
@@ -120,7 +118,7 @@ const Faq: React.FC = () => {
                     }}
                     className="max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-white text-gray-600"
                   >
-                    <div className="p-4">{faq.answer}</div>
+                    <div className="p-4 text-zinc-500">{faq.answer}</div>
                   </div>
                 </div>
               ))}

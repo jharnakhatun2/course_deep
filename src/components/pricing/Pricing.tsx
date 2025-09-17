@@ -59,18 +59,18 @@ const plans: Plan[] = [
 const Pricing: React.FC = () => {
   return (
     <section className="py-20 bg-gray-100 text-gray-900">
-      <div className="container px-4 mx-auto">
+      <div className="lg:max-w-7xl mx-auto px-4">
         {/* Header */}
         <span className="flex justify-center text-xs uppercase text-yellow-400 text-center">
           Pricing Plan
         </span>
         <SectionTitle
           title=" Choose Your Learning Plan"
-          className="text-zinc-600 pb-16"
+          className="text-zinc-600 pb-8 lg:pb-16"
         />
 
         {/* Pricing Plans */}
-        <div className="flex flex-wrap -mx-4">
+        <div className="flex flex-wrap ">
           {plans.map((plan) => (
             <div
               key={plan.id}

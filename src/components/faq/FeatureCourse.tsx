@@ -1,8 +1,8 @@
 const FeatureCourse = () => {
   return (
-    <div className="flex flex-col w-full lg:max-w-lg p-6 space-y-6 overflow-hidden rounded-lg shadow-md bg-white text-gray-900">
+    <div className="flex flex-col w-full lg:max-w-lg p-6 space-y-6 overflow-hidden bg-white/20 text-gray-900 border border-white backdrop-blur-2xl">
       <div>
-        <div className="w-full h-60 sm:h-80 md:h-96 mb-4">
+        <div className="w-full h-60 sm:h-80 md:h-96 mb-4 ">
           <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/7IgVGSaQPaw?si=YUIJfP4pMROE3zDE"

@@ -121,7 +121,7 @@ const LatestBlog: React.FC = () => {
   <div className="absolute inset-0 bg-black/70"></div>
 
   {/* Content wrapper with higher z-index */}
-  <div className="container mx-auto px-4 relative z-10">
+  <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
     <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
       Master New Skills With Ease
     </span>
