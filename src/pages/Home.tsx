@@ -18,17 +18,17 @@ const Home = () => {
     <>
       <Hero/>
       <BannerStats/>
-      <Category/>
-      <CourseCards/>
-      <EventList/>    
-      <Instructor/>
-      <BannerEvent/> 
-      <Testimonials/>
-      <LatestBlog/>
-      <Pricing/>
-      <Banner2/>
-      <FAQ/>
-      <Banner1/>
+      {/* <Category/> */}
+      {/* <CourseCards/> */}
+      {/* <EventList/>     */}
+      {/* <Instructor/> */}
+      {/* <BannerEvent/>  */}
+      {/* <Testimonials/> */}
+      {/* <LatestBlog/> */}
+      {/* <Pricing/> */}
+      {/* <Banner2/> */}
+      {/* <FAQ/> */}
+      {/* <Banner1/> */}
       
       
       <div className="lg:max-w-7xl mx-auto px-4 "></div>

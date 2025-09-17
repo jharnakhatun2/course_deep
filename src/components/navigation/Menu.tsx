@@ -81,7 +81,7 @@ const Menu = () => {
           </div>
           {/* <!-- Login & Signup --> */}
           {user ? (
-            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8 rounded">
+            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8">
               <button
                 className="cursor-pointer hover:text-black transition-smooth"
                 onClick={logOut}
@@ -92,7 +92,7 @@ const Menu = () => {
               <FaUserCircle className="cursor-pointer" />
             </div>
           ) : (
-            <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8 rounded">
+            <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8">
               <Link
                 to="/login"
                 className="cursor-pointer hover:text-black transition-smooth"
@@ -106,7 +106,7 @@ const Menu = () => {
 
       {/* Search input dropdown */}
       <div
-        className={` w-60 absolute transform -translate-y-1/2 transition-smooth overflow-hidden left-1/4 top-32 sm:right-7/12 ${
+        className={` w-60 absolute transform -translate-y-1/2 transition-smooth overflow-hidden left-1/4 top-32 sm:right-7/12 z-50 ${
           showSearch ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
