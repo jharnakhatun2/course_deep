@@ -28,7 +28,7 @@ const Home = () => {
       <Pricing/>
       <Banner2/>
       <FAQ/>
-      {/* <Banner1/> */}
+      <Banner1/>
       
       
       <div className="lg:max-w-7xl mx-auto px-4 "></div>

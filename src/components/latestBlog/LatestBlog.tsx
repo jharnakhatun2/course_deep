@@ -114,49 +114,48 @@ const LatestBlog: React.FC = () => {
 
   return (
     <section
-  className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
-  style={{ backgroundImage: `url(${imgBg})` }}
->
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-black/70"></div>
+      className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
+      style={{ backgroundImage: `url(${imgBg})` }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/70"></div>
 
-  {/* Content wrapper with higher z-index */}
-  <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
-    <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
-      Master New Skills With Ease
-    </span>
-    <SectionTitle title="Latest Blogs" className="text-zinc-100 pb-8" />
+      {/* Content wrapper with higher z-index */}
+      <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
+          Master New Skills With Ease
+        </span>
+        <SectionTitle title="Latest Blogs" className="text-zinc-100 pb-8" />
 
-    {/* buttons + link */}
-    <div className="flex justify-between items-center">
-      <div className="flex gap-2">
-        <button onClick={() => sliderRef.current?.slickPrev()}>
-          <PrevBtn />
-        </button>
-        <button onClick={() => sliderRef.current?.slickNext()}>
-          <NextBtn />
-        </button>
-      </div>
-      <LinkText
-        to="/courses"
-        text="Browse All Courses"
-        className="text-white hover:text-yellow-500"
-      />
-    </div>
-
-    {/* Slider */}
-    <div className="py-8">
-      <Slider ref={sliderRef} {...settings}>
-        {latestBlogs.map((post) => (
-          <div key={post.id} className="px-4">
-            <BlogCard {...post} />
+        {/* buttons + link */}
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2">
+            <button onClick={() => sliderRef.current?.slickPrev()}>
+              <PrevBtn />
+            </button>
+            <button onClick={() => sliderRef.current?.slickNext()}>
+              <NextBtn />
+            </button>
           </div>
-        ))}
-      </Slider>
-    </div>
-  </div>
-</section>
+          <LinkText
+            to="/courses"
+            text="Browse All Courses"
+            className="text-white hover:text-yellow-500"
+          />
+        </div>
 
+        {/* Slider */}
+        <div className="py-8">
+          <Slider ref={sliderRef} {...settings}>
+            {latestBlogs.map((post) => (
+              <div key={post.id} className="px-4">
+                <BlogCard {...post} />
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
+    </section>
   );
 };
 
