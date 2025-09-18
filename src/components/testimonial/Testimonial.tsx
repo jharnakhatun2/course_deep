@@ -13,8 +13,11 @@ const Testimonial: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <section className="text-gray-300 bg-gray-900 py-8 lg:py-12" id="reviews">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-4">
+    <section className="text-gray-300 bg-gray-900 py-8 lg:py-18" id="reviews">
+      <div className="max-w-7xl mx-auto px-4">
+        <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-teal-400 text-center">
+          Real experiences, real results
+        </span>
         <SectionTitle title="Success Stories" className="text-white" />
 
         <div
@@ -317,14 +320,14 @@ const Testimonial: React.FC = () => {
 
             {/* Shadow effect */}
             {!isOpen && (
-              <div className="absolute bottom-0 left-0 w-full h-50 bg-gradient-to-t from-gray-800 via-gray-800/70 to-transparent pointer-events-none"></div>
+              <div className="absolute bottom-0 left-0 w-full h-50 bg-gradient-to-b from-gray-700/10 to-gray-900 pointer-events-none"></div>
             )}
           </div>
 
           {/* Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors cursor-pointer shadow-[0_0_8px_#fcc600]"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 mt-4 px-8 py-2 bg-yellow-500 text-white hover:bg-yellow-600 transition-colors cursor-pointer shadow-[0_0_8px_#fcc600]"
           >
             {isOpen ? "View Less" : "View More"}
           </button>
