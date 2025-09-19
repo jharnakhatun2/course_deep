@@ -1,56 +1,23 @@
 import React from "react";
-import image1 from "../../assets/img/offer/1.webp";
-import image2 from "../../assets/img/offer/2.webp";
-import image3 from "../../assets/img/offer/3.webp";
 import SectionTitle from "../../ult/title/SectionTitle";
 import LinkText from "../../ult/linkText/LinkText";
 import Button from "../../ult/button/Button";
-
-type Event = {
-  id: number;
-  day: string;
-  month: string;
-  weekday: string;
-  title: string;
-  time: string;
-  location: string;
-  image: string;
-};
-
-const events: Event[] = [
-  {
-    id: 1,
-    day: "01",
-    month: "MARCH",
-    weekday: "WEDNESDAY",
-    title: "WordPress Theme Development with Bootstrap",
-    time: "8:00 am - 5:00 pm",
-    location: "Great Russell Street, WC1B 3DG UK",
-    image: image1,
-  },
-  {
-    id: 2,
-    day: "05",
-    month: "MARCH",
-    weekday: "SATURDAY",
-    title: "Build Apps with React Native",
-    time: "12:00 pm - 5:00 pm",
-    location: "No1 Warehouse London, UK",
-    image: image2,
-  },
-  {
-    id: 3,
-    day: "13",
-    month: "MARCH",
-    weekday: "THURSDAY",
-    title: "Free Yoga & Exercise Class at Every Morning",
-    time: "4:00 pm - 8:00 pm",
-    location: "21 New Globe Walk London, UK",
-    image: image3,
-  },
-];
+import { useGetEventsQuery } from "../../features/event/eventApi";
+import Loader from "../../ult/loader/Loader";
 
 const EventList: React.FC = () => {
+  const { data: events, isLoading } = useGetEventsQuery();
+  if (isLoading)
+    return (
+      <p>
+        <Loader />
+      </p>
+    );
+
+  // ✅ Sort by lastUpdated (or any date field) and pick only latest 3
+  const latestEvents = [...(events || [])]
+    .sort((a, b) => new Date(b.day).getTime() - new Date(a.day).getTime())
+    .slice(0, 3);
   return (
     <div className="py-8 lg:py-12 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 space-y-8">
@@ -60,16 +27,18 @@ const EventList: React.FC = () => {
         <SectionTitle title="Upcoming Events" className="text-zinc-600" />
 
         <LinkText
-          to="/courses"
+          to="/events"
           text="Browse All Events"
           className="text-teal-500 hover:text-yellow-500"
         />
 
-        {events.map((event, index) => (
+        {latestEvents?.map((event, index) => (
           <div
-            key={event.id}
+            key={event._id}
             className={`flex flex-col lg:flex-row-reverse items-center justify-between gap-10 ${
-              index !== events.length - 1 ? "border-b border-gray-300 pb-6" : ""
+              index !== latestEvents?.length - 1
+                ? "border-b border-gray-300 pb-6"
+                : ""
             }`}
           >
             {/* Image Section */}
@@ -77,7 +46,7 @@ const EventList: React.FC = () => {
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-1/2 object-cover inline-block"
+                className="w-full object-cover inline-block border border-white/90"
               />
             </div>
             <div className="lg:flex items-center flex-3">

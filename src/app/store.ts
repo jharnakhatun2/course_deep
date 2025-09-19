@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '../features/api/apiSlice';
 import authSliceReducer from '../features/auth/authSlice';
 import blogSliceReducer from '../features/blog/blogSlice';
-import categorySliceReducer from '../features/category/categorySlice';
 import courseSliceReducer from '../features/course/courseSlice';
 import eventSliceReducer from '../features/event/eventSlice';
 
@@ -11,7 +10,6 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSliceReducer,
     blog: blogSliceReducer,
-    category: categorySliceReducer,
     course: courseSliceReducer,
     event: eventSliceReducer
   },

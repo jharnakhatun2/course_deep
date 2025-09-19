@@ -21,3 +21,18 @@ export interface Course {
   prerequisites: string[];
   promoVideo: string;
 }
+
+export interface Event {
+  _id?: string;
+  title: string;
+  day: string;
+  month: string;
+  weekday: string;
+  date: string;
+  time: string;
+  location: string;
+  speaker: string;
+  description: string;
+  image: string;
+  category: string;
+}
