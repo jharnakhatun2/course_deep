@@ -8,8 +8,6 @@ import {
   FiCode,
 } from "react-icons/fi";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { useGetCoursesQuery } from "../../features/course/courseApi";
-import Loader from "../../ult/loader/Loader";
 import type { Course } from "../../ult/types/types";
 import { useNavigate } from "react-router";
 
@@ -23,27 +21,14 @@ const iconMap: Record<string, ReactNode> = {
   "Programming Fundamentals": <FiCode className="w-10 h-10 text-yellow-500" />,
 };
 
-const Category: FC = () => {
-  const { data: courses, isLoading, isError } = useGetCoursesQuery();
+interface CategoryProps {
+  courses: Course[];
+}
+
+const Category: FC<CategoryProps> = ({ courses }) => {
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return (
-      <p className="text-center py-10">
-        <Loader />
-      </p>
-    );
-  }
-
-  if (isError || !courses) {
-    return (
-      <p className="text-center py-10 text-red-500">
-        Failed to load categories.
-      </p>
-    );
-  }
-
-  // ✅ Extract unique categories
+  // same category name use one one
   const uniqueCategories = Array.from(
     new Map(
       courses.map((course: Course) => [course.category, course.shortDes])

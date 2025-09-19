@@ -7,12 +7,14 @@ import bgImage from "../../assets/img/course-bg.webp";
 import LinkText from "../../ult/linkText/LinkText";
 import PrevBtn from "../../ult/slideButton/preBtn";
 import NextBtn from "../../ult/slideButton/nextBtn";
-import { useGetCoursesQuery } from "../../features/course/courseApi";
-import Loader from "../../ult/loader/Loader";
+import type { Course } from "../../ult/types/types";
 
-const CourseCards: React.FC = () => {
+interface CourseCardsProps {
+  courses: Course[];
+}
+
+const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
   const sliderRef = useRef<Slider | null>(null);
-  const { data: courses, isLoading, isError } = useGetCoursesQuery();
 
   const settings: Settings = {
     infinite: true,
@@ -40,18 +42,6 @@ const CourseCards: React.FC = () => {
       },
     ],
   };
-
-  if (isLoading) {
-    return (
-      <p className="text-center text-white">
-        <Loader />
-      </p>
-    );
-  }
-
-  if (isError || !courses) {
-    return <p className="text-center text-red-500">Failed to load courses.</p>;
-  }
 
   return (
     <section

@@ -2,19 +2,14 @@ import React from "react";
 import SectionTitle from "../../ult/title/SectionTitle";
 import LinkText from "../../ult/linkText/LinkText";
 import Button from "../../ult/button/Button";
-import { useGetEventsQuery } from "../../features/event/eventApi";
-import Loader from "../../ult/loader/Loader";
+import type { Event } from "../../ult/types/types";
 
-const EventList: React.FC = () => {
-  const { data: events, isLoading } = useGetEventsQuery();
-  if (isLoading)
-    return (
-      <p>
-        <Loader />
-      </p>
-    );
+interface EventProps {
+  events: Event[];
+}
 
-  // ✅ Sort by lastUpdated (or any date field) and pick only latest 3
+const EventList: React.FC<EventProps> = ({ events }) => {
+  // Sort by lastUpdated (or any date field) and pick only latest 3
   const latestEvents = [...(events || [])]
     .sort((a, b) => new Date(b.day).getTime() - new Date(a.day).getTime())
     .slice(0, 3);

@@ -8,14 +8,13 @@ import PrevBtn from "../../ult/slideButton/preBtn";
 import Slider from "react-slick";
 import BlogCard from "./BlogCard";
 import type { BlogPost } from "../../ult/types/types";
-import { useGetBlogsQuery } from "../../features/blog/blogApi";
-import Loader from "../../ult/loader/Loader";
 
+interface BlogsProps {
+  blogs: BlogPost[];
+}
 
-
-const LatestBlog: React.FC = () => {
+const LatestBlog: React.FC<BlogsProps> = ({ blogs }) => {
   const sliderRef = useRef<Slider | null>(null);
-  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
 
   // blogs is BlogPost[]
   const latestBlogs: BlogPost[] = blogs.slice(0, 4);
@@ -48,9 +47,6 @@ const LatestBlog: React.FC = () => {
     ],
   };
 
-  if (isLoading) return <Loader />;
-  if (isError) return <p className="text-red-500">Failed to load blogs</p>;
-
   return (
     <section
       className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
@@ -77,8 +73,8 @@ const LatestBlog: React.FC = () => {
             </button>
           </div>
           <LinkText
-            to="/courses"
-            text="Browse All Courses"
+            to="/blog"
+            text="Browse All Blogs"
             className="text-white hover:text-yellow-500"
           />
         </div>
