@@ -6,6 +6,6 @@ export const apiSlice = createApi({
         baseUrl: import.meta.env.VITE_API_URL,
         credentials: "include", // 👈 important for sending/receiving cookies
     }),
-    tagTypes: ["User"],
+    tagTypes: ["User","Course"],
     endpoints: (builder) => ({})
 });
