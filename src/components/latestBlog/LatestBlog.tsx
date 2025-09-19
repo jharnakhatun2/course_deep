@@ -1,7 +1,4 @@
 import React, { useRef } from "react";
-import img1 from "../../assets/img/portfolio/1.webp";
-import img2 from "../../assets/img/portfolio/2.webp";
-import img3 from "../../assets/img/portfolio/3.webp";
 import imgBg from "../../assets/img/blogBg.webp";
 import SectionTitle from "../../ult/title/SectionTitle";
 import type { Settings } from "react-slick";
@@ -10,81 +7,20 @@ import NextBtn from "../../ult/slideButton/nextBtn";
 import PrevBtn from "../../ult/slideButton/preBtn";
 import Slider from "react-slick";
 import BlogCard from "./BlogCard";
+import type { BlogPost } from "../../ult/types/types";
+import { useGetBlogsQuery } from "../../features/blog/blogApi";
+import Loader from "../../ult/loader/Loader";
 
-interface BlogPost {
-  id: number;
-  image: string;
-  category: string;
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  readTime: string;
-}
 
-// Static blog data
-const blogData: BlogPost[] = [
-  {
-    id: 1,
-    image: img1,
-    category: "React",
-    title: "Getting Started with React 18: A Beginner's Guide",
-    content:
-      "Learn the fundamentals of React 18, including hooks, component structure, and building your first app step by step.",
-    author: "Jharna Khatun",
-    date: "Sep 14, 2025",
-    readTime: "5 min read",
-  },
-  {
-    id: 2,
-    image: img2,
-    category: "JavaScript",
-    title: "10 Advanced JavaScript Concepts Every Developer Should Know",
-    content:
-      "Deep dive into closures, async/await, event loop, and other advanced JavaScript concepts to level up your coding skills.",
-    author: "Samiha Rahman",
-    date: "Sep 10, 2025",
-    readTime: "7 min read",
-  },
-  {
-    id: 3,
-    image: img3,
-    category: "Web Development",
-    title: "How to Build Responsive Websites with Tailwind CSS",
-    content:
-      "Learn how to use Tailwind CSS utility classes to create modern, responsive websites quickly and efficiently.",
-    author: "Arif Hasan",
-    date: "Sep 5, 2025",
-    readTime: "6 min read",
-  },
-  {
-    id: 4,
-    image: img2,
-    category: "JavaScript",
-    title: "10 Advanced JavaScript Concepts Every Developer Should Know",
-    content:
-      "Deep dive into closures, async/await, event loop, and other advanced JavaScript concepts to level up your coding skills.",
-    author: "Samiha Rahman",
-    date: "Sep 10, 2025",
-    readTime: "7 min read",
-  },
-  {
-    id: 5,
-    image: img3,
-    category: "Web Development",
-    title: "How to Build Responsive Websites with Tailwind CSS",
-    content:
-      "Learn how to use Tailwind CSS utility classes to create modern, responsive websites quickly and efficiently.",
-    author: "Arif Hasan",
-    date: "Sep 5, 2025",
-    readTime: "6 min read",
-  },
-];
 
 const LatestBlog: React.FC = () => {
-  const latestBlogs = blogData.slice(0, 4); // first 3 blogs
   const sliderRef = useRef<Slider | null>(null);
+  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
 
+  // blogs is BlogPost[]
+  const latestBlogs: BlogPost[] = blogs.slice(0, 4);
+
+  // Settings for slider
   const settings: Settings = {
     infinite: true,
     speed: 500,
@@ -111,6 +47,9 @@ const LatestBlog: React.FC = () => {
       },
     ],
   };
+
+  if (isLoading) return <Loader />;
+  if (isError) return <p className="text-red-500">Failed to load blogs</p>;
 
   return (
     <section
@@ -148,7 +87,7 @@ const LatestBlog: React.FC = () => {
         <div className="py-8">
           <Slider ref={sliderRef} {...settings}>
             {latestBlogs.map((post) => (
-              <div key={post.id} className="px-4">
+              <div key={post._id} className="px-4">
                 <BlogCard {...post} />
               </div>
             ))}

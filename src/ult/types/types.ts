@@ -36,3 +36,16 @@ export interface Event {
   image: string;
   category: string;
 }
+
+export interface BlogPost {
+  _id: string;        
+  title: string;
+  author: string;
+  date: string;  
+  shortDes: string;
+  content: string;
+  category: string;
+  image: string;
+  tags: string[];
+  readTime?: string;
+}

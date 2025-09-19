@@ -1,18 +1,23 @@
+import type { BlogPost } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
+
 
 export const blogApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getBlogs: builder.query({
+    // ✅ returns an array of BlogPost, no args
+    getBlogs: builder.query<BlogPost[], void>({
       query: () => "/blogs",
       providesTags: ["Blogs"],
     }),
 
-    getBlogById: builder.query({
+    // ✅ returns a single BlogPost, requires id
+    getBlogById: builder.query<BlogPost, string>({
       query: (id) => `/blogs/${id}`,
-      providesTags: (id) => [{ type: "Blogs", id }],
+      providesTags: (_result, _error, id) => [{ type: "Blogs", id }],
     }),
 
-    addBlog: builder.mutation({
+    // ✅ create new blog
+    addBlog: builder.mutation<BlogPost, Partial<BlogPost>>({
       query: (newBlog) => ({
         url: "/blogs",
         method: "POST",
@@ -21,16 +26,18 @@ export const blogApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Blogs"],
     }),
 
-    updateBlog: builder.mutation({
-      query: ({ id, ...patch }) => ({
+    // ✅ update blog
+    updateBlog: builder.mutation<BlogPost, { id: string; data: Partial<BlogPost> }>({
+      query: ({ id, data }) => ({
         url: `/blogs/${id}`,
         method: "PATCH",
-        body: patch,
+        body: data,
       }),
-      invalidatesTags: (id) => [{ type: "Blogs", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Blogs", id }],
     }),
 
-    deleteBlog: builder.mutation({
+    // ✅ delete blog
+    deleteBlog: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
         url: `/blogs/${id}`,
         method: "DELETE",

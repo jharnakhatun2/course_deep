@@ -1,16 +1,18 @@
 import React from "react";
 import { Link } from "react-router";
-import { ImBlogger2 } from "react-icons/im";
 import { FaUserEdit } from "react-icons/fa";
 
 interface BlogPost {
-  image: string;
-  category: string;
+  _id: string;
   title: string;
-  content: string;
   author: string;
   date: string;
-  readTime: string;
+  shortDes: string;
+  content: string;
+  category: string;
+  image: string;
+  tags: string[];
+  readTime?: string;
 }
 
 const BlogCard: React.FC<BlogPost> = ({
@@ -61,19 +63,17 @@ const BlogCard: React.FC<BlogPost> = ({
 
       {/* Card Footer */}
       <div className="px-6 py-4 border-t border-gray-200 flex items-center">
-        {/* <img
-                  src="https://i.ibb.co/D9dYdq7/user.png"
-                  alt={author}
-                  className="w-10 h-10 rounded-full mr-3"
-                /> */}
         <div className="w-10 h-10 rounded-full mr-3 shadow-2xl bg-white flex items-center justify-center">
-          <FaUserEdit className="w-5 h-5 text-teal-500"/>
+          <FaUserEdit className="w-5 h-5 text-teal-500" />
         </div>
 
         <div className="text-gray-600 text-sm">
-          <p className="font-semibold text-gray-800 uppercase text-xs">{author}</p>
+          <p className="font-semibold text-gray-800 uppercase text-xs">
+            {author}
+          </p>
           <p className="space-x-5">
-            {date} <span className="text-gray-400 px-3">|</span> {readTime}
+            {date} <span className="text-gray-400 px-3">|</span>Read :{" "}
+            {readTime}
           </p>
         </div>
       </div>
