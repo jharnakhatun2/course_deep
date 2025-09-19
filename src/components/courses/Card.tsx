@@ -7,13 +7,13 @@ type CourseCardProps = {
   title: string;
   description: string;
   imageUrl: string;
-  lessons: number;
+  lessons: string;
   students: number;
   price: number;
   time: string;
   teacherName: string;
   teacherProfession: string;
-  rating: number;
+  ratings: number;
 };
 
 const Card: React.FC<CourseCardProps> = ({
@@ -26,7 +26,7 @@ const Card: React.FC<CourseCardProps> = ({
   price,
   teacherName,
   teacherProfession,
-  rating,
+  ratings,
 }) => {
   return (
     <div className="backdrop-blur-lg bg-white/10 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
@@ -47,7 +47,7 @@ const Card: React.FC<CourseCardProps> = ({
       {/* Course Content */}
       <div className="p-4 relative z-10">
         <h3 className="text-lg font-bold mb-2 text-white uppercase">{title}</h3>
-        <p className="text-zinc-400">{description}</p>
+        <p className="text-zinc-400">{description.slice(0, 50) + "..."}</p>
 
         {/* Info row with icons */}
         <div className="flex gap-3 text-zinc-400 text-sm pt-1">
@@ -70,7 +70,7 @@ const Card: React.FC<CourseCardProps> = ({
             time={time}
             name={teacherName}
             profession={teacherProfession}
-            rating={rating}
+            ratings={ratings}
           />
         </div>
         {/* divider */}
@@ -78,7 +78,7 @@ const Card: React.FC<CourseCardProps> = ({
         {/* footer */}
         <div className="flex justify-between items-center">
           <h3 className="font-semibold text-2xl">
-            $<span className="text-white font-bold">{price}.00</span>
+            $<span className="text-white font-bold">{price}</span>
           </h3>
           <button className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
             View More

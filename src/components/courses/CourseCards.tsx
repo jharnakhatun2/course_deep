@@ -4,92 +4,15 @@ import Slider, { type Settings } from "react-slick";
 import SectionTitle from "../../ult/title/SectionTitle";
 import Card from "./Card";
 import bgImage from "../../assets/img/course-bg.webp";
-import img1 from "../../assets/img/portfolio/1.webp";
-import img2 from "../../assets/img/portfolio/2.webp";
-import img3 from "../../assets/img/portfolio/3.webp";
-import img4 from "../../assets/img/portfolio/4.webp";
 import LinkText from "../../ult/linkText/LinkText";
 import PrevBtn from "../../ult/slideButton/preBtn";
 import NextBtn from "../../ult/slideButton/nextBtn";
-
-type Course = {
-  title: string;
-  description: string;
-  imageUrl: string;
-  lessons: number;
-  students: number;
-  price: number;
-  time: string;
-  teacherName: string;
-  teacherProfession: string;
-  rating: number;
-};
-
-const courses: Course[] = [
-  {
-    title: "Node.js & Express",
-    description: "Build scalable backend APIs with Node.js and Express.",
-    imageUrl: img3,
-    lessons: 18,
-    students: 950,
-    price: 25.0,
-    time: "5 hours",
-    teacherName: "Abul Kolim",
-    teacherProfession: "Instructor",
-    rating: 5,
-  },
-  {
-    title: "React for Beginners",
-    description: "Learn the fundamentals of React and build dynamic web apps.",
-    imageUrl: img1,
-    lessons: 20,
-    students: 1200,
-    price: 25.0,
-    time: "5 hours",
-    teacherName: "Abul Kolim",
-    teacherProfession: "Instructor",
-    rating: 5,
-  },
-  {
-    title: "Tailwind CSS Mastery",
-    description: "Master utility-first styling and build modern UI faster.",
-    imageUrl: img2,
-    lessons: 15,
-    students: 850,
-    price: 25.0,
-    time: "5 hours",
-    teacherName: "Abul Kolim",
-    teacherProfession: "Instructor",
-    rating: 5,
-  },
-  {
-    title: "Node.js & Express",
-    description: "Build scalable backend APIs with Node.js and Express.",
-    imageUrl: img3,
-    lessons: 18,
-    students: 950,
-    price: 25.0,
-    time: "5 hours",
-    teacherName: "Abul Kolim",
-    teacherProfession: "Instructor",
-    rating: 5,
-  },
-  {
-    title: "Full Stack MERN",
-    description: "Learn MongoDB, Express, React, and Node for full-stack apps.",
-    imageUrl: img4,
-    lessons: 25,
-    students: 1500,
-    price: 25.0,
-    time: "5 hours",
-    teacherName: "Abul Kolim",
-    teacherProfession: "Instructor",
-    rating: 5,
-  },
-];
+import { useGetCoursesQuery } from "../../features/course/courseApi";
+import Loader from "../../ult/loader/Loader";
 
 const CourseCards: React.FC = () => {
   const sliderRef = useRef<Slider | null>(null);
+  const { data: courses, isLoading, isError } = useGetCoursesQuery();
 
   const settings: Settings = {
     infinite: true,
@@ -101,22 +24,34 @@ const CourseCards: React.FC = () => {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-        }
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
+
+  if (isLoading) {
+    return (
+      <p className="text-center text-white">
+        <Loader />
+      </p>
+    );
+  }
+
+  if (isError || !courses) {
+    return <p className="text-center text-red-500">Failed to load courses.</p>;
+  }
 
   return (
     <section
@@ -157,15 +92,15 @@ const CourseCards: React.FC = () => {
                 {" "}
                 {/* ✅ spacing between slides */}
                 <Card
-                  title={course.title}
+                  title={course.name}
                   description={course.description}
-                  rating={course.rating}
+                  ratings={course.ratings}
                   time={course.time}
-                  teacherName={course.teacherName}
+                  teacherName={course.teacher}
                   teacherProfession={course.teacherProfession}
-                  imageUrl={course.imageUrl}
+                  imageUrl={course.image}
                   lessons={course.lessons}
-                  students={course.students}
+                  students={course.studentsEnrolled}
                   price={course.price}
                 />
               </div>

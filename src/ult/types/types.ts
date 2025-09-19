@@ -2,10 +2,12 @@
 export interface Course {
   _id?: string;
   name: string;
-  price: string;
-  ratings: string;
+  price: number;
+  ratings: number;
+  lessons: string;
   time: string;
   teacher: string;
+  teacherProfession: string;
   shortDes: string;
   description: string;
   image: string;
