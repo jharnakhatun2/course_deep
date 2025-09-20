@@ -1,41 +1,73 @@
 import { useSearchParams } from "react-router";
 import { useGetCoursesQuery } from "../../features/course/courseApi";
 import type { Course } from "../../ult/types/types";
-
+import { useState } from "react";
+import CourseSidebar from "../../components/courses/courses/CourseSidebar";
+import CourseList from "../../components/courses/courses/CourseList";
+import Pagination from "../../ult/pegination/Pagination";
+import Loader from "../../ult/loader/Loader";
 
 const Courses = () => {
-  const { data: courses, isLoading, isError } = useGetCoursesQuery();
+  const { data: courses, isLoading, isError } = useGetCoursesQuery(undefined, {
+  refetchOnMountOrArgChange: false,
+});
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
 
-  if (isLoading) return <p className="text-center py-10">Loading courses...</p>;
-  if (isError || !courses) return <p className="text-center py-10 text-red-500">Failed to load courses.</p>;
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 9;
 
+  if (isLoading) <Loader />
+  if (isError || !courses)
+    return (
+      <p className="text-center py-10 text-red-500">Failed to load courses.</p>
+    );
+
+  // Filter by category
   const filteredCourses = category
     ? courses.filter((course: Course) => course.category === category)
     : courses;
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const startIndex = (currentPage - 1) * coursesPerPage;
+  const currentCourses = filteredCourses.slice(
+    startIndex,
+    startIndex + coursesPerPage
+  );
+
   return (
     <section className="py-10 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-zinc-700 mb-6">
-          {category ? `Courses in ${category}` : "All Courses"}
-        </h2>
+      <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+        {/* Left content */}
+        <div className="lg:col-span-3">
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-sm text-gray-600">
+              Showing {startIndex + 1}–
+              {Math.min(startIndex + coursesPerPage, filteredCourses.length)} of{" "}
+              {filteredCourses.length} results
+            </p>
+            <select className="border rounded px-2 py-1 text-sm">
+              <option>All Courses</option>
+              <option>Business</option>
+              <option>Design</option>
+            </select>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => (
-            <div
-              key={course._id}
-              className="p-5 rounded-xl shadow-md bg-white hover:shadow-lg transition"
-            >
-              <h3 className="text-lg font-semibold text-zinc-700">{course.name}</h3>
-              <p className="text-sm text-gray-500 mt-2">{course.shortDes}</p>
-              <span className="text-xs text-teal-500 mt-3 inline-block uppercase">
-                {course.category}
-              </span>
-            </div>
-          ))}
+          {/* Course List */}
+          <CourseList courses={currentCourses} category={category || ""} />
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
+
+        {/* Sidebar */}
+        <CourseSidebar />
       </div>
     </section>
   );

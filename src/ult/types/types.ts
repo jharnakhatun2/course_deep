@@ -49,3 +49,9 @@ export interface BlogPost {
   tags: string[];
   readTime?: string;
 }
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}

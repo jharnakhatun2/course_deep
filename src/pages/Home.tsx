@@ -3,7 +3,7 @@ import Banner2 from "../components/banners/Banner2";
 import BannerEvent from "../components/banners/BannerEvent";
 import BannerStats from "../components/banners/BannerStats";
 import Category from "../components/category/Category";
-import CourseCards from "../components/courses/CourseCards";
+import CourseCards from "../components/courses/home/CourseCards";
 import EventList from "../components/events/EventList";
 import FAQ from "../components/faq/FAQ";
 import Hero from "../components/hero/Hero";

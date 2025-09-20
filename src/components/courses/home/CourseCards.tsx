@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 import Slider, { type Settings } from "react-slick";
-import SectionTitle from "../../ult/title/SectionTitle";
-import bgImage from "../../assets/img/course-bg.webp";
-import LinkText from "../../ult/linkText/LinkText";
-import PrevBtn from "../../ult/slideButton/preBtn";
-import NextBtn from "../../ult/slideButton/nextBtn";
-import type { Course } from "../../ult/types/types";
-import Card from "../../ult/cards/courseCard/Card";
+import SectionTitle from "../../../ult/title/SectionTitle";
+import bgImage from "../../../assets/img/course-bg.webp";
+import LinkText from "../../../ult/linkText/LinkText";
+import PrevBtn from "../../../ult/slideButton/preBtn";
+import NextBtn from "../../../ult/slideButton/nextBtn";
+import type { Course } from "../../../ult/types/types";
+import Card from "../../../ult/cards/courseCard/Card";
 
 interface CourseCardsProps {
   courses: Course[];
