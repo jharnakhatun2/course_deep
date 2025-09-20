@@ -1,7 +1,7 @@
 import React from "react";
 import { FiBookOpen } from "react-icons/fi";
-import TeacherCard from "./TeacherCard";
 import { FaUsers } from "react-icons/fa";
+import TeacherCard from "./TeacherCard";
 
 type CourseCardProps = {
   title: string;
