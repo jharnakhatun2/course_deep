@@ -1,5 +1,6 @@
 import React from "react";
 import type { Course } from "../../../ult/types/types";
+import Card from "../../../ult/cards/courseCard/Card";
 
 interface CourseListProps {
   courses: Course[];
@@ -15,17 +16,19 @@ const CourseList: React.FC<CourseListProps> = ({ courses, category }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {courses.map((course) => (
-          <div
-            key={course._id}
-            className="p-5 rounded-xl shadow-md bg-white hover:shadow-lg transition"
-          >
-            <h3 className="text-lg font-semibold text-zinc-700">
-              {course.name}
-            </h3>
-            <p className="text-sm text-gray-500 mt-2">{course.shortDes}</p>
-            <span className="text-xs text-teal-500 mt-3 inline-block uppercase">
-              {course.category}
-            </span>
+          <div key={course._id}>
+            <Card
+                  title={course.name}
+                  description={course.description}
+                  ratings={course.ratings}
+                  time={course.time}
+                  teacherName={course.teacher}
+                  teacherProfession={course.teacherProfession}
+                  imageUrl={course.image}
+                  lessons={course.lessons}
+                  students={course.studentsEnrolled}
+                  price={course.price}
+                />
           </div>
         ))}
       </div>

@@ -16,7 +16,7 @@ const Courses = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 9;
+  const coursesPerPage = 6;
 
   if (isLoading) <Loader />
   if (isError || !courses)
