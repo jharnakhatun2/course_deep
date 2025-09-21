@@ -10,11 +10,11 @@ interface BlogsCardProps {
 
 const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
   return (
-    <div className="relative text-zinc-500">
+    <div className="text-zinc-500">
       {blogs.map((blog) => (
         <div
           key={blog._id}
-          className="border border-white/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 my-10"
+          className="relative border border-white/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 my-10"
         >
           {/* Image */}
           <img

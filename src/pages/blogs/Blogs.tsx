@@ -24,7 +24,7 @@ const Blogs = () => {
         totalItems,
         startIndex,
         itemsPerPage,
-      } = usePagination(blogs ?? [], 4);
+      } = usePagination(blogs ?? [], 3);
     
       // Handle loading/error AFTER hooks
       if (isLoading) return <Loader />;

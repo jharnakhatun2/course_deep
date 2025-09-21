@@ -1,7 +1,6 @@
 import React from "react";
 import SectionTitle from "../../ult/title/SectionTitle";
 import LinkText from "../../ult/linkText/LinkText";
-import Button from "../../ult/button/Button";
 import type { Event } from "../../ult/types/types";
 import ECard from "../../ult/cards/eventCard/ECard";
 
