@@ -21,7 +21,7 @@ const Courses = () => {
   if (isLoading) <Loader />
   if (isError || !courses)
     return (
-      <p className="text-center py-10 text-red-500">Failed to load courses.</p>
+      <p className="text-center py-10 text-red-500">Failed to load courses!</p>
     );
 
   // Filter by category
