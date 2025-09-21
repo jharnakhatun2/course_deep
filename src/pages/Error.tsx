@@ -1,3 +1,5 @@
+import { Link } from "react-router"
+import Button from "../ult/button/Button"
 
 
 const Error = () => {
@@ -10,7 +12,13 @@ const Error = () => {
 			</h2>
 			<p className="text-2xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
 			<p className="mt-4 mb-8 dark:text-gray-600">But dont worry, you can find plenty of other things on our homepage.</p>
-			<a rel="noopener noreferrer" href="#" className="px-8 py-3 font-semibold rounded dark:bg-violet-600 dark:text-gray-50">Back to homepage</a>
+			<Button
+            url="/"
+            className="bg-yellow-500 hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,221,51,0.3)]
+ hover:shadow-[0_0_25px_rgba(255,221,51,0.5)] border border-yellow-400"
+          >
+            Back To Home
+          </Button>
 		</div>
 	</div>
 </section>
