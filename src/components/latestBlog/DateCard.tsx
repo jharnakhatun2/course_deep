@@ -9,9 +9,9 @@ const DateCard: React.FC<DateCardProps> = ({ date }) => {
   const year = d.getFullYear();
 
   return (
-    <div className="flex flex-col items-center border px-4 py-2 w-20">
-      <div className="text-3xl font-bold">{day}</div>
-      <div className="border-t w-6 my-1" />
+    <div className="absolute left-3 top-3 flex flex-col items-center border border-white/30 shadow-lg px-4 py-2 w-16 backdrop-blur-lg bg-white">
+      <div className="text-2xl">{day}</div>
+      <div className="border-t w-6 my-2" />
       <div className="text-sm font-medium">{month}</div>
       <div className="text-xs text-gray-500">{year}</div>
     </div>

@@ -33,7 +33,7 @@ const Events = () => {
   }
 
   return (
-    <section className="py-10 bg-gray-50">
+    <section className="py-10 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 gap-8">
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm text-gray-600">

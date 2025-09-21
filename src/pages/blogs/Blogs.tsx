@@ -35,7 +35,7 @@ const Blogs = () => {
       }
 
   return (
-    <section className="py-10 bg-gray-50">
+    <section className="py-10 bg-gray-100">
           <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
             {/* Left content */}
             <div className="lg:col-span-3">
