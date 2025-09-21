@@ -18,16 +18,9 @@ const Courses = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
 
-  // Loading & Error for Data
-  if (isLoading) return <Loader />;
-  if (isError || !courses)
-    return (
-      <p className="text-center py-10 text-red-500">Failed to load courses!</p>
-    );
-
   // Filter by category
-  const filteredCourses = category
-    ? courses?.filter((course: Course) => course.category === category)
+  const filteredCourses: Course[] = category
+    ? courses?.filter((course: Course) => course.category === category) ?? []
     : courses ?? [];
 
   // Use pagination hook
@@ -40,6 +33,13 @@ const Courses = () => {
     startIndex,
     itemsPerPage,
   } = usePagination(filteredCourses, 6);
+
+  // Loading & Error for Data
+  if (isLoading) return <Loader />;
+  if (isError || !currentCourses)
+    return (
+      <p className="text-center py-10 text-red-500">Failed to load courses!</p>
+    );
 
   return (
     <section className="py-10 bg-gray-50">

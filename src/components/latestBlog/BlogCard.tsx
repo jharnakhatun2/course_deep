@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { FaUserEdit } from "react-icons/fa";
+import { FaReadme, FaUserEdit } from "react-icons/fa";
 
 interface BlogPost {
   _id: string;
@@ -13,9 +13,11 @@ interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
+  comments?: number
 }
 
 const BlogCard: React.FC<BlogPost> = ({
+  _id,
   image,
   category,
   title,
@@ -23,6 +25,7 @@ const BlogCard: React.FC<BlogPost> = ({
   author,
   date,
   readTime,
+  
 }) => {
   return (
     <div className="bg-gray-100 rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
@@ -34,12 +37,12 @@ const BlogCard: React.FC<BlogPost> = ({
           className="w-full h-48 object-cover transform transition-transform duration-500 group-hover:scale-110"
         />
         <div
-          className="absolute bottom-0 left-0 w-full h-0 bg-gray-100/70 
+          className="absolute bottom-0 left-0 w-full h-0 bg-gray-100/70
   flex items-center justify-center group-hover:h-full overflow-hidden transition-smooth"
         >
           <Link
-            to="/blog"
-            className="px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400 transition-colors duration-300"
+            to={`/blog/${_id}`}
+            className="px-4 py-2 bg-yellow-400 text-zinc-700 hover:text-white font-semibold rounded hover:bg-yellow-500 transition-colors duration-300 uppercase text-xs transition-smooth"
           >
             View More
           </Link>
@@ -51,8 +54,8 @@ const BlogCard: React.FC<BlogPost> = ({
         <span className="inline-block bg-yellow-500 text-white text-xs px-3 py-1">
           {category}
         </span>
-        <Link to="/blog" className="block">
-          <h3 className="capitalize text-lg  text-zinc-800 font-bold mb-2 hover:text-yellow-400 transition-colors duration-300">
+        <Link to={`/blog/${_id}`} className="block pt-2">
+          <h3 className="text-sm  text-zinc-600 font-bold mb-2 hover:text-yellow-500 transition-colors duration-300 uppercase">
             {title.length > 38 ? title.slice(0, 33) + "..." : title}
           </h3>
         </Link>
@@ -71,10 +74,10 @@ const BlogCard: React.FC<BlogPost> = ({
           <p className="font-semibold text-gray-800 uppercase text-xs">
             {author}
           </p>
-          <p className="space-x-5">
-            {date} <span className="text-gray-400 px-3">|</span>Read :{" "}
-            {readTime}
-          </p>
+          <div className="space-x-5 flex">
+            {date} <span className="text-gray-400 px-3">|</span><span className="flex items-center gap-1"><FaReadme className="text-teal-500"/>{" "}
+            {readTime}</span>
+          </div>
         </div>
       </div>
     </div>

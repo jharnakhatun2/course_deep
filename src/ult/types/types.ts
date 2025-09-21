@@ -48,6 +48,7 @@ export interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
+  comments: number
 }
 
 export interface PaginationProps {
