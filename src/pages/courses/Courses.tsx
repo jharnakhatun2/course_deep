@@ -27,9 +27,13 @@ const Courses = () => {
       ?.filter((course: Course) =>
         category ? course.category === category : true
       )
-      .filter((course: Course) =>
-        course.name.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ?? [];
+      .filter((course: Course) => {
+        const query = searchQuery.toLowerCase();
+        return (
+          course.name.toLowerCase().includes(query) ||
+          course.description.toLowerCase().includes(query)
+        );
+      }) ?? [];
 
   // Use pagination hook
   const {
@@ -68,7 +72,13 @@ const Courses = () => {
           </div>
 
           {/* Course List */}
-          <CourseList courses={currentCourses} category={category || ""} />
+          {filteredCourses.length === 0 ? (
+            <p className="text-center text-red-500 py-10 text-2xl">
+              Not Found!
+            </p>
+          ) : (
+            <CourseList courses={currentCourses} category={category || ""} />
+          )}
 
           {/* Pagination */}
           <Pagination
@@ -79,7 +89,7 @@ const Courses = () => {
         </div>
 
         {/* Sidebar */}
-        <CourseSidebar setSearchQuery={setSearchQuery}/>
+        <CourseSidebar setSearchQuery={setSearchQuery} />
       </div>
     </section>
   );

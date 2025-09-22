@@ -1,4 +1,4 @@
-import React from "react";
+import { type FC } from "react";
 import Search from "../../../ult/search/Search";
 
 
@@ -6,7 +6,7 @@ interface CourseSidebarProps {
   setSearchQuery: (query: string) => void;
 }
 
-const CourseSidebar: React.FC<CourseSidebarProps> = ({setSearchQuery}) => {
+const CourseSidebar: FC<CourseSidebarProps> = ({setSearchQuery}) => {
   return (
     <aside className="space-y-6">
       {/* Search */}

@@ -14,50 +14,47 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
       {blogs.map((blog) => (
         <div
           key={blog._id}
-          className="relative border border-white/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 my-10"
+          className="relative border border-white/80 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-200 my-8"
         >
           {/* Image */}
           <img
             src={blog.image}
             alt={blog.title}
-            className="w-full sm:h-82 object-cover"
+            className="w-full h-48 sm:h-64 md:h-72 object-cover"
           />
 
           {/* Content */}
           <div className="p-5 flex flex-col gap-3">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {/* Date */}
               <DateCard date={blog.date} />
 
               {/* Title & author */}
               <div className="flex-1">
-                <h2 className="text-xl sm:text-3xl font-semibold text-zinc-800">
+                <h2 className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug">
                   {blog.title}
                 </h2>
-                <div className="flex items-center gap-7 pt-1">
-                  <p className="flex items-center gap-2">
-                    <FaUserCheck className="text-yellow-500" />
-                    By <span>{blog.author}</span>
+                <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">
+                  <p className="flex items-center gap-1">
+                    <FaUserCheck className="text-yellow-500" /> {blog.author}
                   </p>
-                  <p className="flex items-center gap-2">
-                    <FaReadme className="text-yellow-500" />
-                    <span>{blog.readTime}</span>
+                  <p className="flex items-center gap-1">
+                    <FaReadme className="text-yellow-500" /> {blog.readTime}
                   </p>
-                  <p className="flex items-center gap-2">
-                    <FaComments className="text-yellow-500" />
-                    <span>{blog.comments}</span>
+                  <p className="flex items-center gap-1">
+                    <FaComments className="text-yellow-500" /> {blog.comments}
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Short description */}
-            <p>{blog.content}</p>
+            <p className="text-sm sm:text-base">{blog.content}</p>
 
             {/* Read More Button */}
             <Button
               url={`/${blog._id}`}
-              className="w-full sm:w-1/6 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500"
+              className="w-full sm:w-auto px-4 py-2 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500 rounded-md"
             >
               Read More
             </Button>
