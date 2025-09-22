@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
-import { IoIosSearch } from "react-icons/io";
-import Search from "./Search";
 import { FaUserCircle } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useLogoutMutation } from "../../features/auth/authApi";
@@ -18,16 +16,10 @@ const menuList = [
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [showSearch, setShowSearch] = useState<boolean>(false);
-  const [query, setQuery] = useState<string>("");
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
 
-  // Filter menu items dynamically based on query
-  const filteredMenu = menuList.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  );
   // logout function
   const logOut = async () => {
     try {
@@ -37,6 +29,7 @@ const Menu = () => {
       console.error("Logout failed:", err);
     }
   };
+
   return (
     <nav className="bg-yellow-400 py-3">
       <div className="lg:max-w-7xl mx-auto px-4 ">
@@ -53,17 +46,12 @@ const Menu = () => {
                 <FiMenu className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700" />
               )}
             </button>
-            {/* Search Icon on Menu Bar for Mobile */}
-            <IoIosSearch
-              onClick={() => setShowSearch(!showSearch)}
-              className="w-5 h-5 text-white cursor-pointer hover:text-zinc-600 transition-smooth ml-4"
-            />
           </div>
 
           <div className="flex space-x-10">
             {/* <!-- primary nav --> */}
             <div className="hidden md:flex items-center space-x-10 text-white">
-              {filteredMenu.map((item, index) => (
+              {menuList.map((item, index) => (
                 <Link
                   key={index}
                   to={item.path}
@@ -73,11 +61,7 @@ const Menu = () => {
                 </Link>
               ))}
             </div>
-            {/* Search Icon on Menu Bar for Desktop */}
-            <IoIosSearch
-              onClick={() => setShowSearch(!showSearch)}
-              className="hidden sm:block w-5 h-5 text-white cursor-pointer hover:text-zinc-600 transition-smooth"
-            />
+            
           </div>
           {/* <!-- Login & Signup --> */}
           {user ? (
@@ -102,15 +86,6 @@ const Menu = () => {
             </div>
           )}
         </div>
-      </div>
-
-      {/* Search input dropdown */}
-      <div
-        className={` w-60 absolute transform -translate-y-1/2 transition-smooth overflow-hidden left-1/4 top-32 sm:right-7/12 z-50 ${
-          showSearch ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <Search onSearch={setQuery} />
       </div>
 
       {/* <!-- Mobile menu --> */}

@@ -1,16 +1,18 @@
 import React from "react";
+import Search from "../../../ult/search/Search";
 
-const CourseSidebar: React.FC = () => {
+
+interface CourseSidebarProps {
+  setSearchQuery: (query: string) => void;
+}
+
+const CourseSidebar: React.FC<CourseSidebarProps> = ({setSearchQuery}) => {
   return (
     <aside className="space-y-6">
       {/* Search */}
       <div>
         <h4 className="font-semibold mb-2">Course Search</h4>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full px-3 py-2 border rounded-lg"
-        />
+        <Search placeholder="Search courses..." onSearch={setSearchQuery}/>
       </div>
 
       {/* Categories */}

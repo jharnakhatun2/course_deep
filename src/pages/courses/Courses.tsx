@@ -6,6 +6,7 @@ import CourseList from "../../components/courses/courses/CourseList";
 import Pagination from "../../ult/pegination/Pagination";
 import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
+import { useState } from "react";
 
 const Courses = () => {
   const {
@@ -17,11 +18,18 @@ const Courses = () => {
   });
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+  //search query
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter by category
-  const filteredCourses: Course[] = category
-    ? courses?.filter((course: Course) => course.category === category) ?? []
-    : courses ?? [];
+  // ✅ Filter by category + search
+  const filteredCourses: Course[] =
+    courses
+      ?.filter((course: Course) =>
+        category ? course.category === category : true
+      )
+      .filter((course: Course) =>
+        course.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ) ?? [];
 
   // Use pagination hook
   const {
@@ -43,9 +51,9 @@ const Courses = () => {
 
   return (
     <section className="py-10 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
         {/* Left content */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-4">
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-gray-600">
               Showing {startIndex + 1}–
@@ -71,7 +79,7 @@ const Courses = () => {
         </div>
 
         {/* Sidebar */}
-        <CourseSidebar />
+        <CourseSidebar setSearchQuery={setSearchQuery}/>
       </div>
     </section>
   );
