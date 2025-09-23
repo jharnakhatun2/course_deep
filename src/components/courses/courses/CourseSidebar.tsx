@@ -2,11 +2,10 @@ import { type FC, useMemo } from "react";
 import Search from "../../../ult/search/Search";
 import { Link, useSearchParams } from "react-router";
 import type { Course } from "../../../ult/types/types";
-import { GiConwayLifeGlider } from "react-icons/gi";
 
 interface CourseSidebarProps {
   setSearchQuery: (query: string) => void;
-  courses: Course[]; // receive all courses
+  courses: Course[];
 }
 
 const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
@@ -101,7 +100,7 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
                 <p className="text-xs font-medium hover:text-yellow-500">
                   {course.name}
                 </p>
-                <span className="text-sm text-yellow-600">{course.price}</span>
+                <span className="text-sm text-yellow-600 font-semibold">{course.price}</span>
               </div>
             </Link>
           ))}

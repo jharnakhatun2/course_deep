@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import BottomFooter from "./BottomFooter";
 import Button from "../../ult/button/Button";
 import ContactUs from "./ContactUs";
+import PopularCourse from "./PopularCourse";
 
 const quickLinks = [
   { label: "All Courses", href: "/" },
@@ -42,40 +43,7 @@ const Footer = () => {
           {/* Other cols */}
           <div className="hidden sm:block">
             <p className={headerClass}>Popular Courses</p>
-            <ul className="mt-2 space-y-2">
-              <li>
-                <a
-                  href="/"
-                  className="transition-colors duration-300 hover:text-deep-purple-accent-400"
-                >
-                  News
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/"
-                  className=" transition-colors duration-300 hover:text-deep-purple-accent-400"
-                >
-                  World
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/"
-                  className=" transition-colors duration-300 hover:text-deep-purple-accent-400"
-                >
-                  Games
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/"
-                  className=" transition-colors duration-300 hover:text-deep-purple-accent-400"
-                >
-                  References
-                </a>
-              </li>
-            </ul>
+            <PopularCourse />
           </div>
           <div>
             <p className={headerClass}>Quick Links</p>
