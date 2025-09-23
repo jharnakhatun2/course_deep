@@ -18,6 +18,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses, category }) => {
         {courses.map((course) => (
           <div key={course._id}>
             <Card
+                  _id={course._id}
                   title={course.name}
                   description={course.description}
                   ratings={course.ratings}

@@ -1,9 +1,8 @@
 import { Link } from "react-router";
 import { useGetCoursesQuery } from "../../features/course/courseApi";
-import Loader from "../../ult/loader/Loader";
 
 const PopularCourse = () => {
-  const { data: courses = [], isLoading } = useGetCoursesQuery(undefined, {
+  const { data: courses = []} = useGetCoursesQuery(undefined, {
     refetchOnMountOrArgChange: false,
   });
 
@@ -13,8 +12,7 @@ const PopularCourse = () => {
     .sort((a, b) => b.studentsEnrolled - a.studentsEnrolled)
     .slice(0, 5);
 
-  // Loading & Error for Data
-  if (isLoading) return <Loader />;
+  
   return (
     <ul className="space-y-4 pt-3">
       {popularCourses.map((course) => (

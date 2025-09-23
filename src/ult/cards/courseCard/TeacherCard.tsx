@@ -152,19 +152,19 @@ const TeacherCard: React.FC<TeacherProps> = ({
       <div className="items-center gap-1 ml-auto">
         <p className="flex items-center gap-1">
           <FiClock className="text-teal-500" />{" "}
-          <span className="font-bold text-white">{time}</span>
+          <span className="text-zinc-600">{time}</span>
         </p>
         <div className="flex items-center gap-1 ml-auto">
           {Array.from({ length: 1 }).map((_, i) => (
             <FaStar
               key={i}
               className={`w-4 h-4 ${
-                i < Math.round(ratings) ? "text-yellow-500" : "text-gray-300"
+                i < Math.round(ratings) ? "text-yellow-500" : "text-zinc-500"
               }`}
             />
           ))}
           <span className="text-sm text-zinc-400">
-            (<span className="font-bold text-white">{ratings}</span> ratings)
+            (<span className="font-bold text-zinc-500">{ratings}</span> ratings)
           </span>
         </div>
       </div>

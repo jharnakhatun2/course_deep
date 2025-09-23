@@ -1,6 +1,6 @@
 //Course data type
 export interface Course {
-  _id?: string;
+  _id: string;
   name: string;
   price: number;
   ratings: number;

@@ -75,11 +75,15 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
           Course Intro
         </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <div className="relative w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
-          <button className="bg-white text-black rounded-full p-4 shadow">
-            ▶
-          </button>
-        </div>
+        <iframe
+          className="w-full h-full"
+          src="https://www.youtube-nocookie.com/embed/7IgVGSaQPaw?si=YUIJfP4pMROE3zDE"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
       </div>
 
       {/* Popular Courses */}
@@ -100,7 +104,9 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
                 <p className="text-xs font-medium hover:text-yellow-500">
                   {course.name}
                 </p>
-                <span className="text-sm text-yellow-600 font-semibold">{course.price}</span>
+                <span className="text-sm text-yellow-600 font-semibold">
+                  {course.price}
+                </span>
               </div>
             </Link>
           ))}

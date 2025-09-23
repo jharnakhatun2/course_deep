@@ -5,7 +5,7 @@ const FeatureCourse = () => {
         <div className="w-full h-60 sm:h-80 md:h-96 mb-4 ">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/7IgVGSaQPaw?si=YUIJfP4pMROE3zDE"
+            src="https://www.youtube-nocookie.com/embed/7IgVGSaQPaw?si=YUIJfP4pMROE3zDE"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

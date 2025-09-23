@@ -79,9 +79,9 @@ const Faq: React.FC = () => {
     setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="bg-gray-100 py-8 lg:pt-12 lg:pb-30">
+    <div className="bg-gray-100 py-8 lg:py-12">
       <div className="lg:max-w-7xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-10 my-10">
+        <div className="flex flex-col lg:flex-row gap-10 mt-10">
           <FeatureCourse />
           <div className="w-full lg:w-2/3">
             

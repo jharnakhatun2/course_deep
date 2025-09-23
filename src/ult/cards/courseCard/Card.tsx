@@ -2,8 +2,10 @@ import React from "react";
 import { FiBookOpen } from "react-icons/fi";
 import { FaUsers } from "react-icons/fa";
 import TeacherCard from "./TeacherCard";
+import { Link } from "react-router";
 
 type CourseCardProps = {
+  _id: string;
   title: string;
   description: string;
   imageUrl: string;
@@ -17,6 +19,7 @@ type CourseCardProps = {
 };
 
 const Card: React.FC<CourseCardProps> = ({
+  _id,
   title,
   description,
   imageUrl,
@@ -29,7 +32,7 @@ const Card: React.FC<CourseCardProps> = ({
   ratings,
 }) => {
   return (
-    <div className="backdrop-blur-lg bg-white/10 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
+    <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
       {/* Image Wrapper with Overlay */}
       <div className="relative overflow-hidden">
         <img
@@ -46,18 +49,18 @@ const Card: React.FC<CourseCardProps> = ({
 
       {/* Course Content */}
       <div className="p-4 relative z-10">
-        <h3 className="text-lg font-bold mb-2 text-white uppercase">{title}</h3>
+        <h3 className=" font-bold mb-2 text-zinc-700 uppercase">{title.slice(0, 23) + "..."} </h3>
         <p className="text-zinc-400">{description.slice(0, 50) + "..."}</p>
 
         {/* Info row with icons */}
         <div className="flex gap-3 text-zinc-400 text-sm pt-1">
           <span className="flex items-center gap-1">
             <FiBookOpen className="text-teal-500" />{" "}
-            <span className="font-bold text-zinc-300">{lessons}</span> Lessons
+            <span className="font-bold text-zinc-500">{lessons}</span> Lessons
           </span>
           <span className="flex items-center gap-1">
             <FaUsers className="text-teal-500" />{" "}
-            <span className="font-bold text-zinc-300">{students}</span> Students
+            <span className="font-bold text-zinc-500">{students}</span> Students
           </span>
         </div>
 
@@ -78,11 +81,11 @@ const Card: React.FC<CourseCardProps> = ({
         {/* footer */}
         <div className="flex justify-between items-center">
           <h3 className="font-semibold text-2xl">
-            $<span className="text-white font-bold">{price}</span>
+            <span className="text-yellow-500 font-bold">{price}</span>
           </h3>
-          <button className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
+          <Link to={`/course/${_id}`} className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
             View More
-          </button>
+          </Link>
         </div>
       </div>
     </div>
