@@ -4,35 +4,28 @@ import Card from "../../../ult/cards/courseCard/Card";
 
 interface CourseListProps {
   courses: Course[];
-  category?: string;
 }
 
-const CourseList: React.FC<CourseListProps> = ({ courses, category }) => {
+const CourseList: React.FC<CourseListProps> = ({ courses }) => {
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-zinc-700 mb-6">
-        {category ? `Courses in ${category}` : "All Courses"}
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {courses.map((course) => (
-          <div key={course._id}>
-            <Card
-                  _id={course._id}
-                  title={course.name}
-                  description={course.description}
-                  ratings={course.ratings}
-                  time={course.time}
-                  teacherName={course.teacher}
-                  teacherProfession={course.teacherProfession}
-                  imageUrl={course.image}
-                  lessons={course.lessons}
-                  students={course.studentsEnrolled}
-                  price={course.price}
-                />
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      {courses.map((course) => (
+        <div key={course._id}>
+          <Card
+            _id={course._id}
+            title={course.name}
+            description={course.description}
+            ratings={course.ratings}
+            time={course.time}
+            teacherName={course.teacher}
+            teacherProfession={course.teacherProfession}
+            imageUrl={course.image}
+            lessons={course.lessons}
+            students={course.studentsEnrolled}
+            price={course.price}
+          />
+        </div>
+      ))}
     </div>
   );
 };

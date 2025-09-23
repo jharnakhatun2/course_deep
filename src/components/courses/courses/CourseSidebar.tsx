@@ -51,12 +51,12 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
           Course Categories
         </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <ul className="space-y-2 text-zinc-500 divide-amber-100">
+        <ul className="space-y-1 text-zinc-500">
           {categories.map((cat) => (
             <li
               key={cat}
               onClick={() => handleCategoryClick(cat)}
-              className={`cursor-pointer text-sm hover:shadow-lg backdrop-blur bg-white/40 py-1 pl-3 transition-smooth hover:text-yellow-500 font-poppins ${
+              className={`cursor-pointer text-sm hover:shadow backdrop-blur bg-white/40 py-2 pl-3 transition-smooth hover:text-yellow-500 font-poppins ${
                 activeCategory === cat ||
                 (cat === "All Courses" && !activeCategory)
                   ? "text-yellow-500 font-semibold"

@@ -76,11 +76,12 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
         {/* Slider */}
         <div className="py-8">
           <Slider ref={sliderRef} {...settings}>
-            {courses.map((course, index) => (
-              <div key={index} className="px-2">
+            {courses.map((course) => (
+              <div key={course._id} className="px-2">
                 {" "}
                 {/* ✅ spacing between slides */}
                 <Card
+                  _id={course._id}
                   title={course.name}
                   description={course.description}
                   ratings={course.ratings}

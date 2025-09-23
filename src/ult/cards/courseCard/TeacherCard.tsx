@@ -15,7 +15,7 @@ const TeacherCard: React.FC<TeacherProps> = ({
   time,
 }) => {
   return (
-    <div className="flex items-center gap-3 w-full">
+    <div className="flex items-center gap-2 w-full">
       {/* Teacher Image as React Icon */}
       <div className="flex gap-3">
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">

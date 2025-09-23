@@ -21,7 +21,6 @@ const Courses = () => {
   //search query
   const [searchQuery, setSearchQuery] = useState("");
 
-
   // ✅ Filter by category + search
   const filteredCourses: Course[] =
     courses
@@ -47,7 +46,7 @@ const Courses = () => {
     itemsPerPage,
   } = usePagination(filteredCourses, 6);
 
-  console.log(filteredCourses)
+  console.log(filteredCourses);
 
   // Loading & Error for Data
   if (isLoading) return <Loader />;
@@ -57,17 +56,32 @@ const Courses = () => {
     );
 
   return (
-    <section className="py-10 bg-gray-100">
+    <section className="py-12 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
         {/* Left content */}
         <div className="lg:col-span-4">
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-sm text-gray-600">
-              Showing {startIndex + 1}–
-              {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems}{" "}
-              results
+          <div className="flex items-center justify-between mb-2">
+            {/* Title */}
+            <h2 className="text-xl text-zinc-700 font-bold">
+              {category ? (
+                <>
+                  <span className="font-light">Courses in</span> {category}
+                </>
+              ) : (
+                "All Courses"
+              )}
+            </h2>
+            {/* total course */}
+            <p className="hidden sm:flex text-zinc-600">
+              Showing{" "}
+              <span className="font-bold px-1">
+                {startIndex + 1}–
+                {Math.min(startIndex + itemsPerPage, totalItems)}
+              </span>{" "}
+              of <span className="px-2 font-bold">{totalItems}</span> results
             </p>
           </div>
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-2 mb-3"></div>
 
           {/* Course List */}
           {filteredCourses.length === 0 ? (
@@ -75,7 +89,7 @@ const Courses = () => {
               Not Found!
             </p>
           ) : (
-            <CourseList courses={currentCourses} category={category || ""} />
+            <CourseList courses={currentCourses} />
           )}
 
           {/* Pagination */}
@@ -87,12 +101,13 @@ const Courses = () => {
         </div>
 
         {/* Sidebar */}
-        <CourseSidebar setSearchQuery={setSearchQuery} courses={courses ?? []}/>
+        <CourseSidebar
+          setSearchQuery={setSearchQuery}
+          courses={courses ?? []}
+        />
       </div>
     </section>
   );
 };
 
 export default Courses;
-
-
