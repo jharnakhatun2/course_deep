@@ -21,6 +21,7 @@ const Courses = () => {
   //search query
   const [searchQuery, setSearchQuery] = useState("");
 
+
   // ✅ Filter by category + search
   const filteredCourses: Course[] =
     courses
@@ -46,6 +47,8 @@ const Courses = () => {
     itemsPerPage,
   } = usePagination(filteredCourses, 6);
 
+  console.log(filteredCourses)
+
   // Loading & Error for Data
   if (isLoading) return <Loader />;
   if (isError || !currentCourses)
@@ -64,11 +67,6 @@ const Courses = () => {
               {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems}{" "}
               results
             </p>
-            <select className="border rounded px-2 py-1 text-sm">
-              <option>All Courses</option>
-              <option>Business</option>
-              <option>Design</option>
-            </select>
           </div>
 
           {/* Course List */}
@@ -89,10 +87,12 @@ const Courses = () => {
         </div>
 
         {/* Sidebar */}
-        <CourseSidebar setSearchQuery={setSearchQuery} />
+        <CourseSidebar setSearchQuery={setSearchQuery} courses={courses ?? []}/>
       </div>
     </section>
   );
 };
 
 export default Courses;
+
+

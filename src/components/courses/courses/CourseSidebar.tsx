@@ -1,36 +1,69 @@
-import { type FC } from "react";
+import { type FC, useMemo } from "react";
 import Search from "../../../ult/search/Search";
-
+import { Link, useSearchParams } from "react-router";
+import type { Course } from "../../../ult/types/types";
+import { GiConwayLifeGlider } from "react-icons/gi";
 
 interface CourseSidebarProps {
   setSearchQuery: (query: string) => void;
+  courses: Course[]; // receive all courses
 }
 
-const CourseSidebar: FC<CourseSidebarProps> = ({setSearchQuery}) => {
+const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = searchParams.get("category");
+
+  // Extract unique categories from course data
+  const categories = useMemo(() => {
+    const unique = Array.from(new Set(courses.map((c) => c.category)));
+    return ["All Courses", ...unique];
+  }, [courses]);
+
+  // Handle category click (updates URL)
+  const handleCategoryClick = (cat: string) => {
+    if (cat === "All Courses") {
+      searchParams.delete("category");
+    } else {
+      searchParams.set("category", cat);
+    }
+    setSearchParams(searchParams);
+  };
+
+  //filter popular courses
+  const popularCourses = courses
+    .filter((course) => course.ratings >= 4.9 && course.studentsEnrolled > 500)
+    .sort((a, b) => b.studentsEnrolled - a.studentsEnrolled)
+    .slice(0, 5);
+
   return (
-    <aside className="space-y-6">
+    <aside className="space-y-10">
       {/* Search */}
       <div>
-        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">Course Search</h4>
+        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">
+          Course Search
+        </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <Search placeholder="Search courses..." onSearch={setSearchQuery}/>
+        <Search placeholder="Search courses..." onSearch={setSearchQuery} />
       </div>
 
       {/* Categories */}
       <div>
-        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">Course Categories</h4>
+        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">
+          Course Categories
+        </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <ul className="space-y-2 text-gray-600">
-          {[
-            "Business",
-            "Design",
-            "Programming Language",
-            "Photography",
-            "Language",
-            "Life Style",
-            "IT & Software",
-          ].map((cat) => (
-            <li key={cat} className="hover:text-blue-600 cursor-pointer">
+        <ul className="space-y-2 text-zinc-500 divide-amber-100">
+          {categories.map((cat) => (
+            <li
+              key={cat}
+              onClick={() => handleCategoryClick(cat)}
+              className={`cursor-pointer text-sm hover:shadow-lg backdrop-blur bg-white/40 py-1 pl-3 transition-smooth hover:text-yellow-500 font-poppins ${
+                activeCategory === cat ||
+                (cat === "All Courses" && !activeCategory)
+                  ? "text-yellow-500 font-semibold"
+                  : ""
+              }`}
+            >
               {cat}
             </li>
           ))}
@@ -39,7 +72,9 @@ const CourseSidebar: FC<CourseSidebarProps> = ({setSearchQuery}) => {
 
       {/* Course Intro */}
       <div>
-        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">Course Intro</h4>
+        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">
+          Course Intro
+        </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
         <div className="relative w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
           <button className="bg-white text-black rounded-full p-4 shadow">
@@ -50,23 +85,26 @@ const CourseSidebar: FC<CourseSidebarProps> = ({setSearchQuery}) => {
 
       {/* Popular Courses */}
       <div>
-        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">Popular Courses</h4>
+        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">
+          Popular Courses
+        </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
         <ul className="space-y-4">
-          <li className="flex items-center gap-3">
-            <img src="https://via.placeholder.com/60" className="rounded" />
-            <div>
-              <p className="text-sm font-medium">Intro to Mobile Apps</p>
-              <span className="text-xs text-blue-600">$99.00</span>
-            </div>
-          </li>
-          <li className="flex items-center gap-3">
-            <img src="https://via.placeholder.com/60" className="rounded" />
-            <div>
-              <p className="text-sm font-medium">Become a Film Maker</p>
-              <span className="text-xs text-green-600">FREE</span>
-            </div>
-          </li>
+          {popularCourses.map((course) => (
+            <Link
+              to={`/course/${course._id}`}
+              className="flex items-center gap-2"
+              key={course._id}
+            >
+              <img src={course.image} className="w-24" />
+              <div>
+                <p className="text-xs font-medium hover:text-yellow-500">
+                  {course.name}
+                </p>
+                <span className="text-sm text-yellow-600">{course.price}</span>
+              </div>
+            </Link>
+          ))}
         </ul>
       </div>
     </aside>

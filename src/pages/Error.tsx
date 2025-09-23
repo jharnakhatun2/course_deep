@@ -14,7 +14,7 @@ const Error = () => {
 			<p className="mt-4 mb-8 dark:text-gray-600">But dont worry, you can find plenty of other things on our homepage.</p>
 			<Button
             url="/"
-            className="bg-yellow-500 hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,221,51,0.3)]
+            className="bg-yellow-500 hover:bg-yellow-400 text-zinc-600 hover:text-white shadow-[0_0_15px_rgba(255,221,51,0.3)]
  hover:shadow-[0_0_25px_rgba(255,221,51,0.5)] border border-yellow-400"
           >
             Back To Home
