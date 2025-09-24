@@ -4,24 +4,20 @@ import type { Event } from "../../types/types";
 
 interface ECardProps {
   event: Event;
-  index: number;
-  total: number;
 }
 
-const ECard: FC<ECardProps> = ({ event, index, total }) => {
+const ECard: FC<ECardProps> = ({ event }) => {
   return (
     <div
       key={event._id}
-      className={`flex flex-col lg:flex-row-reverse items-center justify-between gap-10 ${
-        index !== total - 1 ? "border-b border-gray-300 pb-6" : ""
-      }`}
+      className="flex flex-col lg:flex-row-reverse lg:items-center justify-between border p-3 border-gray-400/15 my-5"
     >
       {/* Image Section */}
       <div className="flex flex-1 justify-center lg:justify-end">
         <img
           src={event.image}
           alt={event.title}
-          className="w-full object-cover inline-block border border-white/90"
+          className="w-full rounded object-cover inline-block border border-white/90 mb-3 lg:mb-0"
         />
       </div>
 

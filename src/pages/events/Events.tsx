@@ -36,20 +36,22 @@ const Events = () => {
     <section className="py-10 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 gap-8">
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-gray-600">
-            Showing {startIndex + 1}–
-            {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems}{" "}
-            results
-          </p>
+          <p className="flex text-zinc-600">
+              Showing{" "}
+              <span className="font-bold px-1">
+                {startIndex + 1}–{" "}
+                {Math.min(startIndex + itemsPerPage, totalItems)}
+              </span>{" "}
+              of <span className="px-2 font-bold">{totalItems}</span> results
+            </p>
         </div>
+        <div className="h-[1px] w-full bg-gray-500/20 -mt-4 mb-4"></div>
 
         {/* Paginated events */}
-        {currentEvents.map((event, index) => (
+        {currentEvents.map((event) => (
           <ECard
             key={event._id}
             event={event}
-            index={index}
-            total={events.length}
           />
         ))}
 
