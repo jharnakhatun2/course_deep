@@ -51,14 +51,18 @@ const Blogs = () => {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Left content */}
         <div className="lg:col-span-3 order-2 lg:order-1">
-          {/* title */}
+          {/* total blogs */}
           <div className="flex items-center justify-between mb-6">
-            <p className="text-sm text-gray-600">
-              Showing {startIndex + 1}–
-              {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems}{" "}
-              results
+            <p className="hidden sm:flex text-zinc-600">
+              Showing{" "}
+              <span className="font-bold px-1">
+                {startIndex + 1}–
+                {Math.min(startIndex + itemsPerPage, totalItems)}
+              </span>{" "}
+              of <span className="px-2 font-bold">{totalItems}</span> results
             </p>
           </div>
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
 
           {/* Blogs List */}
           {filteredBlogs.length === 0 ? (
@@ -79,7 +83,7 @@ const Blogs = () => {
 
         {/* Sidebar */}
         <div className="order-1 lg:order-2">
-          <BlogSidebar setSearchQuery={setSearchQuery} />
+          <BlogSidebar setSearchQuery={setSearchQuery} blogs={blogs ?? []}/>
         </div>
       </div>
     </section>

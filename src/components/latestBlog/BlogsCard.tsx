@@ -3,6 +3,7 @@ import type { BlogPost } from "../../ult/types/types";
 import DateCard from "./DateCard";
 import Button from "../../ult/button/Button";
 import { FaComments, FaReadme, FaUserCheck } from "react-icons/fa";
+import { Link } from "react-router";
 
 interface BlogsCardProps {
   blogs: BlogPost[];
@@ -34,9 +35,9 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                   </div>
                   {/* Title & author */}
                   <div className="flex-1">
-                    <h2 className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug">
+                    <Link to={`/blog/${blog._id}`} className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug hover:text-yellow-500 transition-smooth cursor-pointer">
                       {blog.title}
-                    </h2>
+                    </Link>
                     <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">
                       <p className="flex items-center gap-1">
                         <FaUserCheck className="text-yellow-500" />{" "}
@@ -47,7 +48,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                       </p>
                       <p className="flex items-center gap-1">
                         <FaComments className="text-yellow-500" />{" "}
-                        {blog.comments}
+                        {blog.comments} Comments
                       </p>
                     </div>
                   </div>
@@ -58,8 +59,8 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
 
                 {/* Read More Button */}
                 <Button
-                  url={`/${blog._id}`}
-                  className="w-full sm:w-1/6 px-4 py-2 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500"
+                  url={`/blog/${blog._id}`}
+                  className="w-full sm:w-2/6 px-4 py-2 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500"
                 >
                   Read More
                 </Button>
