@@ -14,20 +14,36 @@ const Blogs = () => {
   } = useGetBlogsQuery(undefined, {
     refetchOnMountOrArgChange: false,
   });
+
   //search query
   const [searchQuery, setSearchQuery] = useState("");
+  // Selected category
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  //search filter
+  // Filter blogs by search and category
   const filteredBlogs =
     blogs?.filter((blog) => {
       const query = searchQuery.toLowerCase();
-      return (
+      const matchesSearch =
         blog.title.toLowerCase().includes(query) ||
-        blog.content.toLowerCase().includes(query)
+        blog.content.toLowerCase().includes(query);
+
+      const matchesCategory = selectedCategory
+        ? blog.category.toLowerCase() === selectedCategory.toLowerCase()
+        : true;
+
+      // Debug
+      console.log(
+        "blog.category:",
+        blog.category,
+        "selectedCategory:",
+        selectedCategory
       );
+
+      return matchesSearch && matchesCategory;
     }) ?? [];
 
-  // Always call hook (even if events is undefined, fallback to [])
+  // Pagination
   const {
     currentPage,
     setCurrentPage,
@@ -36,7 +52,7 @@ const Blogs = () => {
     totalItems,
     startIndex,
     itemsPerPage,
-  } = usePagination(filteredBlogs ?? [], 3);
+  } = usePagination(filteredBlogs, 3);
 
   // Handle loading/error AFTER hooks
   if (isLoading) return <Loader />;
@@ -83,7 +99,12 @@ const Blogs = () => {
 
         {/* Sidebar */}
         <div className="order-1 lg:order-2">
-          <BlogSidebar setSearchQuery={setSearchQuery} blogs={blogs ?? []}/>
+          <BlogSidebar
+            setSearchQuery={setSearchQuery}
+            blogs={blogs ?? []}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
       </div>
     </section>

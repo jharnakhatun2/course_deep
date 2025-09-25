@@ -18,10 +18,11 @@ const Courses = () => {
   });
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+
   //search query
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ✅ Filter by category + search
+  // Filter by category + search
   const filteredCourses: Course[] =
     courses
       ?.filter((course: Course) =>
@@ -45,8 +46,6 @@ const Courses = () => {
     startIndex,
     itemsPerPage,
   } = usePagination(filteredCourses, 6);
-
-  console.log(filteredCourses);
 
   // Loading & Error for Data
   if (isLoading) return <Loader />;
