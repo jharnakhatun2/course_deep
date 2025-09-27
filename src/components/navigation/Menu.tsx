@@ -10,8 +10,7 @@ const menuList = [
   { name: "Home", path: "/" },
   { name: "Courses", path: "/courses" },
   { name: "Events", path: "/events" },
-  { name: "Blog", path: "/blog" },
-  { name: "Contact", path: "/contact" },
+  { name: "Blog", path: "/blog" }
 ];
 
 const Menu = () => {

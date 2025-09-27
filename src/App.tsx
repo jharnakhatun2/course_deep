@@ -14,7 +14,6 @@ import Course from "./pages/courses/Course";
 import Home from "./pages/Home";
 import Layout from "./components/route/Layout";
 import type { FC } from "react";
-import Contact from "./pages/Contact";
 import Events from "./pages/events/Events";
 import Event from "./pages/events/Event";
 import { ToastContainer } from "react-toastify";
@@ -22,6 +21,7 @@ import Login from "./components/auth/Login";
 import { useCurrentUser } from "./components/auth/useCurrentUser";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Terms from "./pages/Terms";
 
 const App: FC = () => {
   useCurrentUser(); // Custom hook to fetch current user on app load
@@ -72,7 +72,7 @@ const App: FC = () => {
             </PrivateRoute>
           ),
         },
-        { path: "/contact", element: <Contact /> },
+        { path: "/terms", element: <Terms /> },
         { path: "*", element: <Error /> },
       ],
     },
