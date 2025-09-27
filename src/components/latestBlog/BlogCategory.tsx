@@ -16,12 +16,14 @@ const BlogCategory: FC<BlogCategoryProps> = ({
   const categories = Array.from(new Set(blogs.map((blog) => blog.category)));
 
   return (
-    <ul className="space-y-2 text-gray-600 sm:text-base flex flex-wrap gap-3 uppercase">
+    <ul className="space-y-2 sm:text-base flex flex-wrap gap-3 uppercase">
       {categories.map((cat) => (
         <li
           key={cat}
-          className={`cursor-pointer hover:text-yellow-500 text-sm border border-white hover:shadow transition-smooth px-2 py-1 backdrop-blur-lg  ${
-            selectedCategory === cat ? "font-bold text-white bg-yellow-500 shadow-[0_0_15px_#ffffff]" : "text-zinc-500 bg-white/10"
+          className={`cursor-pointer hover:bg-yellow-500 hover:border-yellow-500 hover:text-white text-sm border border-white hover:shadow transition-smooth px-2 py-1 backdrop-blur-lg  ${
+            selectedCategory === cat
+              ? "text-white bg-yellow-500 border-yellow-500 shadow-[0_0_15px_#ffffff]"
+              : "text-zinc-500 bg-white/10"
           }`}
           onClick={() =>
             setSelectedCategory
