@@ -8,9 +8,9 @@ const PopularCourse = () => {
 
   //filter popular courses
   const popularCourses = courses
-    .filter((course) => course.ratings >= 4.9 && course.studentsEnrolled > 500)
+    ?.filter((course) => course.ratings >= 4.9 && course.studentsEnrolled > 500)
     .sort((a, b) => b.studentsEnrolled - a.studentsEnrolled)
-    .slice(0, 5);
+    .slice(0, 5) || [];
 
   
   return (
@@ -26,7 +26,7 @@ const PopularCourse = () => {
             <p className="text-xs font-medium hover:text-yellow-500">
               {course.name}
             </p>
-            <span className="text-sm text-teal-600 font-semibold">{course.price}</span>
+            <span className="text-sm text-yellow-500">{course.price}</span>
           </div>
         </Link>
       ))}

@@ -1,8 +1,9 @@
 import { type FC, useMemo } from "react";
 import Search from "../../../ult/search/Search";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import type { Course } from "../../../ult/types/types";
 import CourseIntro from "./CourseIntro";
+import PopularCourse from "../../footer/PopularCourse";
 
 interface CourseSidebarProps {
   setSearchQuery: (query: string) => void;
@@ -29,12 +30,7 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
     setSearchParams(searchParams);
   };
 
-  //filter popular courses
-  const popularCourses = courses
-    .filter((course) => course.ratings >= 4.9 && course.studentsEnrolled > 500)
-    .sort((a, b) => b.studentsEnrolled - a.studentsEnrolled)
-    .slice(0, 5);
-
+  
   return (
     <aside className="space-y-10">
       {/* Search */}
@@ -79,25 +75,7 @@ const CourseSidebar: FC<CourseSidebarProps> = ({ setSearchQuery, courses }) => {
           Popular Courses
         </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <ul className="space-y-4">
-          {popularCourses.map((course) => (
-            <Link
-              to={`/course/${course._id}`}
-              className="flex items-center gap-2"
-              key={course._id}
-            >
-              <img src={course.image} className="w-24" />
-              <div>
-                <p className="text-xs font-medium hover:text-yellow-500">
-                  {course.name}
-                </p>
-                <span className="text-sm text-yellow-600 font-semibold">
-                  {course.price}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </ul>
+        <PopularCourse />
       </div>
     </aside>
   );
