@@ -4,6 +4,7 @@ import Search from "../../ult/search/Search";
 import type { BlogPost } from "../../ult/types/types";
 import LatestPost from "./LatestPost";
 import BlogCategory from "./BlogCategory";
+import CourseIntro from "../courses/courses/CourseIntro";
 
 interface BlogSidebarProps {
   setSearchQuery: (query: string) => void;
@@ -46,17 +47,7 @@ const BlogSidebar: FC<BlogSidebarProps> = ({
       </div>
 
       {/* Course Intro / Video Placeholder */}
-      <div>
-        <h4 className="font-semibold mb-2 uppercase text-xs text-zinc-500">
-          Course Intro
-        </h4>
-        <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <div className="relative w-full h-40 sm:h-52 bg-gray-200 rounded-lg flex items-center justify-center">
-          <button className="bg-white text-black rounded-full p-4 shadow">
-            ▶
-          </button>
-        </div>
-      </div>
+      <CourseIntro/>
     </aside>
   );
 };

@@ -20,8 +20,8 @@ const BlogCategory: FC<BlogCategoryProps> = ({
       {categories.map((cat) => (
         <li
           key={cat}
-          className={`cursor-pointer hover:text-yellow-500 text-sm border border-white hover:shadow transition-smooth px-2 py-1 backdrop-blur-lg bg-white/10 ${
-            selectedCategory === cat ? "font-bold text-yellow-500 shadow-[0_0_15px_#ffffff]" : "text-zinc-500"
+          className={`cursor-pointer hover:text-yellow-500 text-sm border border-white hover:shadow transition-smooth px-2 py-1 backdrop-blur-lg  ${
+            selectedCategory === cat ? "font-bold text-white bg-yellow-500 shadow-[0_0_15px_#ffffff]" : "text-zinc-500 bg-white/10"
           }`}
           onClick={() =>
             setSelectedCategory
