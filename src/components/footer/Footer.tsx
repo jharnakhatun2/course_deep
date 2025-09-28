@@ -5,9 +5,9 @@ import ContactUs from "./ContactUs";
 import PopularCourse from "./PopularCourse";
 
 const quickLinks = [
-  { label: "All Courses", href: "/" },
-  { label: "Summer Sessions", href: "/" },
-  { label: "Recent Exams", href: "/" },
+  { label: "All Courses", href: "/courses" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Privacy Policy", href: "/privacy" },
   { label: "Professional Courses", href: "/" },
   { label: "Portfolio", href: "/" },
 ];

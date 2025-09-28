@@ -22,6 +22,7 @@ import { useCurrentUser } from "./components/auth/useCurrentUser";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Terms from "./pages/Terms";
+import Privacy from "./pages/privacy/Privacy";
 
 const App: FC = () => {
   useCurrentUser(); // Custom hook to fetch current user on app load
@@ -73,6 +74,7 @@ const App: FC = () => {
           ),
         },
         { path: "/terms", element: <Terms /> },
+        { path: "/privacy", element: <Privacy /> },
         { path: "*", element: <Error /> },
       ],
     },
