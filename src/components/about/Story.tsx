@@ -1,7 +1,7 @@
 import AboutImage from "../../assets/img/about.webp";
 const Story = () => {
   return (
-    <section className="mb-20">
+    <section className="pt-5 lg:pb-20">
       <div className="flex flex-col-reverse lg:flex-row items-center md:gap-12 gap-5">
         <div className="lg:w-1/2">
           <span className="text-xs uppercase text-teal-500 tracking-wider">
