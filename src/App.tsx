@@ -8,7 +8,6 @@ import CheckOut from "./pages/CheckOut";
 import PrivateRoute from "./components/route/PrivateRoute";
 import Blogs from "./pages/blogs/Blogs";
 import Blog from "./pages/blogs/Blog";
-import Faq from "./components/Faq";
 import Courses from "./pages/courses/Courses";
 import Course from "./pages/courses/Course";
 import Home from "./pages/Home";
@@ -23,6 +22,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/privacy/Privacy";
+import About from "./pages/about/About";
 
 const App: FC = () => {
   useCurrentUser(); // Custom hook to fetch current user on app load
@@ -32,6 +32,7 @@ const App: FC = () => {
       element: <Layout />,
       children: [
         { path: "/", element: <Home /> },
+        { path: "/about", element: <About /> },
         {
           path: "/courses",
           loader: async () => {
@@ -53,7 +54,6 @@ const App: FC = () => {
         { path: "/events", element: <Events /> },
         { path: "/events/:title", element: <Event /> },
 
-        { path: "/faq", element: <Faq /> },
         { path: "/blog", element: <Blogs /> },
         { path: "/blog/:title", element: <Blog /> },
         {

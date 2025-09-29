@@ -27,12 +27,10 @@ const EventList: React.FC<EventProps> = ({ events }) => {
           className="text-teal-500 hover:text-yellow-500"
         />
 
-        {latestEvents?.map((event, index) => (
+        {latestEvents?.map((event) => (
           <ECard
             key={event._id}
             event={event}
-            index={index}
-            total={events.length}
           />
         ))}
       </div>

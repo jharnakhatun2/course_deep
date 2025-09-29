@@ -8,7 +8,7 @@ const quickLinks = [
   { label: "All Courses", href: "/courses" },
   { label: "Terms & Conditions", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy" },
-  { label: "Professional Courses", href: "/" },
+  { label: "About Us", href: "/about" },
   { label: "Portfolio", href: "/" },
 ];
 
