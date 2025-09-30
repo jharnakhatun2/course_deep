@@ -8,56 +8,15 @@ import team7 from "../../assets/img/team/team7.webp";
 import team8 from "../../assets/img/team/team8.webp";
 
 const teamMembers = [
-  {
-    "id": 1,
-    "name": "John Doe",
-    "role": "Software Engineer",
-    "image": team1
-  },
-  {
-    "id": 2,
-    "name": "Jane Smith",
-    "role": "Graphic Designer",
-    "image": team2
-  },
-  {
-    "id": 3,
-    "name": "Alex Johnson",
-    "role": "Marketing Manager",
-    "image": team3
-  },
-  {
-    "id": 4,
-    "name": "Peter Johnson",
-    "role": "SEO Specialist",
-    "image": team4
-  },
-  {
-    "id": 5,
-    "name": "Emily Brown",
-    "role": "UX Designer",
-    "image": team5
-  },
-  {
-    "id": 6,
-    "name": "Michael Davis",
-    "role": "Frontend Developer",
-    "image": team6
-  },
-  {
-    "id": 7,
-    "name": "Sarah Johnson",
-    "role": "Content Writer",
-    "image": team7
-  },
-  {
-    "id": 8,
-    "name": "David Wilson",
-    "role": "Project Manager",
-    "image": team8
-  }
-]
-
+  { id: 1, name: "John Doe", role: "Software Engineer", image: team1 },
+  { id: 2, name: "Jane Smith", role: "Graphic Designer", image: team2 },
+  { id: 3, name: "Alex Johnson", role: "Marketing Manager", image: team3 },
+  { id: 4, name: "Peter Johnson", role: "SEO Specialist", image: team4 },
+  { id: 5, name: "Emily Brown", role: "UX Designer", image: team5 },
+  { id: 6, name: "Michael Davis", role: "Frontend Developer", image: team6 },
+  { id: 7, name: "Sarah Johnson", role: "Content Writer", image: team7 },
+  { id: 8, name: "David Wilson", role: "Project Manager", image: team8 },
+];
 
 const Team = () => {
   return (
@@ -70,18 +29,30 @@ const Team = () => {
           Our Team
         </h3>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-4">
-        {teamMembers.map((member, idx) => (
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {teamMembers.map((member) => (
           <div
-            key={idx}
-            className="hover:shadow-2xl overflow-hidden m-1 transition-smooth"
+            key={member.id}
+            className="relative group overflow-hidden rounded-lg shadow-md"
           >
+            {/* Image */}
             <img
               src={member.image}
               alt={member.name}
-              className="w-full h-64 object-cover"
+              className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            
+
+            {/* Overlay */}
+            <div
+              className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center 
+              translate-y-full group-hover:translate-y-0 transition-smooth"
+            >
+              <h4 className="text-white font-semibold text-lg">
+                {member.name}
+              </h4>
+              <p className="text-gray-200 text-sm">{member.role}</p>
+            </div>
           </div>
         ))}
       </div>
