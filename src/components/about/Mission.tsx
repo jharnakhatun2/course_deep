@@ -29,7 +29,7 @@ const Mission = () => {
     <section className="bg-primary-50 rounded-xl pt-5 pb-20">
       <div className="text-center">
         <span className="text-xs uppercase text-teal-500 tracking-wider">
-          Explore, Learn & Grow
+          Driven by Purpose
         </span>
         <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-zinc-600 uppercase">
           Our Mission

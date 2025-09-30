@@ -23,7 +23,7 @@ const Team = () => {
     <section className="pb-8 pt-10">
       <div className="text-center mb-7">
         <span className="text-xs uppercase text-teal-500 tracking-wider">
-          Explore, Learn & Grow
+          Behind every success
         </span>
         <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-zinc-600 uppercase">
           Our Team
@@ -45,13 +45,15 @@ const Team = () => {
 
             {/* Overlay */}
             <div
-              className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center 
+              className="absolute inset-0 bg-yellow-400/60 flex flex-col items-center justify-center 
               translate-y-full group-hover:translate-y-0 transition-smooth"
             >
-              <h4 className="text-white font-semibold text-lg">
-                {member.name}
-              </h4>
-              <p className="text-gray-200 text-sm">{member.role}</p>
+              <div className="border border-white p-4 text-center">
+                <h4 className="text-zinc-800 font-semibold text-lg uppercase">
+                  {member.name}
+                </h4>
+                <p className="text-white text-sm">{member.role}</p>
+              </div>
             </div>
           </div>
         ))}

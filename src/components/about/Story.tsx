@@ -5,7 +5,7 @@ const Story = () => {
       <div className="flex flex-col-reverse lg:flex-row items-center md:gap-12 gap-5">
         <div className="lg:w-1/2">
           <span className="text-xs uppercase text-teal-500 tracking-wider">
-            Explore, Learn & Grow
+            How It Began
           </span>
           <h3 className="text-2xl sm:text-3xl font-bold mb-7 text-zinc-600 uppercase">
             Our Story
