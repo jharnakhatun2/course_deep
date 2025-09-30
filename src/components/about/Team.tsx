@@ -1,48 +1,87 @@
+import team1 from "../../assets/img/team/team1.webp";
+import team2 from "../../assets/img/team/team2.webp";
+import team3 from "../../assets/img/team/team3.webp";
+import team4 from "../../assets/img/team/team4.webp";
+import team5 from "../../assets/img/team/team5.webp";
+import team6 from "../../assets/img/team/team6.webp";
+import team7 from "../../assets/img/team/team7.webp";
+import team8 from "../../assets/img/team/team8.webp";
+
 const teamMembers = [
   {
-    name: "Dr. Elena Vasquez",
-    role: "CEO & Co-Founder",
-    desc: "Cognitive computing pioneer with a PhD in Computational Neuroscience from Stanford.",
-    img: "https://images.unsplash.com/photo-1590086783191-a0694c7d1e6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+    "id": 1,
+    "name": "John Doe",
+    "role": "Software Engineer",
+    "image": team1
   },
   {
-    name: "Raj Patel",
-    role: "Chief Technology Officer",
-    desc: "Former lead architect at DeepMind, specializes in neural-symbolic integration.",
-    img: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+    "id": 2,
+    "name": "Jane Smith",
+    "role": "Graphic Designer",
+    "image": team2
   },
   {
-    name: "Dr. Kwame Nkosi",
-    role: "Chief Ethics Officer",
-    desc: "Author of 'The Moral Algorithm' and AI policy advisor to the EU Parliament.",
-    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+    "id": 3,
+    "name": "Alex Johnson",
+    "role": "Marketing Manager",
+    "image": team3
   },
-];
+  {
+    "id": 4,
+    "name": "Peter Johnson",
+    "role": "SEO Specialist",
+    "image": team4
+  },
+  {
+    "id": 5,
+    "name": "Emily Brown",
+    "role": "UX Designer",
+    "image": team5
+  },
+  {
+    "id": 6,
+    "name": "Michael Davis",
+    "role": "Frontend Developer",
+    "image": team6
+  },
+  {
+    "id": 7,
+    "name": "Sarah Johnson",
+    "role": "Content Writer",
+    "image": team7
+  },
+  {
+    "id": 8,
+    "name": "David Wilson",
+    "role": "Project Manager",
+    "image": team8
+  }
+]
+
 
 const Team = () => {
   return (
     <section className="pb-8 pt-10">
-      <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
-        Meet Our Leadership
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="text-center mb-7">
+        <span className="text-xs uppercase text-teal-500 tracking-wider">
+          Explore, Learn & Grow
+        </span>
+        <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-zinc-600 uppercase">
+          Our Team
+        </h3>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4">
         {teamMembers.map((member, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="hover:shadow-2xl overflow-hidden m-1 transition-smooth"
           >
             <img
-              src={member.img}
+              src={member.image}
               alt={member.name}
               className="w-full h-64 object-cover"
             />
-            <div className="p-6">
-              <h3 className="font-bold text-xl text-gray-900 mb-1">
-                {member.name}
-              </h3>
-              <p className="text-primary-600 font-medium mb-3">{member.role}</p>
-              <p className="text-gray-600">{member.desc}</p>
-            </div>
+            
           </div>
         ))}
       </div>
