@@ -38,10 +38,8 @@ const SingleAuthor = ({ blog }: SingleAuthorProps) => {
           <p className="text-zinc-800 text-lg mb-2">
             Written by {blog.author}{" "}
           </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
-            eaque repellendus impedit tempora perferendis beatae nulla voluptas
-            consequuntur neque dolorum .
+          <p className="text-gray-400 text-sm">
+            {blog.authorBio}
           </p>
         </div>
       </div>

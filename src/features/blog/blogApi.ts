@@ -30,7 +30,7 @@ export const blogApi = apiSlice.injectEndpoints({
     updateBlog: builder.mutation<BlogPost, { id: string; data: Partial<BlogPost> }>({
       query: ({ id, data }) => ({
         url: `/blogs/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Blogs", id }],

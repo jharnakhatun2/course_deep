@@ -56,7 +56,8 @@ export interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
-  comments: number
+  comments: number;
+  authorBio: string;
 }
 
 export interface PaginationProps {
