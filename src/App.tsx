@@ -23,6 +23,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/privacy/Privacy";
 import About from "./pages/about/About";
+import Cart from "./components/cart/Cart";
 
 const App: FC = () => {
   useCurrentUser(); // Custom hook to fetch current user on app load
@@ -33,29 +34,13 @@ const App: FC = () => {
       children: [
         { path: "/", element: <Home /> },
         { path: "/about", element: <About /> },
-        {
-          path: "/courses",
-          loader: async () => {
-            return fetch(
-              "https://assignment-ten-server-sage.vercel.app/courses"
-            );
-          },
-          element: <Courses />,
-        },
-        {
-          path: "/course/:id",
-          loader: async ({ params }) => {
-            return fetch(
-              `https://assignment-ten-server-sage.vercel.app/courses/${params.id}`
-            );
-          },
-          element: <Course />,
-        },
+        { path: "/courses", element: <Courses /> },
+        { path: "/course/:id", element: <Course /> },
         { path: "/events", element: <Events /> },
-        { path: "/events/:title", element: <Event /> },
-
-        { path: "/blog", element: <Blogs /> },
-        { path: "/blog/:title", element: <Blog /> },
+        { path: "/events/:id", element: <Event /> },
+        { path: "/blogs", element: <Blogs /> },
+        { path: "/blogs/:id", element: <Blog /> },
+        { path: "/cart", element: <Cart /> },
         {
           path: "/checkout",
           element: (

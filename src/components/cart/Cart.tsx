@@ -1,44 +1,65 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useAddToCartMutation, useGetCartQuery } from "../../features/cart/CartApi";
-import { toggleCart } from "../../features/cart/cartSlice";
-
-
+import { useSelector } from "react-redux";
+import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { data: cart } = useGetCartQuery();
-  const [addToCart] = useAddToCartMutation();
-  const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.cart);
+  const cartItems = useSelector((state) => state.cart);
+  const subTotal = cartItems.reduce(
+    (sum, curItem) => sum + curItem.price * curItem.quantity,
+    0
+  );
 
   return (
-    <div>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded"
-        onClick={() => dispatch(toggleCart())}
-      >
-        {isOpen ? "Close Cart" : "Open Cart"}
-      </button>
-
-      {isOpen && (
-        <div className="p-4 border rounded shadow mt-4 bg-white">
-          <h2 className="font-bold text-lg">Your Cart</h2>
-          <ul>
-            {cart?.map((item) => (
-              <li key={item.id} className="flex justify-between py-1">
-                <span>{item.name} x {item.quantity}</span>
-                <span>${item.price * item.quantity}</span>
-              </li>
+    <main className="py-16">
+      <div className="container 2xl:px-8 px-2 mx-auto">
+        <h2 className="mb-8 text-xl font-bold">Shopping Cart</h2>
+        <div className="cartListContainer">
+          <div className="space-y-6">
+            {cartItems?.map((item) => (
+              <CartItem key={item.id} item={item} />
             ))}
-          </ul>
-          <button
-            onClick={() => addToCart({ productId: "123", quantity: 1 })}
-            className="mt-3 bg-green-500 text-white px-3 py-1 rounded"
-          >
-            Add Item
-          </button>
+          </div>
+
+          {/* Bill Details */}
+          <div>
+            <div className="billDetailsCard">
+              <h4 className="mt-2 mb-8 text-xl font-bold text-center">
+                Bill Details
+              </h4>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <p>Sub Total</p>
+                  <p>
+                    BDT <span className="lws-subtotal">{subTotal}</span>
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <p>Discount</p>
+                  <p>
+                    BDT <span className="lws-discount">0</span>
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <p>VAT</p>
+                  <p>
+                    BDT <span className="vat">0</span>
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pb-4">
+                  <p className="font-bold">TOTAL</p>
+                  <p className="font-bold">
+                    BDT <span className="lws-total">{subTotal}</span>
+                  </p>
+                </div>
+                <button className="placeOrderbtn">place order</button>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </main>
   );
 };
 

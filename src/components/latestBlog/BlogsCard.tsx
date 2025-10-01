@@ -59,7 +59,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
 
                 {/* Read More Button */}
                 <Button
-                  url={`/blog/${blog._id}`}
+                  url={`/blogs/${blog._id}`}
                   className="w-full sm:w-2/6 px-4 py-2 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500"
                 >
                   Read More

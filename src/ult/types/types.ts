@@ -20,6 +20,14 @@ export interface Course {
   courseURL: string;
   prerequisites: string[];
   promoVideo: string;
+  videos: Video[];
+}
+
+export interface Video {
+  id: string;
+  title: string;
+  url: string;
+  free: boolean;
 }
 
 export interface Event {
@@ -59,8 +67,9 @@ export interface PaginationProps {
 
 export interface CartItem {
   id: string;
-  productId: string;
-  name: string;
+  title: string;
+  category: string;
   price: number;
+  image: string;
   quantity: number;
 }

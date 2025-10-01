@@ -32,14 +32,6 @@ const Blogs = () => {
         ? blog.category.toLowerCase() === selectedCategory.toLowerCase()
         : true;
 
-      // Debug
-      console.log(
-        "blog.category:",
-        blog.category,
-        "selectedCategory:",
-        selectedCategory
-      );
-
       return matchesSearch && matchesCategory;
     }) ?? [];
 
