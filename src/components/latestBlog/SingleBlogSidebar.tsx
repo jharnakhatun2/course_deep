@@ -4,7 +4,7 @@ import LatestPost from "./LatestPost";
 
 const SingleBlogSidebar = () => {
   return (
-    <aside className="space-y-10 sm:mt-9">
+    <aside className="space-y-10">
       {/* Course Intro / Video Placeholder */}
       <CourseIntro />
 

@@ -40,7 +40,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                     </Link>
                     <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">
                       <p className="flex items-center gap-1">
-                        <FaUserCheck className="text-yellow-500" />{" "}
+                        <FaUserCheck className="text-yellow-500" />{" "} By {" "}
                         {blog.author}
                       </p>
                       <p className="flex items-center gap-1">

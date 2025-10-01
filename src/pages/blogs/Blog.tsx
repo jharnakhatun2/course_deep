@@ -2,6 +2,9 @@ import { useParams, Link } from "react-router";
 import Loader from "../../ult/loader/Loader";
 import { useGetBlogByIdQuery } from "../../features/blog/blogApi";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
+import { FaComments, FaReadme, FaUserCheck } from "react-icons/fa";
+import { MdOutlineWatchLater } from "react-icons/md";
+import SingleBlogInfo from "../../components/latestBlog/SingleBlogInfo";
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +20,7 @@ const Blog = () => {
       <p className="text-center py-10 text-red-500 text-2xl">Blog not found!</p>
     );
 
+  
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -24,14 +28,13 @@ const Blog = () => {
         <div className="lg:col-span-3">
           <Link
             to="/blogs"
-            className="text-blue-500 hover:underline mb-4 inline-block"
+            className="text-teal-500 hover:text-yellow-500 mb-4 inline-block "
           >
             &larr; Back to Blogs
           </Link>
-
-          <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
-          <p className="text-gray-500 mb-6">Category: {blog.category}</p>
-          <div className="prose max-w-none">{blog.content}</div>
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+          <SingleBlogInfo blog={blog} />
+          
         </div>
 
         {/* Sidebar */}
