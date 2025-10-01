@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router";
 import Loader from "../../ult/loader/Loader";
 import { useGetBlogByIdQuery } from "../../features/blog/blogApi";
+import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,8 +19,9 @@ const Blog = () => {
 
   return (
     <section className="py-10 bg-gray-100">
-      <div className="lg:max-w-7xl mx-auto px-4">
-        <div className="lg:col-span-3 order-2 lg:order-1">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Main Blog Content */}
+        <div className="lg:col-span-3">
           <Link
             to="/blogs"
             className="text-blue-500 hover:underline mb-4 inline-block"
@@ -31,6 +33,11 @@ const Blog = () => {
           <p className="text-gray-500 mb-6">Category: {blog.category}</p>
           <div className="prose max-w-none">{blog.content}</div>
         </div>
+
+        {/* Sidebar */}
+        <aside className="lg:col-span-1">
+          <SingleBlogSidebar />
+        </aside>
       </div>
     </section>
   );

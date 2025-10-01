@@ -35,7 +35,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                   </div>
                   {/* Title & author */}
                   <div className="flex-1">
-                    <Link to={`/blog/${blog._id}`} className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug hover:text-yellow-500 transition-smooth cursor-pointer">
+                    <Link to={`/blogs/${blog._id}`} className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug hover:text-yellow-500 transition-smooth cursor-pointer">
                       {blog.title}
                     </Link>
                     <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">

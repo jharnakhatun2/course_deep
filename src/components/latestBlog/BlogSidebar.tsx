@@ -1,6 +1,5 @@
 import { type FC } from "react";
 import Search from "../../ult/search/Search";
-
 import type { BlogPost } from "../../ult/types/types";
 import LatestPost from "./LatestPost";
 import BlogCategory from "./BlogCategory";
@@ -31,7 +30,7 @@ const BlogSidebar: FC<BlogSidebarProps> = ({
           Latest Blogs
         </h4>
         <div className="h-[1px] w-full bg-gray-500/20 my-3"></div>
-        <LatestPost blogs={blogs} />
+        <LatestPost  />
       </div>
 
       {/* Categories */}

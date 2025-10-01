@@ -1,12 +1,14 @@
 import { useMemo, type FC } from "react";
-import type { BlogPost } from "../../ult/types/types";
 import { Link } from "react-router";
+import { useGetBlogsQuery } from "../../features/blog/blogApi";
 
-interface BlogSidebarProps {
-  blogs: BlogPost[];
-}
 
-const LatestPost: FC<BlogSidebarProps> = ({ blogs }) => {
+
+const LatestPost: FC = () => {
+  const { data: blogs } = useGetBlogsQuery(undefined, {
+      refetchOnMountOrArgChange: false,
+    });
+
   // Compute latest blogs safely using useMemo
   const latestPost = useMemo(() => {
     if (!blogs || blogs.length === 0) return [];
@@ -29,7 +31,7 @@ const LatestPost: FC<BlogSidebarProps> = ({ blogs }) => {
       {latestPost.length > 0 ? (
         latestPost.map((blog) => (
           <Link
-            to={`/blog/${blog._id}`}
+            to={`/blogs/${blog._id}`}
             className="flex items-center gap-2"
             key={blog._id}
           >
