@@ -11,8 +11,10 @@ const SingleBlogInfo = ({ blog }: SingleBlogInfoProps) => {
     "flex items-center gap-1 uppercase text-zinc-500 font-semibold";
   return (
     <div>
-      <img src={blog.image} alt={blog.title} className="w-full h-[500px]" />
-      <h1 className="text-3xl font-bold mt-4 text-zinc-600">{blog.title}</h1>
+      <img src={blog.image} alt={blog.title} className="w-full sm:h-[500px]" />
+      <h1 className="text-2xl sm:text-3xl font-bold mt-4 text-zinc-600">
+        {blog.title}
+      </h1>
       {/* Sub Head */}
       <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">
         <p className={subheadStyle}>

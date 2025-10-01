@@ -2,9 +2,8 @@ import { useParams, Link } from "react-router";
 import Loader from "../../ult/loader/Loader";
 import { useGetBlogByIdQuery } from "../../features/blog/blogApi";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
-import { FaComments, FaReadme, FaUserCheck } from "react-icons/fa";
-import { MdOutlineWatchLater } from "react-icons/md";
 import SingleBlogInfo from "../../components/latestBlog/SingleBlogInfo";
+import SingleAuthor from "../../components/latestBlog/SingleAuthor";
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,8 +31,10 @@ const Blog = () => {
           >
             &larr; Back to Blogs
           </Link>
-          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+          {/* Blog Info */}
           <SingleBlogInfo blog={blog} />
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+          <SingleAuthor blog={blog}/>
           
         </div>
 
