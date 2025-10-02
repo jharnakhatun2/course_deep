@@ -33,7 +33,7 @@ const CommentsList: FC<CommentsListProps> = ({ comments }) => {
               <div className="flex-1">
                 {/* Name & Date */}
                 <div>
-                  <h4 className="text-xl">{comment.name}</h4>
+                  <h4 className="text-lg">{comment.name}</h4>
                   <small className="text-gray-500 font-poppins text-sm">
                     {new Date(comment.date).toLocaleString("en-US", {
                       month: "long",

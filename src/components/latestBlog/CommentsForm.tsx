@@ -32,18 +32,29 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
     setFormData({ name: "", email: "", website: "", comment: "" });
   };
 
+  const inputStyle = "transition-smooth border border-gray-200 rounded p-2 w-full focus:outline-none focus:shadow-[0_0_15px_#c1c1c1] backdrop-blur-lg bg-white/50"
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid gap-4 bg-gray-50 p-5 rounded-lg shadow"
+      className="grid gap-4 p-3 border border-zinc-200"
     >
+      <textarea
+        name="comment"
+        placeholder="Your Comment *"
+        value={formData.comment}
+        onChange={handleChange}
+        className={`min-h-[100px] ${inputStyle}`}
+        required
+      />
+      <div className="sm:flex gap-5 space-y-3 sm:space-y-0">
       <input
         type="text"
         name="name"
         placeholder="Your Name *"
         value={formData.name}
         onChange={handleChange}
-        className="border rounded p-2 w-full"
+        className={inputStyle}
         required
       />
       <input
@@ -52,7 +63,7 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
         placeholder="Your Email *"
         value={formData.email}
         onChange={handleChange}
-        className="border rounded p-2 w-full"
+        className={inputStyle}
         required
       />
       <input
@@ -61,19 +72,12 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
         placeholder="Your Website (optional)"
         value={formData.website}
         onChange={handleChange}
-        className="border rounded p-2 w-full"
+        className={inputStyle}
       />
-      <textarea
-        name="comment"
-        placeholder="Your Comment *"
-        value={formData.comment}
-        onChange={handleChange}
-        className="border rounded p-2 w-full min-h-[100px]"
-        required
-      />
+      </div>
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        className="bg-yellow-500 text-white px-4 py-2 hover:bg-yellow-600 transition-smooth w-full sm:w-2/6 cursor-pointer"
       >
         Submit Comment
       </button>

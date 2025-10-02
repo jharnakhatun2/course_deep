@@ -19,7 +19,7 @@ const CommentsSection: React.FC<Props> = ({ blogId }) => {
       <CommentsList comments={comments ?? []}  />
 
       {/* Comment Form */}
-      <h3 className="text-xl font-semibold mb-4">Leave a Comment</h3>
+      <h3 className="text-xl font-semibold mt-10 mb-2">Leave a Comment</h3>
       <CommentsForm blogId={blogId}/>
     </div>
   );
