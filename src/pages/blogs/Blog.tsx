@@ -4,6 +4,7 @@ import { useGetBlogByIdQuery } from "../../features/blog/blogApi";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
 import SingleBlogInfo from "../../components/latestBlog/SingleBlogInfo";
 import SingleAuthor from "../../components/latestBlog/SingleAuthor";
+import CommentsSection from "../../components/latestBlog/CommentsSection";
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,7 +36,8 @@ const Blog = () => {
           <SingleBlogInfo blog={blog} />
           <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
           <SingleAuthor blog={blog}/>
-          
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+          <CommentsSection blogId={blog._id} />
         </div>
 
         {/* Sidebar */}

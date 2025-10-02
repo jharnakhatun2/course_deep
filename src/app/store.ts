@@ -5,6 +5,7 @@ import blogSliceReducer from '../features/blog/blogSlice';
 import courseSliceReducer from '../features/course/courseSlice';
 import eventSliceReducer from '../features/event/eventSlice';
 import cartSliceReducer from '../features/cart/cartSlice';
+import commentsSliceReducer from '../features/comments/commentsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,9 @@ export const store = configureStore({
     blog: blogSliceReducer,
     course: courseSliceReducer,
     event: eventSliceReducer,
-    cart: cartSliceReducer
+    cart: cartSliceReducer,
+    comments: commentsSliceReducer
+
   },
   devTools: import.meta.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware)

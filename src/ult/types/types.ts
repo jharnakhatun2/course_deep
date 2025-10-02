@@ -56,7 +56,7 @@ export interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
-  comments: number;
+  comments: Comment[];
   authorBio: string;
 }
 
@@ -73,4 +73,14 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+}
+
+export interface Comment {
+  _id: string; 
+  name: string;
+  email: string;
+  website?: string;
+  comment: string;
+  date: string;
+  image: string; 
 }

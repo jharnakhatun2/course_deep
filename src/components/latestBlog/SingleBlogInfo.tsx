@@ -27,7 +27,7 @@ const SingleBlogInfo = ({ blog }: SingleBlogInfoProps) => {
           <FaReadme className="text-yellow-500" /> {blog.readTime}
         </p>
         <p className={subheadStyle}>
-          <FaComments className="text-yellow-500" /> {blog.comments} Comments
+          <FaComments className="text-yellow-500" /> {blog.comments.length} Comments
         </p>
       </div>
       {/* Blog Details */}

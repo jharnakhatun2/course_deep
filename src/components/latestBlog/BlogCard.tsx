@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { FaReadme, FaUserEdit } from "react-icons/fa";
+import type { Comment } from "../../ult/types/types";
 
 interface BlogPost {
   _id: string;
@@ -13,7 +14,7 @@ interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
-  comments?: number
+  comments?: Comment[];
 }
 
 const BlogCard: React.FC<BlogPost> = ({
@@ -25,7 +26,6 @@ const BlogCard: React.FC<BlogPost> = ({
   author,
   date,
   readTime,
-  
 }) => {
   return (
     <div className="bg-gray-100 rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
@@ -75,8 +75,10 @@ const BlogCard: React.FC<BlogPost> = ({
             {author}
           </p>
           <div className="space-x-5 flex">
-            {date} <span className="text-gray-400 px-3">|</span><span className="flex items-center gap-1"><FaReadme className="text-teal-500"/>{" "}
-            {readTime}</span>
+            {date} <span className="text-gray-400 px-3">|</span>
+            <span className="flex items-center gap-1">
+              <FaReadme className="text-teal-500" /> {readTime}
+            </span>
           </div>
         </div>
       </div>

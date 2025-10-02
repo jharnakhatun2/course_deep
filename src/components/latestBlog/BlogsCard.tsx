@@ -35,12 +35,15 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                   </div>
                   {/* Title & author */}
                   <div className="flex-1">
-                    <Link to={`/blogs/${blog._id}`} className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug hover:text-yellow-500 transition-smooth cursor-pointer">
+                    <Link
+                      to={`/blogs/${blog._id}`}
+                      className="text-lg sm:text-2xl font-semibold text-zinc-800 leading-snug hover:text-yellow-500 transition-smooth cursor-pointer"
+                    >
                       {blog.title}
                     </Link>
                     <div className="flex flex-wrap items-center gap-4 pt-2 text-sm">
                       <p className="flex items-center gap-1">
-                        <FaUserCheck className="text-yellow-500" />{" "} By {" "}
+                        <FaUserCheck className="text-yellow-500" /> By{" "}
                         {blog.author}
                       </p>
                       <p className="flex items-center gap-1">
@@ -48,7 +51,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                       </p>
                       <p className="flex items-center gap-1">
                         <FaComments className="text-yellow-500" />{" "}
-                        {blog.comments} Comments
+                        {blog.comments.length} Comments
                       </p>
                     </div>
                   </div>
