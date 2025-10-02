@@ -36,7 +36,7 @@ const Blog = () => {
           <SingleBlogInfo blog={blog} />
           <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
           <SingleAuthor blog={blog}/>
-          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+          <div className="h-[1px] w-full bg-gray-500/20 my-6"></div>
           <CommentsSection blogId={blog._id} />
         </div>
 

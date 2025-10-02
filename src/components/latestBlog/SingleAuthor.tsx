@@ -38,7 +38,7 @@ const SingleAuthor = ({ blog }: SingleAuthorProps) => {
           <p className="text-zinc-800 text-lg mb-2">
             Written by {blog.author}{" "}
           </p>
-          <p className="text-gray-400 text-sm">
+          <p className="text-zinc-500 font-garamond">
             {blog.authorBio}
           </p>
         </div>
