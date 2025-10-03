@@ -16,7 +16,7 @@ const CommentsSection: React.FC<Props> = ({ blogId }) => {
   return (
     <div className="mt-10">
       {/* Comments List */}
-      <CommentsList comments={comments ?? []}  />
+      <CommentsList comments={comments ?? []} blogId={blogId}  />
 
       {/* Comment Form */}
       <h3 className="text-xl font-semibold mt-10 mb-2">Leave a Comment</h3>

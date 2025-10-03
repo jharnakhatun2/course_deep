@@ -45,6 +45,28 @@ export interface Event {
   category: string;
 }
 
+export interface Replay {
+  _id: string;
+  name: string;
+  email: string;
+  comment: string;
+  date: string;
+  image: string;
+}
+
+
+export interface Comment {
+  _id: string; 
+  name: string;
+  email: string;
+  website?: string;
+  comment: string;
+  date: string;
+  image: string;
+  replies?: Replay[]; 
+}
+
+
 export interface BlogPost {
   _id: string;        
   title: string;
@@ -75,12 +97,3 @@ export interface CartItem {
   quantity: number;
 }
 
-export interface Comment {
-  _id: string; 
-  name: string;
-  email: string;
-  website?: string;
-  comment: string;
-  date: string;
-  image: string; 
-}
