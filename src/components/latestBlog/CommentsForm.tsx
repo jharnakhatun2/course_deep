@@ -1,5 +1,7 @@
 import { useState, type FC } from "react";
 import { useAddCommentMutation } from "../../features/comments/commentsApi";
+import { useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router";
 
 interface Props {
   blogId: string;
@@ -7,6 +9,8 @@ interface Props {
 
 const CommentsForm: FC<Props> = ({ blogId }) => {
   const [addComment] = useAddCommentMutation();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
   
   // Local form state
   const [formData, setFormData] = useState({
@@ -23,9 +27,19 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
+ // Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      // Save form data in sessionStorage to use after login
+      sessionStorage.setItem("pendingComment", JSON.stringify({ blogId, ...formData }));
+      navigate("/login", { state: { from: `/blogs/${blogId}` } });
+      return;
+    }
+
+    // Only submit if logged in
     if (!formData.name || !formData.email || !formData.comment) return;
 
     await addComment({ blogId, ...formData });

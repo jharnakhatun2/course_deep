@@ -9,8 +9,9 @@ interface AuthState {
 }
 
 // Rehydrate from localStorage
-const tokenFromStorage = localStorage.getItem("token");
 const userFromStorage = localStorage.getItem("user");
+const tokenFromStorage = localStorage.getItem("token");
+
 
 const initialState: AuthState = {
   user: userFromStorage ? JSON.parse(userFromStorage) : null,

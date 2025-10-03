@@ -5,8 +5,8 @@ import { useAddReplyMutation } from "../../features/comments/commentsApi";
 
 interface Props {
   blogId: string;
-  comment: Comment; // the comment we are replying to
-  onClose?: () => void; // optional: close the reply form after submit
+  comment: Comment;
+  onClose?: () => void;
 }
 
 const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
@@ -30,7 +30,7 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
 
     await addReply({ blogId, commentId: comment._id, ...formData });
     setFormData({ name: "", email: "", comment: "" });
-    onClose?.(); // close form if onClose callback is provided
+    onClose?.();
   };
 
   const inputStyle =

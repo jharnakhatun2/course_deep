@@ -49,6 +49,7 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+
   // handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,13 +64,13 @@ const Login = () => {
 
     try {
       if (newAccount) {
-        // ✅ Register
+        // Register
         const res = await registerUser({ name, email, password }).unwrap();
         showSuccessToast(res.message || "Account created successfully!");
         setFormData({ name: "", email: "", password: "" });
         setNewAccount(false); // switch to login after registration
       } else {
-        // ✅ Login
+        // Login
         const res = await loginUser({ email, password }).unwrap();
 
         // Save user + token in Redux
@@ -83,6 +84,7 @@ const Login = () => {
         showSuccessToast("Logged in successfully!");
         setFormData({ email: "", password: "" });
         navigate("/");
+      
       }
     } catch (error: any) {
       showErrorToast(error?.data?.message || "Something went wrong!");

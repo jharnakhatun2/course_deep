@@ -8,7 +8,7 @@ import {
 } from "../../features/comments/commentsSlice";
 import ReplyForm from "./ReplayForm";
 import ReplyComment from "./ReplayComment";
-
+import { useNavigate } from "react-router";
 
 interface CommentsListProps {
   comments: Comment[];
@@ -20,6 +20,9 @@ const CommentsList: FC<CommentsListProps> = ({ comments, blogId }) => {
   const { selectedComment, isReplying } = useAppSelector(
     (state) => state.comments
   );
+  //for private replay
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const handleReply = (comment: Comment) => {
     dispatch(setSelectedComment(comment));
@@ -77,7 +80,13 @@ const CommentsList: FC<CommentsListProps> = ({ comments, blogId }) => {
 
                   {/* Reply button */}
                   <button
-                    onClick={() => handleReply(comment)}
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        navigate("/login");
+                        return;
+                      }
+                      handleReply(comment);
+                    }}
                     className="text-teal-500 text-xs mt-2 border border-teal-500 px-2 py-1 cursor-pointer hover:bg-teal-500 hover:text-white transition"
                   >
                     Reply
@@ -85,11 +94,11 @@ const CommentsList: FC<CommentsListProps> = ({ comments, blogId }) => {
 
                   {/* Reply Form */}
                   {isReplying && selectedComment?._id === comment._id && (
-                    <ReplyForm
-                      blogId={blogId}
-                      comment={comment}
-                      onClose={handleCloseReplyForm}
-                    />
+                      <ReplyForm
+                        blogId={blogId}
+                        comment={comment}
+                        onClose={handleCloseReplyForm}
+                      />
                   )}
                 </div>
               </div>
