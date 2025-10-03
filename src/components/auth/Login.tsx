@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import {
   useRegisterMutation,
   useLoginMutation,
@@ -28,6 +28,8 @@ const Login = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: string })?.from || "/";
 
   // Sync input fields when toggling between login/register
   useEffect(() => {
@@ -48,7 +50,6 @@ const Login = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
 
   // handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,8 +84,7 @@ const Login = () => {
 
         showSuccessToast("Logged in successfully!");
         setFormData({ email: "", password: "" });
-        navigate("/");
-      
+        navigate(from, { replace: true });
       }
     } catch (error: any) {
       showErrorToast(error?.data?.message || "Something went wrong!");

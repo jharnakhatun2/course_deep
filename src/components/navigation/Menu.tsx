@@ -54,7 +54,7 @@ const Menu = () => {
                 <Link
                   key={index}
                   to={item.path}
-                  className="hover:text-zinc-600 transition-smooth uppercase text-sm"
+                  className="hover:text-zinc-600 transition-smooth uppercase text-sm cursor-pointer"
                 >
                   {item.name}
                 </Link>
@@ -64,7 +64,7 @@ const Menu = () => {
           </div>
           {/* <!-- Login & Signup --> */}
           {user ? (
-            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8">
+            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8 ">
               <button
                 className="cursor-pointer hover:text-black transition-smooth"
                 onClick={logOut}
@@ -98,7 +98,7 @@ const Menu = () => {
             <Link
               key={index}
               to={item.path}
-              className="flex hover:font-bold transition-smooth uppercase text-[12px]"
+              className="flex hover:font-bold transition-smooth uppercase text-[12px] cursor-pointer"
               onClick={() => setIsOpen(!isOpen)}
             >
               {item.name}

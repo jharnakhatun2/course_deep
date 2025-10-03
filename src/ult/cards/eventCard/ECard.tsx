@@ -1,12 +1,20 @@
 import type { FC } from "react";
 import Button from "../../button/Button";
 import type { Event } from "../../types/types";
+import { useNavigate } from "react-router";
 
 interface ECardProps {
   event: Event;
 }
 
 const ECard: FC<ECardProps> = ({ event }) => {
+
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    navigate("/login", { state: { from: `/events/${event._id}` } });
+  };
+
   return (
     <div
       key={event._id}
@@ -45,7 +53,7 @@ const ECard: FC<ECardProps> = ({ event }) => {
             {event.time} | {event.location}
           </p>
           <Button
-            url="/login"
+            onClick={handleRegisterClick}
             className="mt-5 w-full sm:w-1/4 text-center bg-zinc-100 hover:bg-zinc-300 text-zinc-800 hover:text-white border border-gray-300"
           >
             REGISTER
