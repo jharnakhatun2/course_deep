@@ -1,5 +1,5 @@
 // src/components/comments/CommentsList.tsx
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Comment } from "../../ult/types/types";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -13,18 +13,47 @@ import { useNavigate } from "react-router";
 interface CommentsListProps {
   comments: Comment[];
   blogId: string; // pass blogId to ReplyForm
+  focusCommentId?: string;
 }
 
-const CommentsList: FC<CommentsListProps> = ({ comments, blogId }) => {
+const CommentsList: FC<CommentsListProps> = ({ comments, blogId, focusCommentId }) => {
   const dispatch = useAppDispatch();
   const { selectedComment, isReplying } = useAppSelector(
     (state) => state.comments
   );
+  
   //for private replay
   const navigate = useNavigate();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
+  // Auto-open reply form when focusCommentId is provided
+  useEffect(() => {
+    if (focusCommentId && isAuthenticated) {
+      const commentToFocus = comments.find(comment => comment._id === focusCommentId);
+      if (commentToFocus) {
+        dispatch(setSelectedComment(commentToFocus));
+        dispatch(toggleReplying(true));
+      }
+    }
+  }, [focusCommentId, isAuthenticated, comments, dispatch]);
+
   const handleReply = (comment: Comment) => {
+    if (!isAuthenticated) {
+      // Save the target comment ID and navigate to login
+      sessionStorage.setItem(
+        "pendingReply",
+        JSON.stringify({ 
+          blogId, 
+          targetCommentId: comment._id 
+        })
+      );
+      navigate("/login", { 
+        state: { from: `/blogs/${blogId}` } 
+      });
+      return;
+    }
+    
+    // If already authenticated, just open the reply form
     dispatch(setSelectedComment(comment));
     dispatch(toggleReplying(true));
   };
@@ -80,13 +109,7 @@ const CommentsList: FC<CommentsListProps> = ({ comments, blogId }) => {
 
                   {/* Reply button */}
                   <button
-                    onClick={() => {
-                      if (!isAuthenticated) {
-                        navigate("/login");
-                        return;
-                      }
-                      handleReply(comment);
-                    }}
+                    onClick={() => handleReply(comment)}
                     className="text-teal-500 text-xs mt-2 border border-teal-500 px-2 py-1 cursor-pointer hover:bg-teal-500 hover:text-white transition"
                   >
                     Reply

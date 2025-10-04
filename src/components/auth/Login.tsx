@@ -84,7 +84,27 @@ const Login = () => {
 
         showSuccessToast("Logged in successfully!");
         setFormData({ email: "", password: "" });
-        navigate(from, { replace: true });
+
+        // FIXED: Check for both pendingReply and pendingComment
+        const pendingReply = sessionStorage.getItem("pendingReply");
+        const pendingComment = sessionStorage.getItem("pendingComment");
+
+        if (pendingReply) {
+          const replyData = JSON.parse(pendingReply);
+          sessionStorage.removeItem("pendingReply");
+          // Navigate back to the specific blog page with comment hash
+          navigate(`/blogs/${replyData.blogId}`, {
+            replace: true,
+            state: { focusCommentId: replyData.targetCommentId },
+          });
+        } else if (pendingComment) {
+          const { blogId } = JSON.parse(pendingComment);
+          sessionStorage.removeItem("pendingComment");
+          navigate(`/blogs/${blogId}`, { replace: true });
+        } else {
+          // Use the from location passed in navigation state, fallback to "/"
+          navigate(from, { replace: true });
+        }
       }
     } catch (error: any) {
       showErrorToast(error?.data?.message || "Something went wrong!");

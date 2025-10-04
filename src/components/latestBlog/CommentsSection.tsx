@@ -7,16 +7,17 @@ import CommentsForm from "./CommentsForm";
 
 interface Props {
   blogId: string;
+  focusCommentId ?: string;
 }
 
-const CommentsSection: React.FC<Props> = ({ blogId }) => {
+const CommentsSection: React.FC<Props> = ({ blogId, focusCommentId  }) => {
   // Queries & Mutations
   const { data: comments } = useGetCommentsQuery(blogId);
 
   return (
     <div className="mt-10">
       {/* Comments List */}
-      <CommentsList comments={comments ?? []} blogId={blogId} />
+      <CommentsList comments={comments ?? []} blogId={blogId} focusCommentId={focusCommentId}/>
 
       {/* Comment Form */}
       <h3 className="text-xl font-semibold mt-10 mb-2">Leave a Comment</h3>
