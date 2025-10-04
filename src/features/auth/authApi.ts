@@ -51,6 +51,7 @@ export const authApi = apiSlice.injectEndpoints({
           body,
           credentials: "include", // ✅ send/receive cookies
         }),
+        invalidatesTags: ['User'],
       }
     ),
 
@@ -70,6 +71,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ['User'],
     }),
 
     // Get all users (admin use)

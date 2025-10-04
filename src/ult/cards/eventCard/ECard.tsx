@@ -2,17 +2,24 @@ import type { FC } from "react";
 import Button from "../../button/Button";
 import type { Event } from "../../types/types";
 import { useNavigate } from "react-router";
+import { useGetCurrentUserQuery } from "../../../features/auth/authApi";
 
 interface ECardProps {
   event: Event;
 }
 
 const ECard: FC<ECardProps> = ({ event }) => {
-
   const navigate = useNavigate();
 
+  const { data: currentUser } = useGetCurrentUserQuery();
+  console.log(currentUser);
+  
   const handleRegisterClick = () => {
-    navigate("/login", { state: { from: `/events/${event._id}` } });
+    if (!currentUser) {
+      navigate("/login", { state: { from: `/events/${event._id}` } });
+      return;
+    }
+    navigate(`/events/${event._id}`);
   };
 
   return (

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useLogoutMutation } from "../../features/auth/authApi";
+import { useAppDispatch } from "../../app/hooks";
+import { authApi, useGetCurrentUserQuery, useLogoutMutation } from "../../features/auth/authApi";
 import { logout } from "../../features/auth/authSlice";
 
 const menuList = [
@@ -15,19 +15,26 @@ const menuList = [
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const user = useAppSelector((state) => state.auth.user);
+  const { data: user } = useGetCurrentUserQuery();
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
+  const navigate = useNavigate();
+  console.log(user)
 
   // logout function
   const logOut = async () => {
-    try {
-      await logoutApi().unwrap(); // call API logout
-      dispatch(logout()); // clear user from state
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
-  };
+  try {
+    await logoutApi().unwrap();
+    dispatch(logout());
+    
+    // Clear the entire RTK Query cache
+    dispatch(authApi.util.resetApiState());
+    
+    navigate("/");
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+};
 
   return (
     <nav className="bg-yellow-400 py-3">
