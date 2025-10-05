@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../app/hooks";
-import { authApi, useGetCurrentUserQuery, useLogoutMutation } from "../../features/auth/authApi";
+import { authApi, useLogoutMutation } from "../../features/auth/authApi";
 import { logout } from "../../features/auth/authSlice";
 import { useAuth } from "../../hook/useAuth";
 

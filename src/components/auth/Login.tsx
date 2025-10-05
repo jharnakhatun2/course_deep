@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import { useLocation, useNavigate } from "react-router";
 import {
   useRegisterMutation,
@@ -16,14 +16,13 @@ interface FormData {
   password: string;
 }
 
-const Login = () => {
-  const [newAccount, setNewAccount] = useState(false);
+const Login: FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
   });
-
+  const [newAccount, setNewAccount] = useState(false);
   const [registerUser, { isLoading: isRegistering }] = useRegisterMutation();
   const [loginUser, { isLoading: isLoggingIn }] = useLoginMutation();
 
