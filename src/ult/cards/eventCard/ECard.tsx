@@ -9,10 +9,10 @@ interface ECardProps {
 }
 
 const ECard: FC<ECardProps> = ({ event }) => {
+  
   const navigate = useNavigate();
-
   const { data: currentUser } = useGetCurrentUserQuery();
-  console.log(currentUser);
+ 
   
   const handleRegisterClick = () => {
     if (!currentUser) {

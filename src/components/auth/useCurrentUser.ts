@@ -5,26 +5,26 @@ import { useGetCurrentUserQuery } from "../../features/auth/authApi";
 
 export const useCurrentUser = () => {
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.auth.token);
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
-  // Skip query if no token (guest user)
-  const { data, error, isLoading } = useGetCurrentUserQuery(undefined, {
-    skip: !token,
-  });
+  // Always try to get current user (cookies will handle authentication)
+  const { data, error, isLoading, refetch } = useGetCurrentUserQuery();
 
   useEffect(() => {
-    if (!token) {
-      // Guest: stop loading immediately
-      dispatch(setLoading(false));
-      return;
-    }
+    dispatch(setLoading(isLoading));
 
     if (error) {
+      console.error("Auth error:", error);
       dispatch(logout());
     } else if (data) {
-      dispatch(setUser({ user: data, token }));
+      dispatch(setUser(data));
     }
-  }, [data, error, dispatch, token]);
+  }, [data, error, dispatch, isLoading]);
 
-  return isLoading;
+  return {
+    user,
+    isAuthenticated,
+    isLoading,
+    refetch,
+  };
 };

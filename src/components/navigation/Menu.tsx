@@ -5,6 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../app/hooks";
 import { authApi, useGetCurrentUserQuery, useLogoutMutation } from "../../features/auth/authApi";
 import { logout } from "../../features/auth/authSlice";
+import { useAuth } from "../../hook/useAuth";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -15,10 +16,10 @@ const menuList = [
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: user } = useGetCurrentUserQuery();
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
   const navigate = useNavigate();
+  const { user } = useAuth()
   console.log(user)
 
   // logout function

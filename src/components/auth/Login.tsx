@@ -8,6 +8,7 @@ import { setUser } from "../../features/auth/authSlice";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAppDispatch } from "../../app/hooks";
 import Loader from "../../ult/loader/Loader";
+import { useAuth } from "../../hook/useAuth";
 
 interface FormData {
   name?: string;
@@ -27,6 +28,7 @@ const Login = () => {
   const [loginUser, { isLoading: isLoggingIn }] = useLoginMutation();
 
   const dispatch = useAppDispatch();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as { from?: string })?.from || "/";
@@ -51,6 +53,27 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle navigation logic (common for both login and register)
+  const handleNavigation = () => {
+    const pendingReply = sessionStorage.getItem("pendingReply");
+    const pendingComment = sessionStorage.getItem("pendingComment");
+
+    if (pendingReply) {
+      const replyData = JSON.parse(pendingReply);
+      sessionStorage.removeItem("pendingReply");
+      navigate(`/blogs/${replyData.blogId}`, {
+        replace: true,
+        state: { focusCommentId: replyData.targetCommentId },
+      });
+    } else if (pendingComment) {
+      const { blogId } = JSON.parse(pendingComment);
+      sessionStorage.removeItem("pendingComment");
+      navigate(`/blogs/${blogId}`, { replace: true });
+    } else {
+      navigate(from, { replace: true });
+    }
+  };
+
   // handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,48 +91,37 @@ const Login = () => {
         // Register
         const res = await registerUser({ name, email, password }).unwrap();
         showSuccessToast(res.message || "Account created successfully!");
-        setFormData({ name: "", email: "", password: "" });
-        setNewAccount(false); // switch to login after registration
+
+        // After registration, automatically log them in
+        const loginRes = await loginUser({ email, password }).unwrap();
+        if (loginRes.user) {
+          dispatch(setUser({ user: loginRes.user }));
+          handleNavigation();
+          setTimeout(() => setNewAccount(false), 0);
+        }
       } else {
         // Login
         const res = await loginUser({ email, password }).unwrap();
 
         // Save user + token in Redux
-        dispatch(
-          setUser({
-            user: { name: name!, email: email!, role: "user" }, // server returns role in token
-            token: res.token,
-          })
-        );
+        dispatch(setUser({ user: res.user }));
 
         showSuccessToast("Logged in successfully!");
         setFormData({ email: "", password: "" });
-
-        // FIXED: Check for both pendingReply and pendingComment
-        const pendingReply = sessionStorage.getItem("pendingReply");
-        const pendingComment = sessionStorage.getItem("pendingComment");
-
-        if (pendingReply) {
-          const replyData = JSON.parse(pendingReply);
-          sessionStorage.removeItem("pendingReply");
-          // Navigate back to the specific blog page with comment hash
-          navigate(`/blogs/${replyData.blogId}`, {
-            replace: true,
-            state: { focusCommentId: replyData.targetCommentId },
-          });
-        } else if (pendingComment) {
-          const { blogId } = JSON.parse(pendingComment);
-          sessionStorage.removeItem("pendingComment");
-          navigate(`/blogs/${blogId}`, { replace: true });
-        } else {
-          // Use the from location passed in navigation state, fallback to "/"
-          navigate(from, { replace: true });
-        }
+        handleNavigation();
       }
     } catch (error: any) {
       showErrorToast(error?.data?.message || "Something went wrong!");
     }
   };
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      const from = (location.state as { from?: string })?.from || "/";
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location.state]);
 
   // Loading state
   if (isRegistering || isLoggingIn) return <Loader />;

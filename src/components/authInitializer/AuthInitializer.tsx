@@ -1,28 +1,15 @@
-import { useEffect, type ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../features/auth/authSlice';
+import type { ReactNode } from "react";
+import Loader from "../../ult/loader/Loader";
+import { useCurrentUser } from "../auth/useCurrentUser";
 
-interface AuthInitializerProps {
-  children: ReactNode;
-}
 
-const AuthInitializer = ({ children }: AuthInitializerProps) => {
-  const dispatch = useDispatch();
+export const AuthInitializer = ({ children }: { children: ReactNode }) => {
+  const { isLoading } = useCurrentUser();
 
-  useEffect(() => {
-    // This only runs on the client side
-    const userFromStorage = localStorage.getItem('user');
-    const tokenFromStorage = localStorage.getItem('token');
-    
-    if (tokenFromStorage) {
-      dispatch(setUser({ 
-        user: userFromStorage ? JSON.parse(userFromStorage) : null, 
-        token: tokenFromStorage 
-      }));
-    }
-  }, [dispatch]);
+  // Show loader while checking authentication
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return <>{children}</>;
 };
-
-export default AuthInitializer;

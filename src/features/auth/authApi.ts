@@ -1,17 +1,6 @@
+import type { User } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
 
-//Get url : /users , /users/:id , /users (patch), /users/:id (delete)
-//post url :  /auth/register , /auth/login ,  /auth/logout
-
-// Type definitions
-export interface User {
-  _id?: string;
-  name: string;
-  email: string;
-  role?: string;
-  createdAt?: string;
-  lastSignInTime?: string;
-}
 
 export interface RegisterResponse {
   message: string;
@@ -20,16 +9,17 @@ export interface RegisterResponse {
 
 export interface LoginResponse {
   message: string;
-  token: string;
+  user: User;
 }
 
 export interface LogoutResponse {
-  success: boolean;
   message: string;
+  success: boolean;
 }
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    
     // Register new user
     register: builder.mutation<
       RegisterResponse,
@@ -39,7 +29,9 @@ export const authApi = apiSlice.injectEndpoints({
         url: "/auth/register",
         method: "POST",
         body,
+        credentials: "include",
       }),
+      invalidatesTags: ['User'],
     }),
 
     // Login user
@@ -49,7 +41,7 @@ export const authApi = apiSlice.injectEndpoints({
           url: "/auth/login",
           method: "POST",
           body,
-          credentials: "include", // ✅ send/receive cookies
+          credentials: "include", // send/receive cookies
         }),
         invalidatesTags: ['User'],
       }
@@ -60,8 +52,9 @@ export const authApi = apiSlice.injectEndpoints({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
-        credentials: "include", // ✅ clear cookie
+        credentials: "include", // clear cookie
       }),
+      invalidatesTags: ['User'],
     }),
 
     //Get current logged-in user
@@ -103,6 +96,7 @@ export const authApi = apiSlice.injectEndpoints({
         body,
         credentials: "include",
       }),
+      invalidatesTags: ['User'],
     }),
 
     // Delete user

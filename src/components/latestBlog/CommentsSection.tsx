@@ -17,13 +17,13 @@ const CommentsSection: React.FC<Props> = ({ blogId, focusCommentId  }) => {
   return (
     <div className="mt-10">
       {/* Comments List */}
-      <CommentsList comments={comments ?? []} blogId={blogId} focusCommentId={focusCommentId}/>
+      <CommentsList comments={comments ?? []} blogId={blogId} focusCommentId={focusCommentId} />
 
       {/* Comment Form */}
       <h3 className="text-xl font-semibold mt-10 mb-2">Leave a Comment</h3>
-      
+
         <CommentsForm blogId={blogId} />
-     
+
     </div>
   );
 };

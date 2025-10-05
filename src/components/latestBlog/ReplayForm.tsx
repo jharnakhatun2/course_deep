@@ -2,7 +2,8 @@
 import { useEffect, useState, type FC } from "react";
 import type { Comment } from "../../ult/types/types";
 import { useAddReplyMutation } from "../../features/comments/commentsApi";
-import { useAppSelector } from "../../app/hooks";
+import { useAuth } from "../../hook/useAuth";
+
 
 interface Props {
   blogId: string;
@@ -11,8 +12,10 @@ interface Props {
 }
 
 const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
-  const [addReply, { isLoading }] = useAddReplyMutation();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const [addReply] = useAddReplyMutation();
+  const { user } = useAuth() // Get current user from cookies
+  console.log(user);
+  console.log(user?.email);
  
 
   const [formData, setFormData] = useState({
@@ -23,17 +26,14 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
 
   // Restore pending reply after login
   useEffect(() => {
-    const pendingReply = sessionStorage.getItem("pendingReply");
-    if (pendingReply && isAuthenticated) {
-      const data = JSON.parse(pendingReply);
-      setFormData({
-        name: data.name || "",
-        email: data.email || "",
-        comment: data.comment || "",
-      });
-      sessionStorage.removeItem("pendingReply");
-    }
-  }, [isAuthenticated]);
+  if (user?.email && user?.name) {
+    setFormData(prev => ({
+      ...prev,
+      name: user.name,
+      email: user.email
+    }));
+  }
+}, [user]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -41,6 +41,7 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.comment) return;
@@ -72,7 +73,6 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
         value={formData.comment}
         onChange={handleChange}
         className={`min-h-[80px] ${inputStyle}`}
-        disabled={isLoading}
         required
       />
       <input
@@ -82,7 +82,6 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
         value={formData.name}
         onChange={handleChange}
         className={inputStyle}
-        disabled={isLoading}
         required
       />
       <input
@@ -92,15 +91,13 @@ const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
         value={formData.email}
         onChange={handleChange}
         className={inputStyle}
-        disabled={isLoading}
         required
       />
       <button
         type="submit"
         className="bg-teal-500 text-white px-4 py-2 hover:bg-teal-600 transition-smooth w-full sm:w-2/6 cursor-pointer"
-      disabled={isLoading}
       >
-        {isLoading ? "Submitting..." : "Submit Reply"}
+        Submit Reply
       </button>
     </form>
   );

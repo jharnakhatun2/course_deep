@@ -9,50 +9,78 @@ import {
 import ReplyForm from "./ReplayForm";
 import ReplyComment from "./ReplayComment";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../hook/useAuth";
 
 interface CommentsListProps {
   comments: Comment[];
-  blogId: string; // pass blogId to ReplyForm
+  blogId: string;
   focusCommentId?: string;
 }
 
-const CommentsList: FC<CommentsListProps> = ({ comments, blogId, focusCommentId }) => {
+const CommentsList: FC<CommentsListProps> = ({
+  comments,
+  blogId,
+  focusCommentId,
+}) => {
   const dispatch = useAppDispatch();
   const { selectedComment, isReplying } = useAppSelector(
     (state) => state.comments
   );
-  
+  const { user } = useAuth();
   //for private replay
   const navigate = useNavigate();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
-  // Auto-open reply form when focusCommentId is provided
+  // Auto-open reply form when focusCommentId is provided OR after login with pending reply
   useEffect(() => {
-    if (focusCommentId && isAuthenticated) {
-      const commentToFocus = comments.find(comment => comment._id === focusCommentId);
+    // Check for pending reply after login
+    const pendingReply = sessionStorage.getItem("pendingReply");
+
+    if (pendingReply && user) {
+      const { blogId: pendingBlogId, targetCommentId } =
+        JSON.parse(pendingReply);
+
+      // Only process if it's for the current blog
+      if (pendingBlogId === blogId) {
+        const commentToFocus = comments.find(
+          (comment) => comment._id === targetCommentId
+        );
+        if (commentToFocus) {
+          dispatch(setSelectedComment(commentToFocus));
+          dispatch(toggleReplying(true));
+          // Clear the pending reply
+          sessionStorage.removeItem("pendingReply");
+        }
+      }
+    }
+
+    // Original focus comment logic
+    else if (focusCommentId && user) {
+      const commentToFocus = comments.find(
+        (comment) => comment._id === focusCommentId
+      );
       if (commentToFocus) {
         dispatch(setSelectedComment(commentToFocus));
         dispatch(toggleReplying(true));
       }
     }
-  }, [focusCommentId, isAuthenticated, comments, dispatch]);
+  }, [focusCommentId, user, comments, dispatch, blogId]);
 
   const handleReply = (comment: Comment) => {
-    if (!isAuthenticated) {
+    if (!user) {
       // Save the target comment ID and navigate to login
       sessionStorage.setItem(
         "pendingReply",
-        JSON.stringify({ 
-          blogId, 
-          targetCommentId: comment._id 
+        JSON.stringify({
+          blogId,
+          targetCommentId: comment._id,
         })
       );
-      navigate("/login", { 
-        state: { from: `/blogs/${blogId}` } 
+      navigate("/login", {
+        state: { from: `/blogs/${blogId}` },
       });
       return;
     }
-    
+
     // If already authenticated, just open the reply form
     dispatch(setSelectedComment(comment));
     dispatch(toggleReplying(true));
@@ -116,13 +144,20 @@ const CommentsList: FC<CommentsListProps> = ({ comments, blogId, focusCommentId 
                   </button>
 
                   {/* Reply Form */}
-                  {isReplying && selectedComment?._id === comment._id && (
+                  {isReplying &&
+                    selectedComment?._id === comment._id &&
+                    // Wait for currentUser to finish loading before rendering form
+                    (user !== undefined ? (
                       <ReplyForm
                         blogId={blogId}
                         comment={comment}
                         onClose={handleCloseReplyForm}
                       />
-                  )}
+                    ) : (
+                      <p className="text-sm text-gray-400 ml-12">
+                        Loading reply form...
+                      </p>
+                    ))}
                 </div>
               </div>
 

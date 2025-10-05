@@ -1,7 +1,8 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { useAddCommentMutation } from "../../features/comments/commentsApi";
-import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../hook/useAuth";
+
 
 interface Props {
   blogId: string;
@@ -9,8 +10,11 @@ interface Props {
 
 const CommentsForm: FC<Props> = ({ blogId }) => {
   const [addComment] = useAddCommentMutation();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
+  const { user, isAuthenticated  } = useAuth()
+  console.log(user)
+  console.log(user?.email)
+
   
   // Local form state
   const [formData, setFormData] = useState({
@@ -19,6 +23,17 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
     website: "",
     comment: "",
   });
+
+  // Auto-fill form when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.name || "",
+        email: user.email || ""
+      }));
+    }
+  }, [isAuthenticated, user]);
 
   // Handle form change
   const handleChange = (
@@ -35,16 +50,50 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
     if (!isAuthenticated) {
       // Save form data in sessionStorage to use after login
       sessionStorage.setItem("pendingComment", JSON.stringify({ blogId, ...formData }));
-      navigate("/login", { state: { from: `/blogs/${blogId}` } });
+      navigate("/login", { state: { from: `/blogs/${blogId}`, message: "Please login to submit your comment" } });
       return;
     }
 
     // Only submit if logged in
     if (!formData.name || !formData.email || !formData.comment) return;
 
-    await addComment({ blogId, ...formData });
-    setFormData({ name: "", email: "", website: "", comment: "" });
+     try {
+      await addComment({ blogId, ...formData }).unwrap();
+      setFormData({ 
+        name: user?.name || "", 
+        email: user?.email || "", 
+        website: "", 
+        comment: "" 
+      });
+    } catch (error) {
+      console.error("Failed to submit comment:", error);
+    }
   };
+
+  // Handle restoring pending comment after login
+  useEffect(() => {
+    if (isAuthenticated) {
+      const pendingComment = sessionStorage.getItem("pendingComment");
+      
+      if (pendingComment) {
+        const { blogId: pendingBlogId, ...savedFormData } = JSON.parse(pendingComment);
+        
+        // Only restore if it's for the current blog
+        if (pendingBlogId === blogId) {
+          setFormData(prev => ({
+            ...prev,
+            ...savedFormData,
+            // Keep user's name/email if they're logged in now
+            name: user?.name || savedFormData.name,
+            email: user?.email || savedFormData.email
+          }));
+          
+          // Clear the pending comment
+          sessionStorage.removeItem("pendingComment");
+        }
+      }
+    }
+  }, [isAuthenticated, blogId, user]);
 
   const inputStyle = "transition-smooth border border-gray-200 rounded p-2 w-full focus:outline-none focus:shadow-[0_0_15px_#c1c1c1] backdrop-blur-lg bg-white/50"
 
@@ -79,6 +128,7 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
         onChange={handleChange}
         className={inputStyle}
         required
+        disabled={isAuthenticated}
       />
       <input
         type="text"
