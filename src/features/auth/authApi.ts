@@ -1,5 +1,6 @@
 import type { User } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
+import { logout } from "./authSlice";
 
 
 export interface RegisterResponse {
@@ -47,14 +48,27 @@ export const authApi = apiSlice.injectEndpoints({
       }
     ),
 
-    // Logout user
+      // Logout user
     logout: builder.mutation<LogoutResponse, void>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
-        credentials: "include", // clear cookie
+        credentials: "include",
       }),
       invalidatesTags: ['User'],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // Clear the auth state immediately after successful logout
+          dispatch(logout());
+          // Reset the entire API cache
+          dispatch(apiSlice.util.resetApiState());
+        } catch (error) {
+          // Even if the backend call fails, clear the frontend state
+          dispatch(logout());
+          dispatch(apiSlice.util.resetApiState());
+        }
+      },
     }),
 
     //Get current logged-in user
