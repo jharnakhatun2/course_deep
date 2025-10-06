@@ -28,10 +28,7 @@ const EventList: React.FC<EventProps> = ({ events }) => {
         />
 
         {latestEvents?.map((event) => (
-          <ECard
-            key={event._id}
-            event={event}
-          />
+          <ECard key={event._id} event={event} />
         ))}
       </div>
     </div>

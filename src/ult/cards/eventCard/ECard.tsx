@@ -2,7 +2,7 @@ import type { FC } from "react";
 import Button from "../../button/Button";
 import type { Event } from "../../types/types";
 import { useNavigate } from "react-router";
-import { useGetCurrentUserQuery } from "../../../features/auth/authApi";
+import { useAuth } from "../../../hook/useAuth";
 
 interface ECardProps {
   event: Event;
@@ -11,11 +11,11 @@ interface ECardProps {
 const ECard: FC<ECardProps> = ({ event }) => {
   
   const navigate = useNavigate();
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const { user } = useAuth()
  
   
   const handleRegisterClick = () => {
-    if (!currentUser) {
+    if (!user?.email) {
       navigate("/login", { state: { from: `/events/${event._id}` } });
       return;
     }
