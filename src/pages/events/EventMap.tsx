@@ -1,6 +1,6 @@
 const EventMap = () => {
   return (
-    <div className="mt-6 rounded overflow-hidden border">
+    <div className="mt-6 rounded overflow-hidden border border-gray-200">
       <iframe
         title="Event location"
         className="w-full h-72"
