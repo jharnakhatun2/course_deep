@@ -5,7 +5,7 @@ import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { FaFlag } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
-// import BuyTicket from "./BuyTicket";
+import BuyTicket from "./BuyTicket";
 
 const HEADER_IMAGE_URL =
   "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
@@ -28,7 +28,7 @@ const Event = () => {
               <div className="h-full flex items-center justify-end">
                 <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 w-full sm:w-62 h-full flex flex-col">
                   <div className="flex gap-2">
-                    <MdOutlineWatchLater  className="text-white font-bold text-xl"/>
+                    <MdOutlineWatchLater className="text-white font-bold text-xl" />
                     <div>
                       <div className={titleStyle}>Start Time : </div>
                       <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
@@ -59,7 +59,7 @@ const Event = () => {
             </div>
           </div>
 
-          <h1 className="mt-6 text-3xl md:text-4xl font-semibold text-zinc-700 ">
+          <h1 className="mt-6 text-2xl md:text-4xl font-semibold text-zinc-700 ">
             WordPress Theme Development With Boostrap
           </h1>
 
@@ -79,7 +79,7 @@ const Event = () => {
           </div>
 
           {/* Countdown + Buy button */}
-          {/* <BuyTicket /> */}
+          <BuyTicket />
 
           {/* Event Content / Tabs */}
           <div className="mt-8">
