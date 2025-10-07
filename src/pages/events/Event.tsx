@@ -2,12 +2,17 @@ import SocialIcon from "./SocialIcon";
 import EventMap from "./EventMap";
 import Tab from "./Tab";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
+import { MdOutlineWatchLater } from "react-icons/md";
+import { FaFlag } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
 // import BuyTicket from "./BuyTicket";
 
 const HEADER_IMAGE_URL =
   "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
 
 const Event = () => {
+  const titleStyle = "text-xs uppercase text-zinc-900 font-semibold";
+  const textStyle = "text-sm text-zinc-600";
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">
@@ -22,67 +27,31 @@ const Event = () => {
             <div className="absolute top-0 right-0 hidden lg:block h-full">
               <div className="h-full flex items-center">
                 <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-4">
-                    <svg
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path
-                        d="M12 8v4l3 3"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  <div className="flex gap-2">
+                    <MdOutlineWatchLater  className="text-white font-bold text-xl"/>
                     <div>
-                      <div className="text-xs uppercase">Start Time :</div>
-                      <div className="text-sm">March 01, 2017 AT 8.00 am</div>
+                      <div className={titleStyle}>Start Time :</div>
+                      <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
                     </div>
                   </div>
 
-                  <hr className="border-gray-200 my-2" />
+                  <hr className="border-gray-200 my-7" />
 
-                  <div className="flex items-center gap-3 mb-4">
-                    <svg
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path
-                        d="M3 12h18"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  <div className="flex gap-3">
+                    <FaFlag className="text-white font-bold" />
                     <div>
-                      <div className="text-xs uppercase">Finish Time :</div>
-                      <div className="text-sm">March 01, 2017 AT 8.00 am</div>
+                      <div className={titleStyle}>Finish Time :</div>
+                      <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
                     </div>
                   </div>
 
-                  <hr className="border-gray-200 my-2" />
+                  <hr className="border-gray-200 my-7" />
 
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path
-                        d="M21 10c0 6-9 13-9 13S3 16 3 10a9 9 0 1118 0z"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  <div className="flex gap-2">
+                    <IoLocationSharp className="text-white font-bold text-xl" />
                     <div>
-                      <div className="text-xs uppercase">Address:</div>
-                      <div className="text-sm">Peppard Hill, UK</div>
+                      <div className={titleStyle}>Address:</div>
+                      <div className={textStyle}>Peppard Hill, UK</div>
                     </div>
                   </div>
                 </div>
