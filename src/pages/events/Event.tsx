@@ -11,7 +11,7 @@ const HEADER_IMAGE_URL =
   "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
 
 const Event = () => {
-  const titleStyle = "text-xs uppercase text-zinc-900 font-semibold";
+  const titleStyle = "text-xs uppercase text-zinc-900 font-semibold mb-1";
   const textStyle = "text-sm text-zinc-600";
   return (
     <section className="py-10 bg-gray-100">
@@ -24,13 +24,13 @@ const Event = () => {
               className="w-full h-64 sm:h-96 object-cover"
             />
             {/* white overlay bottom to match design */}
-            <div className="absolute top-0 right-0 hidden lg:block h-full">
-              <div className="h-full flex items-center">
-                <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 h-full flex flex-col">
+            <div className="w-full sm:absolute top-0 right-0 h-full">
+              <div className="h-full flex items-center justify-end">
+                <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 w-full sm:w-62 h-full flex flex-col">
                   <div className="flex gap-2">
                     <MdOutlineWatchLater  className="text-white font-bold text-xl"/>
                     <div>
-                      <div className={titleStyle}>Start Time :</div>
+                      <div className={titleStyle}>Start Time : </div>
                       <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
                     </div>
                   </div>
