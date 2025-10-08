@@ -41,14 +41,7 @@ const App: FC = () => {
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
         { path: "/cart", element: <Cart /> },
-        {
-          path: "/checkout",
-          element: (
-            <PrivateRoute>
-              <CheckOut />
-            </PrivateRoute>
-          ),
-        },
+        { path: "/checkout", element: <CheckOut /> },
         { path: "/login", element: <Login /> },
         {
           path: "/dashboard",

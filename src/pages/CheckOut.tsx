@@ -1,9 +1,376 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import image1 from "../assets/img/hero/hero-3.webp";
+import ProductList from "../components/checkout/ProductList";
 
+const cartItems = [
+  { id: 1, name: "HTML & CSS Course", price: 10, quantity: 3, image: image1 },
+];
 
 const CheckOut = () => {
-  return (
-    <div>CheckOut</div>
-  )
-}
+  const [shippingMethod, setShippingMethod] = useState("flat");
+  const [paymentMethod, setPaymentMethod] = useState("bank");
+  const [agreed, setAgreed] = useState(false);
+  // const { cartItems } = useCart();
+  const { name, quantity, price, image } = cartItems[0] || {};
+  const navigate = useNavigate();
 
-export default CheckOut
+  const subtotal = price * quantity || 0;
+  const shippingCost = shippingMethod === "flat" ? 15 : 0;
+  const total = subtotal + shippingCost;
+  return (
+    <section className="py-10 bg-gray-100">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-20">
+        {/* Billing Details */}
+        <div className="lg:col-span-3">
+          {/* Form */}
+          <form className="space-y-4">
+            {/* Contact information */}
+            <h2 className="text-2xl font-semibold mb-6">Contact information</h2>
+            <input
+              type="email"
+              placeholder="Email address *"
+              className="input w-full"
+            />
+            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+            {/* Shipping information */}
+            <h2 className="text-2xl font-semibold mb-6">
+              Shipping information
+            </h2>
+
+            {/* name */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="First name *"
+                className="input w-full"
+              />
+              <input
+                type="text"
+                placeholder="Last name *"
+                className="input w-full"
+              />
+            </div>
+
+            {/* company name */}
+            <input
+              type="text"
+              placeholder="Company name (optional)"
+              className="input w-full"
+            />
+            {/* Address */}
+            <input
+              type="text"
+              placeholder="Address *"
+              className="input w-full"
+            />
+
+            {/* City and Country */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="City *"
+                className="input w-full"
+              />
+              {/* Country */}
+              <select className="input w-full text-zinc-400" defaultValue="">
+                <option value="" disabled hidden>
+                  Country *
+                </option>
+                <option value="BD">Bangladesh (BD)</option>
+                <option value="US">United States (US)</option>
+                <option value="UK">United Kingdom (UK)</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="ZIP Code *"
+                className="input w-full"
+              />
+              <input
+                type="text"
+                placeholder="Phone *"
+                className="input w-full"
+              />
+            </div>
+
+            <div className="h-[1px] w-full bg-gray-500/20 my-5" />
+
+            {/* Payment Information */}
+            <h2 className="text-2xl font-semibold mb-3">Payment</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* option part */}
+            <div>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
+                Credit Card
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer cursor-pointer" />
+                PayPal
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
+                eTransfer
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
+                Direct bank transfer
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
+                Check payments
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
+                Cash on delivery
+              </label>
+            </div>
+            
+            {/* toggle part */}
+            <div className="md:col-span-2 space-y-4">
+            {/* Card number */}
+            <input
+              type="text"
+              placeholder="Card number *"
+              className="input w-full"
+            />
+            {/* Name on card */}
+            <input
+              type="text"
+              placeholder="Name on card *"
+              className="input w-full"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Expiration date (MM/YY) */}
+              <input
+                type="text"
+                placeholder="Expiration date (MM/YY) *"
+                className="input w-full lg:col-span-2"
+              />
+              {/* CVC */}
+              <input type="text" placeholder="CVC *" className="input w-full" />
+            </div>
+            </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Order Summary */}
+        {cartItems.length > 0 ? (
+          <div className="bg-white p-6 rounded shadow-md border border-gray-200 lg:col-span-2">
+            <h3 className="text-xl font-semibold mb-4">Your order</h3>
+            <div className="border-b border-gray-300 pb-4 mb-4">
+              {/* Product List */}
+              <ProductList />
+
+              {/* Subtotal */}
+              <div className="flex justify-between font-bold pt-4">
+                <span>Subtotal</span>
+                <span>${price * quantity}</span>
+              </div>
+            </div>
+
+            {/* Shipping */}
+            <div className="mb-4">
+              <label className="block font-bold mb-2">Shipping</label>
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="shipping"
+                  checked={shippingMethod === "flat"}
+                  onChange={() => setShippingMethod("flat")}
+                  className="mr-2"
+                />
+                Flat rate: $15.00
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shipping"
+                  checked={shippingMethod === "pickup"}
+                  onChange={() => setShippingMethod("pickup")}
+                  className="mr-2"
+                />
+                Local pickup
+              </label>
+            </div>
+
+            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+            {/* Total */}
+            <div className="flex justify-between font-bold mb-4">
+              <span>Total</span>
+              <span>${total}.00</span>
+            </div>
+            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+            <div className="mb-4">
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "bank"}
+                  onChange={() => setPaymentMethod("bank")}
+                  className="mr-2"
+                />
+                Direct bank transfer
+              </label>
+              <p className="text-sm text-gray-600 mb-2">
+                Make your payment directly into our bank account. Please use
+                your Order ID as the payment reference. Your order will not be
+                shipped until the funds have cleared in our account.
+              </p>
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "check"}
+                  onChange={() => setPaymentMethod("check")}
+                  className="mr-2"
+                />
+                Check payments
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "cash"}
+                  onChange={() => setPaymentMethod("cash")}
+                  className="mr-2"
+                />
+                Cash on delivery
+              </label>
+            </div>
+
+            <label className="flex items-start mb-4 text-sm">
+              <input
+                type="checkbox"
+                className="mt-1 mr-2"
+                checked={agreed}
+                onChange={() => setAgreed(!agreed)}
+              />
+              I have read and agree to the website{" "}
+              <a href="#" className="text-blue-600 ml-1 underline">
+                terms and conditions
+              </a>
+            </label>
+
+            <button
+              onClick={() => navigate("/")}
+              disabled={!agreed}
+              className="cursor-pointer w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-all duration-200 disabled:opacity-50"
+            >
+              Pay {total === 0 ? "" : `$${total}.00`}
+            </button>
+          </div>
+        ) : (
+          <div className="bg-white p-6 rounded shadow-md border">
+            <h3 className="text-xl font-semibold mb-4">Your order</h3>
+            <div className="border-b pb-4 mb-4">
+              <div className="flex justify-between mb-2">
+                <span>No Product</span>
+                <span>0</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>$0</span>
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block font-medium mb-2">Shipping</label>
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="shipping"
+                  checked={shippingMethod === "flat"}
+                  onChange={() => setShippingMethod("flat")}
+                  className="mr-2"
+                />
+                Flat rate: $15.00
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shipping"
+                  checked={shippingMethod === "pickup"}
+                  onChange={() => setShippingMethod("pickup")}
+                  className="mr-2"
+                />
+                Local pickup
+              </label>
+            </div>
+
+            <div className="flex justify-between font-semibold mb-4">
+              <span>Total</span>
+              <span>$00.00</span>
+            </div>
+
+            <div className="mb-4">
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "bank"}
+                  onChange={() => setPaymentMethod("bank")}
+                  className="mr-2"
+                />
+                Direct bank transfer
+              </label>
+              <p className="text-sm text-gray-600 mb-2">
+                Make your payment directly into our bank account. Please use
+                your Order ID as the payment reference. Your order will not be
+                shipped until the funds have cleared in our account.
+              </p>
+              <label className="flex items-center mb-2">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "check"}
+                  onChange={() => setPaymentMethod("check")}
+                  className="mr-2"
+                />
+                Check payments
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === "cash"}
+                  onChange={() => setPaymentMethod("cash")}
+                  className="mr-2"
+                />
+                Cash on delivery
+              </label>
+            </div>
+
+            <label className="flex items-start mb-4 text-sm">
+              <input
+                type="checkbox"
+                className="mt-1 mr-2"
+                checked={agreed}
+                onChange={() => setAgreed(!agreed)}
+              />
+              I have read and agree to the website{" "}
+              <a href="#" className="text-blue-600 ml-1 underline">
+                terms and conditions
+              </a>
+            </label>
+
+            <button
+              disabled={!agreed}
+              className="cursor-pointer w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-all duration-200 disabled:opacity-50"
+            >
+              Place order
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default CheckOut;
