@@ -25,7 +25,7 @@ const CheckOut = () => {
   const labelStyle = "flex items-center gap-2";
   return (
     <section className="py-10 bg-gray-100">
-      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-20">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10">
         {/* Billing Details */}
         <div className="lg:col-span-3">
           {/* Form */}
