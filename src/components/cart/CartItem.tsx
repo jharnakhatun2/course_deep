@@ -11,11 +11,12 @@ const CartItem = () => {
       </div>
 
       <div className="h-[1px] w-full bg-gray-500/20 my-3" />
-
+      
+      {/* single item */}
       <div className="flex items-center justify-between py-1">
-        <div className="flex items-center col-span-6 space-x-6">
+        <div className="sm:flex items-center col-span-6 space-x-6">
           <img className="w-20" src={image1} alt="product" />
-          <h4 className="lws-cartName">HTML CSS Course</h4>
+          <h4 className="text-sm pt-1">HTML CSS Course</h4>
         </div>
         <div>
         <QuantityInput />
@@ -26,6 +27,38 @@ const CartItem = () => {
         </div>
       </div>
       <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+      {/* single item */}
+      <div className="flex items-center justify-between py-1">
+        <div className="sm:flex items-center col-span-6 space-x-6">
+          <img className="w-20" src={image1} alt="product" />
+          <h4 className="text-sm pt-1">HTML CSS Course</h4>
+        </div>
+        <div>
+        <QuantityInput />
+        <p className="underline text-sm cursor-pointer hover:text-yellow-500 transition-smooth">Remove item</p>
+        </div>
+        <div>
+          <h3>$30.00</h3>
+        </div>
+      </div>
+      <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+      {/* single item */}
+      <div className="flex items-center justify-between py-1">
+        <div className="sm:flex items-center col-span-6 space-x-6">
+          <img className="w-20" src={image1} alt="product" />
+          <h4 className="text-sm pt-1">HTML CSS Course</h4>
+        </div>
+        <div>
+        <QuantityInput />
+        <p className="underline text-sm cursor-pointer hover:text-yellow-500 transition-smooth">Remove item</p>
+        </div>
+        <div>
+          <h3>$30.00</h3>
+        </div>
+      </div>
+
     </div>
   );
 };
