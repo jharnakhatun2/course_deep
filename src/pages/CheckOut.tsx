@@ -18,6 +18,10 @@ const CheckOut = () => {
   const subtotal = price * quantity || 0;
   const shippingCost = shippingMethod === "flat" ? 15 : 0;
   const total = subtotal + shippingCost;
+
+  const radioStyle = "cursor-pointer";
+  const radioBgStyle = { accentColor: "yellow", backgroundColor: "white" };
+  const labelStyle = "flex items-center gap-2";
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-20">
@@ -30,7 +34,7 @@ const CheckOut = () => {
             <input
               type="email"
               placeholder="Email address *"
-              className="input w-full"
+              className="input w-full bg-white"
             />
             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
 
@@ -44,12 +48,12 @@ const CheckOut = () => {
               <input
                 type="text"
                 placeholder="First name *"
-                className="input w-full"
+                className="input w-full bg-white"
               />
               <input
                 type="text"
                 placeholder="Last name *"
-                className="input w-full"
+                className="input w-full bg-white"
               />
             </div>
 
@@ -57,13 +61,13 @@ const CheckOut = () => {
             <input
               type="text"
               placeholder="Company name (optional)"
-              className="input w-full"
+              className="input w-full bg-white"
             />
             {/* Address */}
             <input
               type="text"
               placeholder="Address *"
-              className="input w-full"
+              className="input w-full bg-white"
             />
 
             {/* City and Country */}
@@ -71,10 +75,13 @@ const CheckOut = () => {
               <input
                 type="text"
                 placeholder="City *"
-                className="input w-full"
+                className="input w-full bg-white"
               />
               {/* Country */}
-              <select className="input w-full text-zinc-400" defaultValue="">
+              <select
+                className="input w-full text-zinc-400 bg-white"
+                defaultValue=""
+              >
                 <option value="" disabled hidden>
                   Country *
                 </option>
@@ -88,81 +95,35 @@ const CheckOut = () => {
               <input
                 type="text"
                 placeholder="ZIP Code *"
-                className="input w-full"
+                className="input w-full bg-white"
               />
               <input
                 type="text"
                 placeholder="Phone *"
-                className="input w-full"
+                className="input w-full bg-white"
               />
             </div>
 
             <div className="h-[1px] w-full bg-gray-500/20 my-5" />
 
             {/* Payment Information */}
-            <h2 className="text-2xl font-semibold mb-3">Payment</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* option part */}
-            <div>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
-                Credit Card
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer cursor-pointer" />
-                PayPal
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
-                eTransfer
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
-                Direct bank transfer
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
-                Check payments
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="payment" className="mr-2 cursor-pointer" />
-                Cash on delivery
-              </label>
-            </div>
-            
-            {/* toggle part */}
-            <div className="md:col-span-2 space-y-4">
-            {/* Card number */}
-            <input
-              type="text"
-              placeholder="Card number *"
-              className="input w-full"
-            />
-            {/* Name on card */}
-            <input
-              type="text"
-              placeholder="Name on card *"
-              className="input w-full"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Expiration date (MM/YY) */}
-              <input
-                type="text"
-                placeholder="Expiration date (MM/YY) *"
-                className="input w-full lg:col-span-2"
-              />
-              {/* CVC */}
-              <input type="text" placeholder="CVC *" className="input w-full" />
-            </div>
-            </div>
-            </div>
+            <h2 className="text-2xl font-semibold mb-3">Payment Method</h2>
+            <p className="text-zinc-500">There are no payment methods available. This may be an error on our side. Please contact us if you need any help placing your order!</p>
+
+            {/* place order button */}
+            <button
+              type="submit"
+              className="cursor-pointer w-2/4 bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-smooth"
+            >
+              Place Order
+            </button>
           </form>
         </div>
 
         {/* Order Summary */}
         {cartItems.length > 0 ? (
           <div className="bg-white p-6 rounded shadow-md border border-gray-200 lg:col-span-2">
-            <h3 className="text-xl font-semibold mb-4">Your order</h3>
+            <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b border-gray-300 pb-4 mb-4">
               {/* Product List */}
               <ProductList />
@@ -206,65 +167,6 @@ const CheckOut = () => {
               <span>${total}.00</span>
             </div>
             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
-
-            <div className="mb-4">
-              <label className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "bank"}
-                  onChange={() => setPaymentMethod("bank")}
-                  className="mr-2"
-                />
-                Direct bank transfer
-              </label>
-              <p className="text-sm text-gray-600 mb-2">
-                Make your payment directly into our bank account. Please use
-                your Order ID as the payment reference. Your order will not be
-                shipped until the funds have cleared in our account.
-              </p>
-              <label className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "check"}
-                  onChange={() => setPaymentMethod("check")}
-                  className="mr-2"
-                />
-                Check payments
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "cash"}
-                  onChange={() => setPaymentMethod("cash")}
-                  className="mr-2"
-                />
-                Cash on delivery
-              </label>
-            </div>
-
-            <label className="flex items-start mb-4 text-sm">
-              <input
-                type="checkbox"
-                className="mt-1 mr-2"
-                checked={agreed}
-                onChange={() => setAgreed(!agreed)}
-              />
-              I have read and agree to the website{" "}
-              <a href="#" className="text-blue-600 ml-1 underline">
-                terms and conditions
-              </a>
-            </label>
-
-            <button
-              onClick={() => navigate("/")}
-              disabled={!agreed}
-              className="cursor-pointer w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-all duration-200 disabled:opacity-50"
-            >
-              Pay {total === 0 ? "" : `$${total}.00`}
-            </button>
           </div>
         ) : (
           <div className="bg-white p-6 rounded shadow-md border">
