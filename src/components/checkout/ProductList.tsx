@@ -18,7 +18,7 @@ const ProductList = () => {
           <p>Dwight Adams</p>
         </div>
 
-        <div className="font-bold">
+        <div>
           <p>$20</p>
         </div>
       </div>

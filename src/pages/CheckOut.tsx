@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import image1 from "../assets/img/hero/hero-3.webp";
 import ProductList from "../components/checkout/ProductList";
+import ApplyCoupon from "../components/checkout/ApplyCoupon";
 
 const cartItems = [
   { id: 1, name: "HTML & CSS Course", price: 10, quantity: 3, image: image1 },
@@ -122,18 +123,21 @@ const CheckOut = () => {
 
         {/* Order Summary */}
         {cartItems.length > 0 ? (
-          <div className="bg-white p-6 rounded shadow-md border border-gray-200 lg:col-span-2">
+          <div className=" p-6 lg:col-span-2">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b border-gray-300 pb-4 mb-4">
               {/* Product List */}
               <ProductList />
 
               {/* Subtotal */}
-              <div className="flex justify-between font-bold pt-4">
+              <div className="flex justify-between pt-4">
                 <span>Subtotal</span>
                 <span>${price * quantity}</span>
               </div>
             </div>
+
+            {/* Apply Coupon */}
+            <ApplyCoupon />
 
             {/* Shipping */}
             <div className="mb-4">
@@ -166,11 +170,10 @@ const CheckOut = () => {
               <span>Total</span>
               <span>${total}.00</span>
             </div>
-            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
           </div>
         ) : (
-          <div className="bg-white p-6 rounded shadow-md border">
-            <h3 className="text-xl font-semibold mb-4">Your order</h3>
+          <div className=" p-6 lg:col-span-2">
+            <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b pb-4 mb-4">
               <div className="flex justify-between mb-2">
                 <span>No Product</span>
@@ -210,64 +213,6 @@ const CheckOut = () => {
               <span>Total</span>
               <span>$00.00</span>
             </div>
-
-            <div className="mb-4">
-              <label className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "bank"}
-                  onChange={() => setPaymentMethod("bank")}
-                  className="mr-2"
-                />
-                Direct bank transfer
-              </label>
-              <p className="text-sm text-gray-600 mb-2">
-                Make your payment directly into our bank account. Please use
-                your Order ID as the payment reference. Your order will not be
-                shipped until the funds have cleared in our account.
-              </p>
-              <label className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "check"}
-                  onChange={() => setPaymentMethod("check")}
-                  className="mr-2"
-                />
-                Check payments
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === "cash"}
-                  onChange={() => setPaymentMethod("cash")}
-                  className="mr-2"
-                />
-                Cash on delivery
-              </label>
-            </div>
-
-            <label className="flex items-start mb-4 text-sm">
-              <input
-                type="checkbox"
-                className="mt-1 mr-2"
-                checked={agreed}
-                onChange={() => setAgreed(!agreed)}
-              />
-              I have read and agree to the website{" "}
-              <a href="#" className="text-blue-600 ml-1 underline">
-                terms and conditions
-              </a>
-            </label>
-
-            <button
-              disabled={!agreed}
-              className="cursor-pointer w-full bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-all duration-200 disabled:opacity-50"
-            >
-              Place order
-            </button>
           </div>
         )}
       </div>
