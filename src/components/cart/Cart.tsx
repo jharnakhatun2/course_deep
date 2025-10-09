@@ -1,22 +1,13 @@
-import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart);
-  const subTotal = cartItems.reduce(
-    (sum, curItem) => sum + curItem.price * curItem.quantity,
-    0
-  );
-
   return (
-    <main className="py-16">
-      <div className="container 2xl:px-8 px-2 mx-auto">
-        <h2 className="mb-8 text-xl font-bold">Shopping Cart</h2>
-        <div className="cartListContainer">
-          <div className="space-y-6">
-            {cartItems?.map((item) => (
-              <CartItem key={item.id} item={item} />
-            ))}
+    <section className="py-10 bg-gray-100">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-16">
+        {/* Billing Details */}
+        <div className="lg:col-span-3">
+          <h2 className="mb-8 text-xl font-semibold">Your cart (3 items)</h2>
+              <CartItem />
           </div>
 
           {/* Bill Details */}
@@ -29,7 +20,7 @@ const Cart = () => {
                 <div className="flex items-center justify-between">
                   <p>Sub Total</p>
                   <p>
-                    BDT <span className="lws-subtotal">{subTotal}</span>
+                    BDT <span className="lws-subtotal">0</span>
                   </p>
                 </div>
 
@@ -50,16 +41,16 @@ const Cart = () => {
                 <div className="flex items-center justify-between pb-4">
                   <p className="font-bold">TOTAL</p>
                   <p className="font-bold">
-                    BDT <span className="lws-total">{subTotal}</span>
+                    BDT <span className="lws-total">0</span>
                   </p>
                 </div>
-                <button className="placeOrderbtn">place order</button>
+                <button className="">Proceed to Checkout</button>
               </div>
             </div>
           </div>
-        </div>
+        
       </div>
-    </main>
+    </section>
   );
 };
 

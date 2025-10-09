@@ -1,56 +1,31 @@
-import { useDispatch } from "react-redux";
-import { decrementQuantity, incrementQuantity, removeFromCart } from "../../features/cart/cartSlice";
+import image1 from "../../assets/img/hero/hero-2.webp";
+import QuantityInput from "./QuantityInput";
 
-
-const CartItem = ({ item }) => {
-  const dispatch = useDispatch();
-
+const CartItem = () => {
   return (
-    <div className="cartCard">
-      <div className="flex items-center col-span-6 space-x-6">
-        <img className="lws-cartImage" src={item.image} alt="product" />
+    <div className="">
+      <div className="flex justify-between items-center uppercase font-semibold text-sm">
+        <span>Items</span>
+        <span>Quantity</span>
+        <span>Total</span>
+      </div>
 
-        <div className="space-y-2">
-          <h4 className="lws-cartName">{item.title}</h4>
-          <p className="lws-cartCategory">{item.category}</p>
-          <p>
-            BDT <span className="lws-cartPrice">{item.price}</span>
-          </p>
+      <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+      <div className="flex items-center justify-between py-1">
+        <div className="flex items-center col-span-6 space-x-6">
+          <img className="w-20" src={image1} alt="product" />
+          <h4 className="lws-cartName">HTML CSS Course</h4>
+        </div>
+        <div>
+        <QuantityInput />
+        <p className="underline text-sm cursor-pointer hover:text-yellow-500 transition-smooth">Remove item</p>
+        </div>
+        <div>
+          <h3>$30.00</h3>
         </div>
       </div>
-
-      <div className="flex items-center justify-center col-span-4 mt-4 space-x-8 md:mt-0">
-        <div className="flex items-center space-x-4">
-          <button
-            className="lws-incrementQuantity"
-            onClick={() => dispatch(incrementQuantity(item.id))}
-          >
-            <i className="text-lg fa-solid fa-plus"></i>
-          </button>
-
-          <span className="lws-cartQuantity">{item.quantity}</span>
-
-          <button
-            className="lws-decrementQuantity"
-            onClick={() => dispatch(decrementQuantity(item.id))}
-          >
-            <i className="text-lg fa-solid fa-minus"></i>
-          </button>
-        </div>
-
-        <p className="text-lg font-bold">
-          BDT <span className="lws-calculatedPrice">{item.price * item.quantity}</span>
-        </p>
-      </div>
-
-      <div className="flex items-center justify-center col-span-2 mt-4 md:justify-end md:mt-0">
-        <button
-          className="lws-removeFromCart"
-          onClick={() => dispatch(removeFromCart(item.id))}
-        >
-          <i className="text-lg text-red-400 fa-solid fa-trash"></i>
-        </button>
-      </div>
+      <div className="h-[1px] w-full bg-gray-500/20 my-3" />
     </div>
   );
 };
