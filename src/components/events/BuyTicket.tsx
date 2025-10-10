@@ -35,7 +35,7 @@ const BuyTicket = () => {
       <div className="mt-4 md:mt-0">
         <Button
             onClick={() => alert("Ticket booking coming soon!")}
-            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
+            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800 hover:text-teal-600"
           >
            Buy Tickets
           </Button>

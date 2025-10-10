@@ -94,7 +94,7 @@ const EventBookingForm = () => {
 
         {/* Tickets */}
         <div>
-          <label className={labelStyle}>Number of Tickets</label>
+          <label className={labelStyle}>Ticket Quantity</label>
           <input
             type="number"
             name="tickets"
@@ -131,6 +131,7 @@ const EventBookingForm = () => {
             className={inputStyle}
           />
         </div>
+
 
         {/* Submit */}
         <button

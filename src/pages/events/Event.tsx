@@ -1,11 +1,9 @@
-import SocialIcon from "./SocialIcon";
-import EventMap from "./EventMap";
-import Tab from "./Tab";
+import SocialIcon from "../../components/events/SocialIcon";
+import EventMap from "../../components/events/EventMap";
+import Tab from "../../components/events/Tab";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
-import { MdOutlineWatchLater } from "react-icons/md";
-import { FaFlag } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
-import BuyTicket from "./BuyTicket";
+import BuyTicket from "../../components/events/BuyTicket";
 
 const HEADER_IMAGE_URL =
   "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
@@ -27,21 +25,22 @@ const Event = () => {
             <div className="w-full sm:absolute top-0 right-0 h-full">
               <div className="h-full flex items-center justify-end">
                 <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 w-full sm:w-62 h-full flex flex-col">
+                  
                   <div className="flex gap-2">
-                    <MdOutlineWatchLater className="text-white font-bold text-xl" />
+                    📅
                     <div>
-                      <div className={titleStyle}>Start Time : </div>
-                      <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
+                      <div className={titleStyle}>Date : </div>
+                      <div className={textStyle}>December 25, 2025</div>
                     </div>
                   </div>
 
                   <hr className="border-gray-200 my-7" />
 
                   <div className="flex gap-3">
-                    <FaFlag className="text-white font-bold" />
+                    🕒
                     <div>
-                      <div className={titleStyle}>Finish Time :</div>
-                      <div className={textStyle}>March 01, 2017 AT 8.00 am</div>
+                      <div className={titleStyle}>Time :</div>
+                      <div className={textStyle}>10:00 AM – 4:00 PM</div>
                     </div>
                   </div>
 
@@ -50,8 +49,18 @@ const Event = () => {
                   <div className="flex gap-2">
                     <IoLocationSharp className="text-white font-bold text-xl" />
                     <div>
-                      <div className={titleStyle}>Address:</div>
-                      <div className={textStyle}>Peppard Hill, UK</div>
+                      <div className={titleStyle}>Venue:</div>
+                      <div className={textStyle}>Dhaka Convention Hall</div>
+                    </div>
+                  </div>
+
+                  <hr className="border-gray-200 my-7" />
+
+                  <div className="flex gap-2">
+                    💵
+                    <div>
+                      <div className={titleStyle}>Price:</div>
+                      <div className={textStyle}><span className="font-bold text-white text-2xl">$49</span> / person</div>
                     </div>
                   </div>
                 </div>
