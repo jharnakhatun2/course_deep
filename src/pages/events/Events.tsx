@@ -12,6 +12,7 @@ const Events = () => {
   } = useGetEventsQuery(undefined, {
     refetchOnMountOrArgChange: false,
   });
+ 
 
   // Always call hook (even if events is undefined, fallback to [])
   const {

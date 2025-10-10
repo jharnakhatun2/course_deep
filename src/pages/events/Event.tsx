@@ -4,13 +4,23 @@ import Tab from "../../components/events/Tab";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
 import { IoLocationSharp } from "react-icons/io5";
 import BuyTicket from "../../components/events/BuyTicket";
-
+import { useParams } from "react-router";
+import { useGetEventByIdQuery } from "../../features/event/eventApi";
+import Loader from "../../ult/loader/Loader";
 const HEADER_IMAGE_URL =
   "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
 
 const Event = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data: event, isLoading, isError } = useGetEventByIdQuery(id!);
+  console.log(event)
   const titleStyle = "text-xs uppercase text-zinc-900 font-semibold mb-1";
   const textStyle = "text-sm text-zinc-600";
+
+  if (isLoading) return <Loader />;
+  if (isError || !event)
+    return <p className="text-center py-10 text-red-500">Event not found!</p>;
+
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">
@@ -25,7 +35,6 @@ const Event = () => {
             <div className="w-full sm:absolute top-0 right-0 h-full">
               <div className="h-full flex items-center justify-end">
                 <div className="bg-yellow-400 p-6 shadow text-sm text-gray-800 w-full sm:w-62 h-full flex flex-col">
-                  
                   <div className="flex gap-2">
                     📅
                     <div>
@@ -60,7 +69,12 @@ const Event = () => {
                     💵
                     <div>
                       <div className={titleStyle}>Price:</div>
-                      <div className={textStyle}><span className="font-bold text-white text-2xl">$49</span> / person</div>
+                      <div className={textStyle}>
+                        <span className="font-bold text-white text-2xl">
+                          $49
+                        </span>{" "}
+                        / person
+                      </div>
                     </div>
                   </div>
                 </div>

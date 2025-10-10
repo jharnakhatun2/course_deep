@@ -3,17 +3,16 @@ import Button from "../../button/Button";
 import type { Event } from "../../types/types";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../hook/useAuth";
+import Loader from "../../loader/Loader";
 
 interface ECardProps {
   event: Event;
 }
 
 const ECard: FC<ECardProps> = ({ event }) => {
-  
   const navigate = useNavigate();
-  const { user } = useAuth()
- 
-  
+  const { user, loading } = useAuth();
+
   const handleRegisterClick = () => {
     if (!user?.email) {
       navigate("/login", { state: { from: `/events/${event._id}` } });
@@ -22,6 +21,7 @@ const ECard: FC<ECardProps> = ({ event }) => {
     navigate(`/events/${event._id}`);
   };
 
+  if (loading) return <Loader />;
   return (
     <div
       key={event._id}
