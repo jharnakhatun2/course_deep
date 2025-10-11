@@ -10,7 +10,7 @@ const Events = () => {
     isLoading: eventsLoading,
     isError: eventsError,
   } = useGetEventsQuery(undefined, {
-    refetchOnMountOrArgChange: false,
+    refetchOnMountOrArgChange: false
   });
  
 

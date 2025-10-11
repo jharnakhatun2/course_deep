@@ -1,30 +1,24 @@
 // src/components/PrivateRoute.tsx
 import { Navigate, useLocation } from "react-router";
-import { useAppSelector } from "../../app/hooks";
-import { useCurrentUser } from "../auth/useCurrentUser";
 import Loader from "../../ult/loader/Loader";
+import { useAuth } from "../../hook/useAuth";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { user, isAuthenticated, loading } = useAppSelector(
-    (state) => state.auth
-  );
-  
-  useCurrentUser(); // fetch current user on mount
+  const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
     return <Loader />; // show loader while fetching
   }
 
-  if (isAuthenticated && user) {
-    return <>{children}</>;
+  if (isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
-  return <Navigate to="/login" state={{ from: location }} replace />;
+  return <>{children}</>;
 };
 
 export default PrivateRoute;

@@ -39,7 +39,7 @@ const App: FC = () => {
         { path: "/courses", element: <Courses /> },
         { path: "/course/:id", element: <Course /> },
         { path: "/events", element: <Events /> },
-        { path: "/events/:id", element:  <PrivateRoute><Event /></PrivateRoute> },
+        { path: "/events/:id", element:  <Event />},
         { path: "/event-book", element: <EventBookingForm /> },
         { path: "/book", element: <CourseEventPage /> },
         { path: "/blogs", element: <Blogs /> },

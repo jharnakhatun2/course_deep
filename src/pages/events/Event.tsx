@@ -12,12 +12,14 @@ const HEADER_IMAGE_URL =
 
 const Event = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: event, isLoading, isError } = useGetEventByIdQuery(id!);
+  const { data: event, isLoading, isError } = useGetEventByIdQuery(id!, {
+  skip: !id,
+});
   console.log(event)
   const titleStyle = "text-xs uppercase text-zinc-900 font-semibold mb-1";
   const textStyle = "text-sm text-zinc-600";
 
-  if (isLoading) return <Loader />;
+  if (!id || isLoading) return <Loader />;
   if (isError || !event)
     return <p className="text-center py-10 text-red-500">Event not found!</p>;
 
