@@ -1,11 +1,16 @@
+import type { FC } from "react";
 
-const SocialIcon = () => {
+interface SocialIconProps {
+  category: string;
+}
+
+const SocialIcon:FC<SocialIconProps> = ({category}) => {
     const iconStyle = "px-3 py-1.5 text-white ";
   return (
     <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4 text-sm text-gray-600">
             <div>
               <span className="font-medium">Tags:</span>
-              <span className="ml-2 text-zinc-500">Online, App Development</span>
+              <span className="ml-2 text-zinc-500">{category}</span>
             </div>
                 {/* Social Icon */}
             <div className="flex items-center gap-3">

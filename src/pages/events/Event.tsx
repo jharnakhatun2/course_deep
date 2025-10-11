@@ -7,15 +7,17 @@ import BuyTicket from "../../components/events/BuyTicket";
 import { useParams } from "react-router";
 import { useGetEventByIdQuery } from "../../features/event/eventApi";
 import Loader from "../../ult/loader/Loader";
-const HEADER_IMAGE_URL =
-  "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a2d2d5a8a0bfa0d4d3e5f7f6f1b8a6b"; // replace with your image
 
 const Event = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: event, isLoading, isError } = useGetEventByIdQuery(id!, {
-  skip: !id,
-});
-  console.log(event)
+  const {
+    data: event,
+    isLoading,
+    isError,
+  } = useGetEventByIdQuery(id!, {
+    skip: !id,
+  });
+
   const titleStyle = "text-xs uppercase text-zinc-900 font-semibold mb-1";
   const textStyle = "text-sm text-zinc-600";
 
@@ -29,7 +31,7 @@ const Event = () => {
         <div className="lg:col-span-3">
           <div className="relative overflow-hidden shadow">
             <img
-              src={HEADER_IMAGE_URL}
+              src={event.image}
               alt="Event header"
               className="w-full h-64 sm:h-96 object-cover"
             />
@@ -41,7 +43,15 @@ const Event = () => {
                     📅
                     <div>
                       <div className={titleStyle}>Date : </div>
-                      <div className={textStyle}>December 25, 2025</div>
+                      <div className={textStyle}>
+                        {event.date
+                          ? new Date(event.date).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
+                          : ""}
+                      </div>
                     </div>
                   </div>
 
@@ -51,7 +61,7 @@ const Event = () => {
                     🕒
                     <div>
                       <div className={titleStyle}>Time :</div>
-                      <div className={textStyle}>10:00 AM – 4:00 PM</div>
+                      <div className={textStyle}>{event.time}</div>
                     </div>
                   </div>
 
@@ -61,7 +71,7 @@ const Event = () => {
                     <IoLocationSharp className="text-white font-bold text-xl" />
                     <div>
                       <div className={titleStyle}>Venue:</div>
-                      <div className={textStyle}>Dhaka Convention Hall</div>
+                      <div className={textStyle}>{event.location}</div>
                     </div>
                   </div>
 
@@ -73,7 +83,7 @@ const Event = () => {
                       <div className={titleStyle}>Price:</div>
                       <div className={textStyle}>
                         <span className="font-bold text-white text-2xl">
-                          $49
+                          ${event.price}
                         </span>{" "}
                         / person
                       </div>
@@ -85,21 +95,13 @@ const Event = () => {
           </div>
 
           <h1 className="mt-6 text-2xl md:text-4xl font-semibold text-zinc-700 ">
-            WordPress Theme Development With Boostrap
+            {event.title}
           </h1>
 
           <div className="mt-4 text-zinc-600">
             <h3 className="text-lg font-medium mb-2">Event Description</h3>
             <p className="leading-relaxed text-sm md:text-base text-justify text-zinc-500">
-              Numbers say it all. Globally, progress in the wind sector
-              continues to be strong with increasing annual installed capacity
-              and growing investment in the sector. In 2015 alone, 63,013
-              megawatts of wind power capacity was installed globally an annual
-              market growth of 22 percent. It is continuing its progress towards
-              becoming a mainstream, competitive and reliable power source in
-              both developing and mature markets. In fact, wind is becoming
-              cheap enough in many places in the U.S. and around the world to
-              compete effectively with fossil fuels.
+              {event.description}
             </p>
           </div>
 
@@ -109,7 +111,7 @@ const Event = () => {
           {/* Event Content / Tabs */}
           <div className="mt-8">
             <h3 className="text-lg font-medium mb-4">Event Content</h3>
-            <Tab />
+            <Tab event={event} />
           </div>
 
           {/* Map embed */}
@@ -118,7 +120,7 @@ const Event = () => {
           <div className="h-[1px] w-full bg-gray-500/20 mt-10" />
 
           {/* Tags + Share  */}
-          <SocialIcon />
+          <SocialIcon category={event.category} />
         </div>
 
         {/* Sidebar */}

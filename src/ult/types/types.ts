@@ -53,6 +53,10 @@ export interface Event {
   description: string;
   image: string;
   category: string;
+  price: string;
+  country: string;
+  seats: string;
+  discussItems: string[];
 }
 
 export interface Replay {
