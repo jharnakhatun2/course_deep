@@ -24,8 +24,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/privacy/Privacy";
 import About from "./pages/about/About";
 import Cart from "./components/cart/Cart";
-import EventBookingForm from "./components/events/EventBookingForm";
-import CourseEventPage from "./components/events/CourseEventPage";
+
 
 const App: FC = () => {
   useCurrentUser(); // Custom hook to fetch current user on app load
@@ -40,8 +39,6 @@ const App: FC = () => {
         { path: "/course/:id", element: <Course /> },
         { path: "/events", element: <Events /> },
         { path: "/events/:id", element:  <Event />},
-        { path: "/event-book", element: <EventBookingForm /> },
-        { path: "/book", element: <CourseEventPage /> },
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
         { path: "/cart", element: <Cart /> },

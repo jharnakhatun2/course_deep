@@ -67,7 +67,7 @@ const Tab: FC<TabProps> = ({ event }) => {
               <div className="flex items-center space-x-2">
                 <p>
                   Seats Available:{" "}
-                  <span className="font-semibold text-yellow-500 text-2xl">
+                  <span className="font-semibold text-red-700 text-2xl">
                     {event.seats}
                   </span>
                 </p>

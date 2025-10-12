@@ -36,6 +36,20 @@ export const eventApi = apiSlice.injectEndpoints({
       invalidatesTags: (_result, _error, { id }) => [{ type: "Event", id }],
     }),
 
+    // Update event seats
+
+    updateEventSeats: builder.mutation<
+      Event,
+      { id: string; seats: number }
+    >({
+      query: ({ id, seats }) => ({
+        url: `/events/${id}/seats`,
+        method: "PATCH",
+        body: { seats },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Event", id }],
+    }),
+
     // DELETE event
     deleteEvent: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
@@ -53,4 +67,5 @@ export const {
   useCreateEventMutation,
   useUpdateEventMutation,
   useDeleteEventMutation,
+   useUpdateEventSeatsMutation
 } = eventApi;

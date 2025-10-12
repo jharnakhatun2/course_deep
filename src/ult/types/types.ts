@@ -53,10 +53,21 @@ export interface Event {
   description: string;
   image: string;
   category: string;
-  price: string;
+  price: number;
   country: string;
-  seats: string;
+  seats: number;
   discussItems: string[];
+}
+
+export interface Booking {
+  _id?: string;
+  name: string;
+  email: string;
+  phone: string;
+  eventTitle: string;
+  tickets: number;
+  date: string;
+  bookedAt?: string;
 }
 
 export interface Replay {

@@ -14,6 +14,7 @@ const Event = () => {
     data: event,
     isLoading,
     isError,
+    refetch
   } = useGetEventByIdQuery(id!, {
     skip: !id,
   });
@@ -82,7 +83,7 @@ const Event = () => {
                     <div>
                       <div className={titleStyle}>Price:</div>
                       <div className={textStyle}>
-                        <span className="font-bold text-white text-2xl">
+                        <span className="font-bold text-black text-2xl">
                           ${event.price}
                         </span>{" "}
                         / person
@@ -106,7 +107,7 @@ const Event = () => {
           </div>
 
           {/* Countdown + Buy button */}
-          <BuyTicket />
+          <BuyTicket event={event} refetchEvent={refetch}/>
 
           {/* Event Content / Tabs */}
           <div className="mt-8">
