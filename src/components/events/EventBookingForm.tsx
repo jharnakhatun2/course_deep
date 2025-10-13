@@ -4,7 +4,11 @@ import { useUpdateEventSeatsMutation } from "../../features/event/eventApi";
 import { useAuth } from "../../hook/useAuth";
 import type { Event } from "../../ult/types/types";
 import { useCreateBookingMutation } from "../../features/bookings/bookingsApi";
-import { showErrorToast } from "../../ult/toast/toast";
+import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
+import { useAddToCartMutation } from "../../features/cart/cartApi";
+import { createCartItemFromEvent, isFreeEvent } from "../cart/cartHelpers";
+import { useNavigate } from "react-router";
+
 
 interface EventBookingFormProps {
   event: Event;
@@ -19,8 +23,9 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
 }) => {
   const { user } = useAuth();
   const [updateSeats] = useUpdateEventSeatsMutation();
-  const [createBooking, { isLoading, isError, isSuccess }] =
-    useCreateBookingMutation();
+  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
+  const [addToCart, { isLoading: isCartLoading }] = useAddToCartMutation();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,6 +35,10 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     tickets: 1,
     date: event?.date || "",
   });
+
+  // Use the helper function to check if event is free
+  const freeEvent = isFreeEvent(event);
+  const isLoading = isBookingLoading || isCartLoading;
 
   // Auto-fill user info
   useEffect(() => {
@@ -51,10 +60,17 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     }));
   };
 
-  // Handle form submission
+  // Calculate total price safely
+  const calculateTotalPrice = (): number => {
+    const price = event.price;
+    const numericPrice = typeof price === 'number' ? price : parseFloat(price as string) || 0;
+    return numericPrice * formData.tickets;
+  };
+
+  // Handle form submission for both free and paid events
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("first");
+    
     if (formData.tickets > event.seats) {
       showErrorToast("Not enough seats available!");
       return;
@@ -65,21 +81,41 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       return;
     }
 
+    if (!formData.phone) {
+      showErrorToast("Phone number is required!");
+      return;
+    }
+
     try {
-      // Step 1: Create booking (backend prevents duplicate bookings)
-      const bookingResult = await createBooking(formData).unwrap();
-      console.log("Booking API response:", bookingResult);
+      if (freeEvent) {
+        // FREE EVENT: Direct booking
+        await createBooking(formData).unwrap();
+        
+        // Update event seats
+        const remainingSeats = event.seats - formData.tickets;
+        await updateSeats({ id: event._id, seats: remainingSeats }).unwrap();
 
-      // Step 2: Update event seats after successful booking
-      const remainingSeats = event.seats - formData.tickets;
-      await updateSeats({ id: event._id, seats: remainingSeats }).unwrap();
+        await refetchEvent();
+        showSuccessToast("🎉 Your Booking is confirmed!");
+        onClose()
 
-      await refetchEvent(); // Refresh event data
-      setTimeout(() => onClose(), 1500);
+      } else {
+        // 🔵 PAID EVENT: Add to cart
+        const cartItemData = createCartItemFromEvent(event);
+        await addToCart({
+          productId: cartItemData.productId,
+          type: 'event',
+          quantity: formData.tickets
+        }).unwrap();
+
+        showSuccessToast(`✅ Added ${formData.tickets} ticket(s) to cart!`);
+        onClose();
+        navigate('/cart');
+      }
     } catch (err: any) {
       console.error("Booking error:", err);
       if (err?.data) {
-        showErrorToast(err.data); // e.g. "You have already booked this event."
+        showErrorToast(err.data);
       } else {
         showErrorToast("Something went wrong. Please try again.");
       }
@@ -90,11 +126,13 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
   const inputStyle =
     "w-full text-zinc-700 border border-zinc-200 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-yellow-400";
 
+  const totalPrice = calculateTotalPrice();
+
   return (
     <div className="fixed inset-0 backdrop-blur-lg bg-black/80 flex justify-center items-center min-h-screen py-10 z-50 overflow-y-auto">
       <form
         onSubmit={handleSubmit}
-        className="relative backdrop-blur-lg bg-white/95 w-full max-w-md p-6 rounded shadow-lg space-y-4 my-20"
+        className="relative backdrop-blur-lg bg-white/95 w-full max-w-md p-6 rounded shadow-lg space-y-4 my-20 top-30"
       >
         {/* Close button */}
         <button
@@ -109,6 +147,26 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
         <h2 className="text-2xl font-semibold text-center text-gray-800">
           🎫 Book Your Seat
         </h2>
+
+        {/* Event Info Card */}
+        <div className={`border rounded p-3 ${freeEvent ? 'bg-teal-50 border-teal-200' : 'bg-blue-50 border-blue-200'}`}>
+          <h3 className="font-semibold text-lg text-zinc-500">{event.title || event.name}</h3>
+          <div className="flex justify-between items-center mt-1">
+            <span className={`px-2 py-1 rounded text-sm font-medium ${freeEvent ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800'}`}>
+              {freeEvent ? 'FREE EVENT' : 'PAID EVENT'}
+            </span>
+            {freeEvent && (
+              <span className="text-lg font-bold text-teal-600">
+                $00.00
+              </span>
+            )}
+            {!freeEvent && (
+              <span className="text-lg font-bold text-yellow-600">
+                ${totalPrice.toFixed(2)}
+              </span>
+            )}
+          </div>
+        </div>
 
         {/* Full Name */}
         <div>
@@ -136,13 +194,14 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
 
         {/* Phone */}
         <div>
-          <label className={labelStyle}>Phone Number *</label>
+          <label className={labelStyle}>Phone Number <span className="text-red-600">*</span></label>
           <input
             type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
             required
+            placeholder="Enter your phone number"
             className={inputStyle}
           />
         </div>
@@ -174,6 +233,11 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
             onChange={handleChange}
             className={inputStyle}
           />
+          {!freeEvent && (
+            <p className="text-sm text-gray-500 mt-1">
+              Total: ${totalPrice.toFixed(2)}
+            </p>
+          )}
         </div>
 
         {/* Event Date */}
@@ -195,6 +259,8 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
           className={`w-full rounded font-medium py-2.5 uppercase transition-colors cursor-pointer ${
             event.seats <= 0
               ? "bg-gray-400 text-white cursor-not-allowed"
+              : freeEvent
+              ? "bg-teal-500 text-white hover:bg-teal-600"
               : "bg-yellow-500 text-white hover:bg-yellow-600"
           }`}
         >
@@ -202,27 +268,19 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
             ? "Processing..."
             : event.seats <= 0
             ? "Sold Out"
-            : "Book Now"}
+            : freeEvent
+            ? `Confirm Booking ${formData.tickets > 1 ? `(${formData.tickets} tickets)` : ''}`
+            : `Add to Cart - $${totalPrice.toFixed(2)}`}
         </button>
 
-        {/* RTK Query Status Messages */}
-        {isError && (
-          <p className="text-red-600 text-center font-medium mt-2">
-            Something went wrong. Please try again.
-          </p>
-        )}
-
-        {isSuccess && (
-          <p className="text-green-600 text-center font-medium mt-2">
-            Booking Submitted Successfully!
-          </p>
-        )}
-
-        {isLoading && (
-          <p className="text-yellow-600 text-center font-medium mt-2">
-            ⏳ Submitting your booking...
-          </p>
-        )}
+        {/* Info Message */}
+        <div className="text-center text-sm text-gray-500">
+          {freeEvent ? (
+            <p>Your booking will be confirmed immediately</p>
+          ) : (
+            <p>You'll complete payment on the checkout page</p>
+          )}
+        </div>
       </form>
     </div>
   );

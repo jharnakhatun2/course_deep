@@ -12,8 +12,8 @@ export interface User {
 export interface Course {
   _id: string;
   name: string;
-  price: number;
-  ratings: number;
+  price: string;
+  ratings: string;
   lessons: string;
   time: string;
   teacher: string;
@@ -41,8 +41,9 @@ export interface Video {
 }
 
 export interface Event {
-  _id?: string;
+  _id: string;
   title: string;
+  name: string;
   day: string;
   month: string;
   weekday: string;
@@ -53,7 +54,7 @@ export interface Event {
   description: string;
   image: string;
   category: string;
-  price: number;
+  price: number | string;
   country: string;
   seats: number;
   discussItems: string[];
@@ -114,11 +115,19 @@ export interface PaginationProps {
 }
 
 export interface CartItem {
-  id: string;
-  title: string;
-  category: string;
+  _id: string;
+  productId: string;
+  name: string;
   price: number;
-  image: string;
+  originalPrice: string; // Keep original price string for display
   quantity: number;
+  type: 'course' | 'event';
+  image: string;
+  date?: string; // For events
+  time?: string; // For events
+  location?: string; // For events
+  teacher?: string; // For courses
+  ratings?: string; // For courses
+  duration?: string; // For courses
 }
 

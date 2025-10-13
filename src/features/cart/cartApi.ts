@@ -9,19 +9,28 @@ export const cartApi = apiSlice.injectEndpoints({
       providesTags: ["Cart"],
     }),
 
-    addToCart: builder.mutation<CartItem, { productId: string; quantity: number }>({
-      query: ({ productId, quantity }) => ({
+    addToCart: builder.mutation<CartItem, { productId: string; quantity: number; type: 'course' | 'event'; }>({
+      query: (cartItem) => ({
         url: "/cart",
         method: "POST",
-        body: { productId, quantity },
+        body: cartItem,
       }),
       invalidatesTags: ["Cart"],
     }),
 
-    removeFromCart: builder.mutation<{ success: boolean }, { productId: string }>({
-      query: ({ productId }) => ({
-        url: `/cart/${productId}`,
+    removeFromCart: builder.mutation<{ success: boolean }, { productId: string; type: string }>({
+      query: ({ productId, type }) => ({
+        url: `/cart/${productId}?type=${type}`,
         method: "DELETE",
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+
+    updateCartQuantity: builder.mutation<CartItem, { productId: string; type: string; quantity: number }>({
+      query: ({ productId, type, quantity }) => ({
+        url: `/cart/${productId}`,
+        method: "PATCH",
+        body: { type, quantity },
       }),
       invalidatesTags: ["Cart"],
     }),
@@ -40,5 +49,6 @@ export const {
   useGetCartQuery,
   useAddToCartMutation,
   useRemoveFromCartMutation,
+  useUpdateCartQuantityMutation,
   useClearCartMutation,
 } = cartApi;
