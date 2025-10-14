@@ -9,7 +9,6 @@ import { useAddToCartMutation } from "../../features/cart/cartApi";
 import { createCartItemFromEvent, isFreeEvent } from "../cart/cartHelpers";
 import { useNavigate } from "react-router";
 
-
 interface EventBookingFormProps {
   event: Event;
   onClose: () => void;
@@ -23,7 +22,8 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
 }) => {
   const { user } = useAuth();
   const [updateSeats] = useUpdateEventSeatsMutation();
-  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
+  const [createBooking, { isLoading: isBookingLoading }] =
+    useCreateBookingMutation();
   const [addToCart, { isLoading: isCartLoading }] = useAddToCartMutation();
   const navigate = useNavigate();
 
@@ -63,14 +63,21 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
   // Calculate total price safely
   const calculateTotalPrice = (): number => {
     const price = event.price;
-    const numericPrice = typeof price === 'number' ? price : parseFloat(price as string) || 0;
+    const numericPrice =
+      typeof price === "number" ? price : parseFloat(price as string) || 0;
     return numericPrice * formData.tickets;
   };
 
   // Handle form submission for both free and paid events
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
+    // Check if user is authenticated
+    if (!user) {
+      showErrorToast("Please login to book events!");
+      return;
+    }
+
     if (formData.tickets > event.seats) {
       showErrorToast("Not enough seats available!");
       return;
@@ -90,27 +97,27 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       if (freeEvent) {
         // FREE EVENT: Direct booking
         await createBooking(formData).unwrap();
-        
+
         // Update event seats
         const remainingSeats = event.seats - formData.tickets;
         await updateSeats({ id: event._id, seats: remainingSeats }).unwrap();
 
         await refetchEvent();
         showSuccessToast("🎉 Your Booking is confirmed!");
-        onClose()
-
+        onClose();
       } else {
-        // 🔵 PAID EVENT: Add to cart
+        // PAID EVENT for Add to cart
         const cartItemData = createCartItemFromEvent(event);
         await addToCart({
           productId: cartItemData.productId,
-          type: 'event',
-          quantity: formData.tickets
+          type: "event",
+          quantity: formData.tickets,
+          userEmail: user.email,
         }).unwrap();
 
-        showSuccessToast(`✅ Added ${formData.tickets} ticket(s) to cart!`);
+        showSuccessToast(`Added ${formData.tickets} ticket(s) to cart!`);
         onClose();
-        navigate('/cart');
+        navigate("/cart");
       }
     } catch (err: any) {
       console.error("Booking error:", err);
@@ -149,16 +156,28 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
         </h2>
 
         {/* Event Info Card */}
-        <div className={`border rounded p-3 ${freeEvent ? 'bg-teal-50 border-teal-200' : 'bg-blue-50 border-blue-200'}`}>
-          <h3 className="font-semibold text-lg text-zinc-500">{event.title || event.name}</h3>
+        <div
+          className={`border rounded p-3 ${
+            freeEvent
+              ? "bg-teal-50 border-teal-200"
+              : "bg-blue-50 border-blue-200"
+          }`}
+        >
+          <h3 className="font-semibold text-lg text-zinc-500">
+            {event.title || event.name}
+          </h3>
           <div className="flex justify-between items-center mt-1">
-            <span className={`px-2 py-1 rounded text-sm font-medium ${freeEvent ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800'}`}>
-              {freeEvent ? 'FREE EVENT' : 'PAID EVENT'}
+            <span
+              className={`px-2 py-1 rounded text-sm font-medium ${
+                freeEvent
+                  ? "bg-teal-100 text-teal-800"
+                  : "bg-blue-100 text-blue-800"
+              }`}
+            >
+              {freeEvent ? "FREE EVENT" : "PAID EVENT"}
             </span>
             {freeEvent && (
-              <span className="text-lg font-bold text-teal-600">
-                $00.00
-              </span>
+              <span className="text-lg font-bold text-teal-600">$00.00</span>
             )}
             {!freeEvent && (
               <span className="text-lg font-bold text-yellow-600">
@@ -194,7 +213,9 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
 
         {/* Phone */}
         <div>
-          <label className={labelStyle}>Phone Number <span className="text-red-600">*</span></label>
+          <label className={labelStyle}>
+            Phone Number <span className="text-red-600">*</span>
+          </label>
           <input
             type="tel"
             name="phone"
@@ -269,7 +290,9 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
             : event.seats <= 0
             ? "Sold Out"
             : freeEvent
-            ? `Confirm Booking ${formData.tickets > 1 ? `(${formData.tickets} tickets)` : ''}`
+            ? `Confirm Booking ${
+                formData.tickets > 1 ? `(${formData.tickets} tickets)` : ""
+              }`
             : `Add to Cart - $${totalPrice.toFixed(2)}`}
         </button>
 

@@ -1,10 +1,12 @@
 import { useGetCartQuery } from "../../features/cart/cartApi";
+import { useAuth } from "../../hook/useAuth";
 import Loader from "../../ult/loader/Loader";
 import ApplyCoupon from "../checkout/ApplyCoupon";
 import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { data: cartItems = [], isLoading, error } = useGetCartQuery();
+  const {user} = useAuth();
+  const { data: cartItems = [], isLoading, error } = useGetCartQuery(user?.email);
 
   if (isLoading) return <Loader />
 
