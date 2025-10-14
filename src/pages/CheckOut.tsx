@@ -1,18 +1,49 @@
 import { useState } from "react";
-import image1 from "../assets/img/hero/hero-3.webp";
 import ProductList from "../components/checkout/ProductList";
 import ApplyCoupon from "../components/checkout/ApplyCoupon";
+import { useLocation } from "react-router";
+import type { CartItem } from "../ult/types/types";
 
-const cartItems = [
-  { id: 1, name: "HTML & CSS Course", price: 10, quantity: 3, image: image1 },
-];
+
+interface LocationState {
+  cartItems: CartItem[];
+  subtotal: number;
+}
 
 const CheckOut = () => {
-  const [shippingMethod, setShippingMethod] = useState("flat");
-  const { name, quantity, price, image } = cartItems[0] || {};
-  const subtotal = price * quantity || 0;
+  const [shippingMethod, setShippingMethod] = useState<"flat" | "pickup">("flat");
+  const [couponApplied, setCouponApplied] = useState<boolean>(false);
+  const [couponCode, setCouponCode] = useState<string>("");
+  const location = useLocation();
+  
+  // Get cart data from navigation state with proper typing
+  const cartItems = (location.state as LocationState)?.cartItems || [];
+  const cartSubtotal = (location.state as LocationState)?.subtotal || 0;
+  
   const shippingCost = shippingMethod === "flat" ? 15 : 0;
-  const total = subtotal + shippingCost;
+  
+  // Calculate discount (10% if coupon is applied)
+  const discount = couponApplied ? cartSubtotal * 0.1 : 0;
+  
+  // Calculate total after discount and shipping
+  const total = cartSubtotal - discount + shippingCost;
+
+  // Handle coupon application
+  const handleApplyCoupon = (code: string): boolean => {
+    if (code.toLowerCase() === "save10") {
+      setCouponApplied(true);
+      setCouponCode(code);
+      return true;
+    }
+    return false;
+  };
+
+  // Handle coupon removal
+  const handleRemoveCoupon = (): void => {
+    setCouponApplied(false);
+    setCouponCode("");
+  };
+
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10">
@@ -111,12 +142,35 @@ const CheckOut = () => {
           <div className=" p-6 lg:col-span-2">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b border-gray-300 pb-4 mb-4">
-              {/* Product List */} <ProductList /> {/* Subtotal */}
+              {/* Product List */} 
+              <ProductList cartItems={cartItems}/> 
+              
+              {/* Subtotal */}
               <div className="flex justify-between pt-4">
-                <span>Subtotal</span> <span>${price * quantity}</span>
+                <span>Subtotal</span> <span>${cartSubtotal.toFixed(2)}</span>
               </div>
             </div>
-            {/* Apply Coupon */} <ApplyCoupon /> {/* Shipping */}
+            
+            {/* Apply Coupon */} 
+            <ApplyCoupon 
+              onApplyCoupon={handleApplyCoupon}
+              onRemoveCoupon={handleRemoveCoupon}
+              couponApplied={couponApplied}
+              couponCode={couponCode}
+            />
+
+            {/* Discount Display */}
+            {couponApplied && (
+              <div className="flex justify-between text-green-600 mb-2">
+                <span>Discount (10%)</span>
+                <span>-${discount.toFixed(2)}</span>
+              </div>
+            )}
+            
+            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+
+
+            {/* Shipping */}
             <div className="mb-4">
               <label className="block font-bold mb-2">Shipping</label>
               <label className="flex items-center mb-2">
@@ -142,7 +196,7 @@ const CheckOut = () => {
             </div>
             <div className="h-[1px] w-full bg-gray-500/20 my-3" /> {/* Total */}
             <div className="flex justify-between font-bold mb-4">
-              <span>Total</span> <span>${total}.00</span>
+              <span>Total</span> <span>${total.toFixed(2)}</span>
             </div>
           </div>
         ) : (
@@ -156,6 +210,15 @@ const CheckOut = () => {
                 <span>Subtotal</span> <span>$0</span>
               </div>
             </div>
+
+            {/* Apply Coupon - Even when cart is empty */}
+            <ApplyCoupon 
+              onApplyCoupon={handleApplyCoupon}
+              onRemoveCoupon={handleRemoveCoupon}
+              couponApplied={couponApplied}
+              couponCode={couponCode}
+            />
+            
             <div className="mb-4">
               <label className="block font-medium mb-2">Shipping</label>
               <label className="flex items-center mb-2">

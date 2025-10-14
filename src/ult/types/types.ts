@@ -129,5 +129,6 @@ export interface CartItem {
   teacher?: string; // For courses
   ratings?: string; // For courses
   duration?: string; // For courses
+  userEmail: string;
 }
 

@@ -1,27 +1,36 @@
-import image from "../../assets/img/hero/hero-3.webp";
+import type { FC } from "react";
+import type { CartItem } from "../../ult/types/types";
 
-const ProductList = () => {
+interface ProductListProps {
+  cartItems: CartItem[];
+}
+
+const ProductList:FC<ProductListProps> = ({ cartItems = [] }) => {
+  console.log(cartItems)
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-between items-center border-b border-gray-300 space-y-5 ">
+      {cartItems.map( item =>(
+<div key={item._id} className="flex justify-between items-center border-b border-gray-300 space-y-5 ">
         <div className="font-medium relative">
           <img
-            src={image}
+            src={item.image}
             alt="course"
             className="w-20 object-cover mx-auto my-2"
           />
           <span className="absolute top-0 -right-6 border w-4 h-4 sm:w-5 sm:h-5  rounded-full flex items-center justify-center text-black">
-            3
+            {item.quantity}
           </span>
         </div>
         <div className="px-3 py-2">
-          <p>Dwight Adams</p>
+          <p>{item.name}</p>
         </div>
 
         <div>
-          <p>$20</p>
+          <p>${item.price}</p>
         </div>
       </div>
+      ))}
+      
     </div>
   );
 };
