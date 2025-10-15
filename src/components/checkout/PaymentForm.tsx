@@ -45,7 +45,6 @@ const PaymentForm = ({ cartItems, email, eventId }: PaymentFormProps) => {
         alert(paymentResult.error.message);
         setIsLoading(false);
       } else if (paymentResult.paymentIntent.status === "succeeded") {
-
         // Payment succeeded: create booking records
         for (const item of cartItems) {
           await createBooking({
@@ -59,10 +58,16 @@ const PaymentForm = ({ cartItems, email, eventId }: PaymentFormProps) => {
         }
 
         // Clear cart
-        await clearCart();
+        await clearCart({ userEmail: email });
+
+        // Clear the Stripe CardElement
+        const cardElement = elements.getElement(CardElement);
+        if (cardElement) {
+          cardElement.clear(); // This clears the card form fields
+        }
 
         alert("Payment Successful! Booking Confirmed.");
-        navigate("/bookings"); // redirect to bookings page
+        navigate("/payment-success"); // redirect to bookings page
       }
     } catch (err) {
       console.error(err);

@@ -4,7 +4,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Error from "./pages/Error";
 import { UserDashboard } from "./dashboard/UserDashboard";
-import CheckOut from "./pages/CheckOut";
 import PrivateRoute from "./components/route/PrivateRoute";
 import Blogs from "./pages/blogs/Blogs";
 import Blog from "./pages/blogs/Blog";
@@ -24,10 +23,15 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/privacy/Privacy";
 import About from "./pages/about/About";
 import Cart from "./components/cart/Cart";
+import CheckOutWrapper from "./components/checkout/CheckOutWrapper";
+import PaymentSuccess from "./pages/PaymentSuccess";
+
 
 
 const App: FC = () => {
-  useCurrentUser(); // Custom hook to fetch current user on app load
+  // Custom hook to fetch current user on app load
+  useCurrentUser(); 
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -42,7 +46,8 @@ const App: FC = () => {
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
         { path: "/cart", element: <Cart /> },
-        { path: "/checkout", element: <CheckOut /> },
+        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
+        { path: "/payment-success", element: <PaymentSuccess/>},
         { path: "/login", element: <Login /> },
         {
           path: "/dashboard",

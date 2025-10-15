@@ -15,7 +15,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
     return <Loader />; // show loader while fetching
   }
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   return <>{children}</>;
