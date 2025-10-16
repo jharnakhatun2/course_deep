@@ -79,7 +79,7 @@ export const getCartItemCount = (cartItems: CartItem[]): number => {
 };
 
 
-// ✅ ADD: Duplicate booking check function
+// Duplicate booking check function
 export const checkIfAlreadyBooked = async (
   userEmail: string, 
   productId: string, 
@@ -102,8 +102,31 @@ export const checkIfAlreadyBooked = async (
   }
 };
 
+// Check if event is already in cart
+export const checkIfEventInCart = async (
+  userEmail: string,
+  eventId: string
+): Promise<boolean> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/cart?userEmail=${userEmail}`
+    );
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch cart');
+    }
+    
+    const cartItems = await response.json();
+    return cartItems.some((item: CartItem) => 
+      item.productId === eventId && item.type === "event"
+    );
+  } catch (error) {
+    console.error('Error checking cart:', error);
+    return false;
+  }
+};
 
-// ✅ ADD: Check if event can be added to cart (for paid events)
+// Check if event can be added to cart (for paid events)
 export const canAddEventToCart = async (
   userEmail: string,
   event: Event
@@ -135,7 +158,7 @@ export const canAddEventToCart = async (
 };
 
 
-// ✅ ADD: Validate cart items for duplicates before checkout
+// Validate cart items for duplicates before checkout
 export const validateCartItemsBeforeCheckout = async (
   cartItems: CartItem[],
   userEmail: string
@@ -169,7 +192,7 @@ export const validateCartItemsBeforeCheckout = async (
 };
 
 
-// ✅ ADD: Get event booking status
+// Get event booking status
 export const getEventBookingStatus = async (
   userEmail: string,
   eventId: string
@@ -184,7 +207,7 @@ export const getEventBookingStatus = async (
 };
 
 
-// ✅ ADD: Create complete cart item with user email
+// Create complete cart item with user email
 export const createCompleteCartItem = (
   baseItem: Omit<CartItem, "quantity" | "userEmail">,
   quantity: number,
@@ -198,7 +221,7 @@ export const createCompleteCartItem = (
 };
 
 
-// ✅ ADD: Enhanced validation for cart items before payment
+// Enhanced validation for cart items before payment
 export const validateCartForCheckout = async (
   cartItems: CartItem[],
   userEmail: string

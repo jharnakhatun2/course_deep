@@ -6,7 +6,7 @@ import type { Event } from "../../ult/types/types";
 import { useCreateBookingMutation } from "../../features/bookings/bookingsApi";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAddToCartMutation } from "../../features/cart/cartApi";
-import { canAddEventToCart, createCartItemFromEvent, createCompleteCartItem, isFreeEvent } from "../cart/cartHelpers";
+import { canAddEventToCart, checkIfEventInCart, createCartItemFromEvent, createCompleteCartItem, isFreeEvent } from "../cart/cartHelpers";
 import { useNavigate } from "react-router";
 
 interface EventBookingFormProps {
@@ -66,7 +66,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     return numericPrice * formData.tickets;
   };
 
-  //  FIXED: Handle FREE event booking with new format
+  //  Handle FREE event booking with new format
   const handleFreeEventBooking = async () => {
     if (!user || !event._id) {
       showErrorToast("User or event information missing!");
@@ -125,7 +125,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     }
   };
 
-  //  FIXED: Handle PAID event - add to cart
+  //  Handle PAID event - add to cart
   const handlePaidEventToCart = async () => {
   if (!user) {
     showErrorToast("Please login to book events!");
@@ -133,6 +133,14 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
   }
 
   try {
+
+    // Check if event is already in cart
+    const isInCart = await checkIfEventInCart(user.email, event._id);
+    if (isInCart) {
+      showErrorToast("This event is already in your cart!");
+      return;
+    }
+
     // Check if user can add this event to cart
     const canAddResult = await canAddEventToCart(user.email, event);
     
@@ -157,7 +165,11 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     navigate("/cart");
   } catch (err: any) {
     console.error("Add to cart error:", err);
-    if (err?.data) {
+    if (err?.data?.includes("already in your cart")) {
+      showErrorToast("This event is already in your cart!");
+    } else if (err?.data?.includes("already booked")) {
+      showErrorToast("You have already booked this event!");
+    } else if (err?.data) {
       showErrorToast(err.data);
     } else {
       showErrorToast("Something went wrong. Please try again.");
@@ -198,7 +210,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       }
     } catch (err: any) {
       console.error("Booking error:", err);
-      showErrorToast("Something went wrong. Please try again.");
+      showErrorToast("Already you booked this event!");
     }
   };
 
