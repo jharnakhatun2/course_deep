@@ -6,16 +6,18 @@ import axios from "axios";
 import { useCreateBookingMutation } from "../../features/bookings/bookingsApi";
 import { useClearCartMutation } from "../../features/cart/cartApi";
 
+
 interface PaymentFormProps {
   cartItems: any[];
   email: string;
-  eventId?: string; // optional, for events
+  eventId?: string;
 }
 
-const PaymentForm = ({ cartItems, email, eventId }: PaymentFormProps) => {
+const PaymentForm = ({ cartItems, email }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
   const [createBooking] = useCreateBookingMutation();
   const [clearCart] = useClearCartMutation();
@@ -48,7 +50,7 @@ const PaymentForm = ({ cartItems, email, eventId }: PaymentFormProps) => {
         // Payment succeeded: create booking records
         for (const item of cartItems) {
           await createBooking({
-            name: "Customer Name", // replace with actual
+            name: "Customer Name",
             email,
             phone: "Customer Phone",
             eventTitle: item.name,
@@ -91,3 +93,4 @@ const PaymentForm = ({ cartItems, email, eventId }: PaymentFormProps) => {
 };
 
 export default PaymentForm;
+

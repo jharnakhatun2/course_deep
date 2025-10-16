@@ -120,78 +120,9 @@ const CheckOut = () => {
               {error}
             </div>
           )}
+          
           {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Contact information */}
-            <h2 className="text-2xl font-semibold mb-6">Contact information</h2>
-            <input
-              type="email"
-              placeholder="Email address *"
-              className="input w-full bg-white"
-            />
-            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
-            {/* Shipping information */}
-            <h2 className="text-2xl font-semibold mb-6">
-              Shipping information
-            </h2>
-            {/* name */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="First name *"
-                className="input w-full bg-white"
-              />
-              <input
-                type="text"
-                placeholder="Last name *"
-                className="input w-full bg-white"
-              />
-            </div>
-            {/* company name */}
-            <input
-              type="text"
-              placeholder="Company name (optional)"
-              className="input w-full bg-white"
-            />
-            {/* Address */}
-            <input
-              type="text"
-              placeholder="Address *"
-              className="input w-full bg-white"
-            />
-            {/* City and Country */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="City *"
-                className="input w-full bg-white"
-              />
-              {/* Country */}
-              <select
-                className="input w-full text-zinc-400 bg-white"
-                defaultValue=""
-              >
-                <option value="" disabled hidden>
-                  Country *
-                </option>
-                <option value="BD">Bangladesh (BD)</option>
-                <option value="US">United States (US)</option>
-                <option value="UK">United Kingdom (UK)</option>
-              </select>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="ZIP Code *"
-                className="input w-full bg-white"
-              />
-              <input
-                type="text"
-                placeholder="Phone *"
-                className="input w-full bg-white"
-              />
-            </div>
-            <div className="h-[1px] w-full bg-gray-500/20 my-5" />
             {/* Payment Information */}
             <h2 className="text-2xl font-semibold mb-3">Payment Method</h2>
             <PaymentElement />
@@ -205,6 +136,7 @@ const CheckOut = () => {
             </button>
           </form>
         </div>
+
         {/* Order Summary */}
         {cartItems.length > 0 ? (
           <div className=" p-6 lg:col-span-2">

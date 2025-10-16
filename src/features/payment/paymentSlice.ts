@@ -19,7 +19,6 @@ export const paymentSlice = createSlice({
   reducers: {
     startPayment(state) {
       state.loading = true;
-      state.success = false;
       state.error = null;
     },
     paymentSuccess(state) {

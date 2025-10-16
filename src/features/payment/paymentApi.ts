@@ -12,7 +12,7 @@ interface CreatePaymentIntentRequest {
 
 export const paymentApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // ✅ Create a PaymentIntent
+    // Create a PaymentIntent
     createPaymentIntent: builder.mutation<
       PaymentIntentResponse,
       CreatePaymentIntentRequest
@@ -24,7 +24,7 @@ export const paymentApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    // ✅ Optional: Verify payment status
+    // Verify payment status
     verifyPaymentStatus: builder.query<any, string>({
       query: (paymentIntentId) => `/payments/verify/${paymentIntentId}`,
     }),

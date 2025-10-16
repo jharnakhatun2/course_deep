@@ -1,9 +1,5 @@
-// src/features/bookings/bookingsApi.ts
-
 import type { Booking } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
-
-
 
 
 export const bookingsApi = apiSlice.injectEndpoints({
