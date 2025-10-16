@@ -1,7 +1,6 @@
 import type { Booking } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
 
-
 export const bookingsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // GET all bookings
@@ -10,19 +9,64 @@ export const bookingsApi = apiSlice.injectEndpoints({
       providesTags: ["Bookings"],
     }),
 
-    // POST create a new booking
+    //  ADD: GET user bookings
+    getUserBookings: builder.query<Booking[], string>({
+      query: (email) => `/bookings/user/${email}`,
+      providesTags: ["Bookings"],
+    }),
+
+    //  UPDATED: POST create a new booking
     createBooking: builder.mutation<
       Booking,
-      Omit<Booking, "_id" | "bookedAt">
+      {
+        // User information
+        userId: string;
+        userEmail: string;
+        userName: string;
+        
+        // Product information
+        productId: string;
+        productType: "course" | "event";
+        productTitle: string;
+        productPrice: number;
+        quantity: number;
+        
+        // Payment information
+        paymentIntentId: string;
+        paymentStatus: "pending" | "succeeded" | "failed";
+        paymentAmount: number;
+        paymentCurrency: string;
+        
+        // Event-specific
+        eventDate?: string;
+        eventTime?: string;
+        eventLocation?: string;
+        
+        status: "confirmed" | "cancelled";
+      }
     >({
       query: (newBooking) => ({
         url: "/bookings",
         method: "POST",
         body: newBooking,
       }),
-      invalidatesTags: ["Bookings", "Event"], // refresh events after booking
+      invalidatesTags: ["Bookings", "Event", "Cart"],
+    }),
+
+    // ADD: Check duplicate booking
+    checkDuplicateBooking: builder.query<
+      { isDuplicate: boolean; existingBooking?: Booking },
+      { userEmail: string; productId: string; type: string }
+    >({
+      query: ({ userEmail, productId, type }) => 
+        `/bookings/check-duplicate?userEmail=${userEmail}&productId=${productId}&type=${type}`,
     }),
   }),
 });
 
-export const { useGetBookingsQuery, useCreateBookingMutation } = bookingsApi;
+export const { 
+  useGetBookingsQuery, 
+  useGetUserBookingsQuery, 
+  useCreateBookingMutation, 
+  useCheckDuplicateBookingQuery 
+} = bookingsApi;

@@ -4,10 +4,14 @@ import ApplyCoupon from "../components/checkout/ApplyCoupon";
 import { useLocation, useNavigate } from "react-router";
 import type { CartItem } from "../ult/types/types";
 import {
+  CardElement,
   PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { useAuth } from "../hook/useAuth";
+import { useCreateBookingMutation } from "../features/bookings/bookingsApi";
+import { useClearCartMutation } from "../features/cart/cartApi";
 
 interface LocationState {
   cartItems: CartItem[];
@@ -22,6 +26,12 @@ const CheckOut = () => {
   const [couponCode, setCouponCode] = useState<string>("");
   const location = useLocation();
   const navigate = useNavigate();
+
+  // ADD: New hooks for booking creation
+  const { user } = useAuth();
+  const [createBooking] = useCreateBookingMutation();
+  const [clearCart] = useClearCartMutation();
+
 
   // Stripe payment state
   const stripe = useStripe();
@@ -53,6 +63,107 @@ const CheckOut = () => {
     setCouponApplied(false);
     setCouponCode("");
   };
+
+  // Handle successful payment with booking creation and seat decrement
+const handleSuccessfulPayment = async (paymentIntent: any) => {
+  try {
+    // Create bookings for each cart item and update seats
+    const bookingPromises = cartItems.map(async (item) => {
+      const bookingData = {
+        // User information
+        userId: user?._id || "unknown",
+        userEmail: user?.email || "unknown",
+        userName: user?.name || "Customer",
+        
+        // Product information
+        productId: item.productId,
+        productType: item.type,
+        productTitle: item.name,
+        productPrice: item.price,
+        quantity: item.quantity,
+        
+        // Payment information
+        paymentIntentId: paymentIntent.id,
+        paymentStatus: "succeeded" as const,
+        paymentAmount: paymentIntent.amount / 100, // Convert from cents
+        paymentCurrency: paymentIntent.currency,
+        
+        // Event-specific information
+        ...(item.type === 'event' && {
+          eventDate: item.date,
+          eventTime: item.time,
+          eventLocation: item.location
+        }),
+        
+        status: "confirmed" as const,
+      };
+
+      const bookingResult = await createBooking(bookingData).unwrap();
+      
+      // ✅ UPDATE: Decrease seats for paid events after successful payment
+      if (item.type === 'event') {
+        try {
+          // Fetch current event to get current seat count
+          const eventResponse = await fetch(
+            `${import.meta.env.VITE_API_URL}/events/${item.productId}`
+          );
+          if (eventResponse.ok) {
+            const event = await eventResponse.json();
+            const remainingSeats = event.seats - item.quantity;
+            
+            // Update event seats
+            await fetch(
+              `${import.meta.env.VITE_API_URL}/events/${item.productId}/seats`,
+              {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ seats: remainingSeats })
+              }
+            );
+          }
+        } catch (seatError) {
+          console.error('Error updating event seats:', seatError);
+          // Don't fail the whole process if seat update fails
+        }
+      }
+      
+      return bookingResult;
+    });
+
+    await Promise.all(bookingPromises);
+
+    // ✅ CLEAR CART after successful payment
+    if (user?.email) {
+      await clearCart({ userEmail: user.email }).unwrap();
+    }
+
+    // ✅ CLEAR Stripe CardElement
+    const cardElement = elements?.getElement(CardElement);
+    if (cardElement) {
+      cardElement.clear();
+    }
+
+    // Redirect to success page
+    navigate("/payment-success", { 
+      state: { 
+        success: true,
+        cartItems: cartItems,
+        paymentIntent: paymentIntent
+      } 
+    });
+
+  } catch (err) {
+    console.error("Error creating bookings:", err);
+    // Still show success but with warning
+    navigate("/payment-success", { 
+      state: { 
+        success: true,
+        warning: "Payment succeeded but there was an issue with booking creation."
+      } 
+    });
+  }
+};
+
 
   // Handle payment submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -99,12 +210,13 @@ const CheckOut = () => {
         console.error(confirmationError);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         // Payment succeeded — redirect manually
-        navigate("/payment-success", { state: { success: true } });
+        // navigate("/payment-success", { state: { success: true } });
+        await handleSuccessfulPayment(paymentIntent);
       }
       // If no error, the payment is processing and user may be redirected
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
-      console.error(err);
+      
     } finally {
       setIsLoading(false);
     }
@@ -113,33 +225,10 @@ const CheckOut = () => {
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10">
-        {/* Billing Details */}
-        <div className="lg:col-span-3">
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
-          
-          {/* Form */}
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Payment Information */}
-            <h2 className="text-2xl font-semibold mb-3">Payment Method</h2>
-            <PaymentElement />
-            {/* Pay button */}
-            <button
-              type="submit"
-              disabled={isLoading || !stripe || !elements}
-              className="cursor-pointer w-2/4 bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-smooth"
-            >
-              {isLoading ? "Processing..." : "Pay Now"}
-            </button>
-          </form>
-        </div>
-
+        
         {/* Order Summary */}
         {cartItems.length > 0 ? (
-          <div className=" p-6 lg:col-span-2">
+          <div className=" p-6 lg:col-span-3">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b border-gray-300 pb-4 mb-4">
               {/* Product List */}
@@ -195,7 +284,7 @@ const CheckOut = () => {
             </div>
           </div>
         ) : (
-          <div className=" p-6 lg:col-span-2">
+          <div className=" p-6 lg:col-span-3">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="border-b pb-4 mb-4">
               <div className="flex justify-between mb-2">
@@ -242,8 +331,33 @@ const CheckOut = () => {
             </div>
           </div>
         )}
+
+        {/* Billing Details */}
+        <div className="p-6 lg:col-span-2">
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+          
+          {/* Form */}
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Payment Information */}
+            <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+            <PaymentElement />
+            {/* Pay button */}
+            <button
+              type="submit"
+              disabled={isLoading || !stripe || !elements}
+              className="cursor-pointer w-2/4 bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-smooth"
+            >
+              {isLoading ? "Processing..." : "Pay Now"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
 };
 export default CheckOut;
+

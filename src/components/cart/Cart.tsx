@@ -4,6 +4,7 @@ import { useAuth } from "../../hook/useAuth";
 import Loader from "../../ult/loader/Loader";
 import CartItem from "./CartItem";
 
+
 const Cart = () => {
   const {user} = useAuth();
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const Cart = () => {
               </button>
             </div>
           ) : (
-            <CartItem />
+            <CartItem cartItems={cartItems} userEmail={user?.email} />
           )}
         </div>
 

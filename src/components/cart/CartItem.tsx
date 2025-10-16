@@ -1,19 +1,24 @@
-import { useGetCartQuery } from "../../features/cart/cartApi";
 import QuantityInput from "./QuantityInput";
 import { 
   useRemoveFromCartMutation, 
   useUpdateCartQuantityMutation 
 } from "../../features/cart/cartApi";
 import { showSuccessToast, showErrorToast } from "../../ult/toast/toast";
+import type {CartItem as CartItemType} from "../../ult/types/types";
+import type { FC } from "react";
 
-const CartItem = () => {
-  const { data: cartItems = [] } = useGetCartQuery();
+interface CartItemProps {
+  cartItems: CartItemType[];
+  userEmail?: string;
+}
+
+const CartItem:FC<CartItemProps> = ({ cartItems, userEmail }) => {
   const [removeFromCart, { isLoading: isRemoving }] = useRemoveFromCartMutation();
   const [updateQuantity] = useUpdateCartQuantityMutation();
 
   const handleRemove = async (productId: string, type: string) => {
     try {
-      await removeFromCart({ productId, type }).unwrap();
+      await removeFromCart({ productId, type, userEmail }).unwrap();
       showSuccessToast("Item removed from cart");
     } catch (error) {
       showErrorToast("Failed to remove item");
@@ -25,7 +30,8 @@ const CartItem = () => {
       await updateQuantity({
         productId,
         type,
-        quantity: newQuantity
+        quantity: newQuantity,
+        userEmail
       }).unwrap();
     } catch (error) {
       showErrorToast("Failed to update quantity");

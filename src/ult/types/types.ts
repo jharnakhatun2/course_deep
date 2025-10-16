@@ -8,7 +8,6 @@ export interface User {
   lastSignInTime?: string; 
 }
 
-//Course data type
 export interface Course {
   _id: string;
   name: string;
@@ -26,7 +25,7 @@ export interface Course {
   language: string;
   studentsEnrolled: number;
   certificate: boolean;
-  lastUpdated: string; // ISO date string
+  lastUpdated: string;
   courseURL: string;
   prerequisites: string[];
   promoVideo: string;
@@ -60,14 +59,34 @@ export interface Event {
   discussItems: string[];
 }
 
+// ✅ UPDATED: Booking interface
 export interface Booking {
   _id?: string;
-  name: string;
-  email: string;
-  phone: string;
-  eventTitle: string;
-  tickets: number;
-  date: string;
+  // User information
+  userId: string;
+  userEmail: string;
+  userName: string;
+  
+  // Product information
+  productId: string;
+  productType: "course" | "event";
+  productTitle: string;
+  productPrice: number;
+  quantity: number;
+  
+  // Payment information
+  paymentIntentId: string;
+  paymentStatus: "pending" | "succeeded" | "failed";
+  paymentAmount: number;
+  paymentCurrency: string;
+  
+  // Event-specific
+  eventDate?: string;
+  eventTime?: string;
+  eventLocation?: string;
+  
+  // Booking metadata
+  status: "confirmed" | "cancelled";
   bookedAt?: string;
 }
 
@@ -80,7 +99,6 @@ export interface Replay {
   image: string;
 }
 
-
 export interface Comment {
   _id: string; 
   name: string;
@@ -91,7 +109,6 @@ export interface Comment {
   image: string;
   replies?: Replay[]; 
 }
-
 
 export interface BlogPost {
   _id: string;        
@@ -119,16 +136,15 @@ export interface CartItem {
   productId: string;
   name: string;
   price: number;
-  originalPrice: string; // Keep original price string for display
+  originalPrice: string;
   quantity: number;
   type: 'course' | 'event';
   image: string;
-  date?: string; // For events
-  time?: string; // For events
-  location?: string; // For events
-  teacher?: string; // For courses
-  ratings?: string; // For courses
-  duration?: string; // For courses
+  date?: string;
+  time?: string;
+  location?: string;
+  teacher?: string;
+  ratings?: string;
+  duration?: string;
   userEmail: string;
 }
-

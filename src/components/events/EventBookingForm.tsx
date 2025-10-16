@@ -6,7 +6,7 @@ import type { Event } from "../../ult/types/types";
 import { useCreateBookingMutation } from "../../features/bookings/bookingsApi";
 import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import { useAddToCartMutation } from "../../features/cart/cartApi";
-import { createCartItemFromEvent, isFreeEvent } from "../cart/cartHelpers";
+import { canAddEventToCart, createCartItemFromEvent, createCompleteCartItem, isFreeEvent } from "../cart/cartHelpers";
 import { useNavigate } from "react-router";
 
 interface EventBookingFormProps {
@@ -31,9 +31,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     name: "",
     email: "",
     phone: "",
-    eventTitle: event?.title || "",
     tickets: 1,
-    date: event?.date || "",
   });
 
   // Use the helper function to check if event is free
@@ -68,6 +66,105 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
     return numericPrice * formData.tickets;
   };
 
+  //  FIXED: Handle FREE event booking with new format
+  const handleFreeEventBooking = async () => {
+    if (!user || !event._id) {
+      showErrorToast("User or event information missing!");
+      return;
+    }
+
+    const bookingData = {
+      // User information
+      userId: user._id,
+      userEmail: user.email,
+      userName: user.name,
+      
+      // Product information
+      productId: event._id,
+      productType: "event" as const,
+      productTitle: event.title || event.name,
+      productPrice: 0, // Free event
+      quantity: formData.tickets,
+      
+      // Payment information (for free events)
+      paymentIntentId: "free_event_no_payment",
+      paymentStatus: "succeeded" as const,
+      paymentAmount: 0,
+      paymentCurrency: "usd",
+      
+      // Event-specific information
+      eventDate: event.date,
+      eventTime: event.time,
+      eventLocation: event.location,
+      
+      status: "confirmed" as const,
+    };
+
+    try {
+      // Create booking
+      await createBooking(bookingData).unwrap();
+
+      // Update event seats
+      const remainingSeats = event.seats - formData.tickets;
+      await updateSeats({ id: event._id, seats: remainingSeats }).unwrap();
+
+      await refetchEvent();
+      showSuccessToast("🎉 Your Booking is confirmed!");
+      onClose();
+    } catch (err: any) {
+      console.error("Free event booking error:", err);
+      
+      // ✅ Handle duplicate booking error specifically
+      if (err?.data?.includes("already booked") || err?.status === 400) {
+        showErrorToast("You have already booked this event!");
+      } else if (err?.data) {
+        showErrorToast(err.data);
+      } else {
+        showErrorToast("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+  //  FIXED: Handle PAID event - add to cart
+  const handlePaidEventToCart = async () => {
+  if (!user) {
+    showErrorToast("Please login to book events!");
+    return;
+  }
+
+  try {
+    // Check if user can add this event to cart
+    const canAddResult = await canAddEventToCart(user.email, event);
+    
+    if (!canAddResult.canAdd) {
+      showErrorToast(canAddResult.reason || "Cannot add this event to cart");
+      return;
+    }
+
+    // If can add, proceed with adding to cart
+    const cartItemData = createCartItemFromEvent(event);
+    const completeCartItem = createCompleteCartItem(cartItemData, formData.tickets, user.email);
+    
+    await addToCart({
+      productId: completeCartItem.productId,
+      type: "event",
+      quantity: completeCartItem.quantity,
+      userEmail: completeCartItem.userEmail,
+    }).unwrap();
+
+    showSuccessToast(`Added ${formData.tickets} ticket(s) to cart!`);
+    onClose();
+    navigate("/cart");
+  } catch (err: any) {
+    console.error("Add to cart error:", err);
+    if (err?.data) {
+      showErrorToast(err.data);
+    } else {
+      showErrorToast("Something went wrong. Please try again.");
+    }
+  }
+};
+
   // Handle form submission for both free and paid events
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,37 +192,13 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
 
     try {
       if (freeEvent) {
-        // FREE EVENT: Direct booking
-        await createBooking(formData).unwrap();
-
-        // Update event seats
-        const remainingSeats = event.seats - formData.tickets;
-        await updateSeats({ id: event._id, seats: remainingSeats }).unwrap();
-
-        await refetchEvent();
-        showSuccessToast("🎉 Your Booking is confirmed!");
-        onClose();
+        await handleFreeEventBooking();
       } else {
-        // PAID EVENT for Add to cart
-        const cartItemData = createCartItemFromEvent(event);
-        await addToCart({
-          productId: cartItemData.productId,
-          type: "event",
-          quantity: formData.tickets,
-          userEmail: user.email,
-        }).unwrap();
-
-        showSuccessToast(`Added ${formData.tickets} ticket(s) to cart!`);
-        onClose();
-        navigate("/cart");
+        await handlePaidEventToCart();
       }
     } catch (err: any) {
       console.error("Booking error:", err);
-      if (err?.data) {
-        showErrorToast(err.data);
-      } else {
-        showErrorToast("Something went wrong. Please try again.");
-      }
+      showErrorToast("Something went wrong. Please try again.");
     }
   };
 
@@ -227,13 +300,12 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
           />
         </div>
 
-        {/* Event */}
+        {/* Event Info (Read-only) */}
         <div>
           <label className={labelStyle}>Event</label>
           <input
             type="text"
-            name="eventTitle"
-            value={formData.eventTitle}
+            value={event.title || event.name}
             readOnly
             className={`${inputStyle} bg-gray-100 !text-zinc-500`}
           />
@@ -261,13 +333,12 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
           )}
         </div>
 
-        {/* Event Date */}
+        {/* Event Date (Read-only) */}
         <div>
           <label className={labelStyle}>Event Date</label>
           <input
-            type="date"
-            name="date"
-            value={formData.date}
+            type="text"
+            value={event.date}
             readOnly
             className={`${inputStyle} bg-gray-100 !text-zinc-500`}
           />
@@ -304,6 +375,13 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
             <p>You'll complete payment on the checkout page</p>
           )}
         </div>
+
+        {/* Duplicate Prevention Warning */}
+        {!freeEvent && (
+          <div className="text-center text-xs text-orange-600 bg-orange-50 p-2 rounded">
+            ⚠️ You can only book this event once per email
+          </div>
+        )}
       </form>
     </div>
   );
