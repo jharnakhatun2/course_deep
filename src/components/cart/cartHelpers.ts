@@ -11,7 +11,7 @@ export const createCartItemFromEvent = (
   const originalPrice =
     typeof event.price === "number"
       ? `$${event.price.toFixed(2)}`
-      : event.price;
+      : `$${parseFloat(event.price as string).toFixed(2)}`;
 
   return {
     _id: event._id,

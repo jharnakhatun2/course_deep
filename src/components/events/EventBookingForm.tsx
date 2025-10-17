@@ -85,6 +85,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       productTitle: event.title || event.name,
       productPrice: 0, // Free event
       quantity: formData.tickets,
+      productImage: event.image,
       
       // Payment information (for free events)
       paymentIntentId: "free_event_no_payment",
@@ -158,6 +159,14 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       type: "event",
       quantity: completeCartItem.quantity,
       userEmail: completeCartItem.userEmail,
+      // All product information
+      name: completeCartItem.name,
+      price: completeCartItem.price,
+      originalPrice: completeCartItem.originalPrice,
+      image: completeCartItem.image,
+      date: completeCartItem.date,
+      time: completeCartItem.time,
+      location: completeCartItem.location
     }).unwrap();
 
     showSuccessToast(`Added ${formData.tickets} ticket(s) to cart!`);

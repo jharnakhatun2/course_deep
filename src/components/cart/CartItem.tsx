@@ -15,7 +15,7 @@ interface CartItemProps {
 const CartItem:FC<CartItemProps> = ({ cartItems, userEmail }) => {
   const [removeFromCart, { isLoading: isRemoving }] = useRemoveFromCartMutation();
   const [updateQuantity] = useUpdateCartQuantityMutation();
-
+console.log(cartItems)
   const handleRemove = async (productId: string, type: string) => {
     try {
       await removeFromCart({ productId, type, userEmail }).unwrap();
@@ -39,7 +39,8 @@ const CartItem:FC<CartItemProps> = ({ cartItems, userEmail }) => {
   };
 
   if (cartItems.length === 0) return null;
-
+  
+console.log(cartItems)
   return (
     <div> 
       {cartItems.map((item) => (

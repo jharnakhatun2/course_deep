@@ -6,13 +6,31 @@ export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query<CartItem[], string | void>({
       query: (userEmail) => ({
-        url: userEmail ? `/cart?userEmail=${userEmail}` : '/cart',
+        url: userEmail ? `/cart?userEmail=${userEmail}` : "/cart",
         method: "GET",
       }),
       providesTags: ["Cart"],
     }),
 
-    addToCart: builder.mutation<CartItem, { productId: string; quantity: number; type: 'course' | 'event'; userEmail: string;}>({
+    addToCart: builder.mutation<
+      CartItem,
+      {
+        productId: string;
+        quantity: number;
+        type: "course" | "event";
+        userEmail: string;
+        name?: string;
+        price?: number;
+        originalPrice?: string;
+        image?: string;
+        date?: string;
+        time?: string;
+        location?: string;
+        teacher?: string;
+        ratings?: string;
+        duration?: string;
+      }
+    >({
       query: (cartItem) => ({
         url: "/cart",
         method: "POST",
@@ -21,15 +39,23 @@ export const cartApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Cart"],
     }),
 
-    removeFromCart: builder.mutation<{ success: boolean }, { productId: string; type: string; userEmail?: string; }>({
+    removeFromCart: builder.mutation<
+      { success: boolean },
+      { productId: string; type: string; userEmail?: string }
+    >({
       query: ({ productId, type, userEmail }) => ({
-        url: `/cart/${productId}?type=${type}${userEmail ? `&userEmail=${userEmail}` : ''}`,
+        url: `/cart/${productId}?type=${type}${
+          userEmail ? `&userEmail=${userEmail}` : ""
+        }`,
         method: "DELETE",
       }),
       invalidatesTags: ["Cart"],
     }),
 
-    updateCartQuantity: builder.mutation<CartItem, { productId: string; type: string; quantity: number; userEmail?: string; }>({
+    updateCartQuantity: builder.mutation<
+      CartItem,
+      { productId: string; type: string; quantity: number; userEmail?: string }
+    >({
       query: ({ productId, type, quantity, userEmail }) => ({
         url: `/cart/${productId}`,
         method: "PATCH",
@@ -38,9 +64,9 @@ export const cartApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Cart"],
     }),
 
-    clearCart: builder.mutation<{ success: boolean }, {userEmail?: string}>({
-      query: ({userEmail}={}) => ({
-        url: userEmail ?  `/cart/clear?userEmail=${userEmail}` : "/cart/clear",
+    clearCart: builder.mutation<{ success: boolean }, { userEmail?: string }>({
+      query: ({ userEmail } = {}) => ({
+        url: userEmail ? `/cart/clear?userEmail=${userEmail}` : "/cart/clear",
         method: "DELETE",
       }),
       invalidatesTags: ["Cart"],
