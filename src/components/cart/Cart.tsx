@@ -33,8 +33,6 @@ const Cart = () => {
     );
   }
 
-  
-console.log(cartItems)
   return (
     <section className="py-20 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 sm:gap-16">

@@ -25,6 +25,7 @@ import About from "./pages/about/About";
 import Cart from "./components/cart/Cart";
 import CheckOutWrapper from "./components/checkout/CheckOutWrapper";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import BookingsPage from "./pages/BookingsPage";
 
 
 
@@ -48,6 +49,7 @@ const App: FC = () => {
         { path: "/cart", element: <Cart /> },
         { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
         { path: "/payment-success", element: <PaymentSuccess/>},
+        { path: "/bookings", element: <BookingsPage/>},
         { path: "/login", element: <Login /> },
         {
           path: "/dashboard",

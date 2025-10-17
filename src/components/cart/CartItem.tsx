@@ -40,7 +40,7 @@ console.log(cartItems)
 
   if (cartItems.length === 0) return null;
   
-console.log(cartItems)
+
   return (
     <div> 
       {cartItems.map((item) => (

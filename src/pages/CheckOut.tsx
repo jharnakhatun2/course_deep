@@ -32,7 +32,6 @@ const CheckOut = () => {
   const [createBooking] = useCreateBookingMutation();
   const [clearCart] = useClearCartMutation();
 
-
   // Stripe payment state
   const stripe = useStripe();
   const elements = useElements();
@@ -65,105 +64,106 @@ const CheckOut = () => {
   };
 
   // Handle successful payment with booking creation and seat decrement
-const handleSuccessfulPayment = async (paymentIntent: any) => {
-  try {
-    // Create bookings for each cart item and update seats
-    const bookingPromises = cartItems.map(async (item) => {
-      const bookingData = {
-        // User information
-        userId: user?._id || "unknown",
-        userEmail: user?.email || "unknown",
-        userName: user?.name || "Customer",
-        
-        // Product information
-        productId: item.productId,
-        productType: item.type,
-        productTitle: item.name,
-        productPrice: item.price,
-        quantity: item.quantity,
-        
-        // Payment information
-        paymentIntentId: paymentIntent.id,
-        paymentStatus: "succeeded" as const,
-        paymentAmount: paymentIntent.amount / 100, // Convert from cents
-        paymentCurrency: paymentIntent.currency,
-        
-        // Event-specific information
-        ...(item.type === 'event' && {
-          eventDate: item.date,
-          eventTime: item.time,
-          eventLocation: item.location
-        }),
-        
-        status: "confirmed" as const,
-      };
+  const handleSuccessfulPayment = async (paymentIntent: any) => {
+    try {
+      // Create bookings for each cart item and update seats
+      const bookingPromises = cartItems.map(async (item) => {
+        const bookingData = {
+          // User information
+          userId: user?._id || "unknown",
+          userEmail: user?.email || "unknown",
+          userName: user?.name || "Customer",
 
-      const bookingResult = await createBooking(bookingData).unwrap();
-      
-      // ✅ UPDATE: Decrease seats for paid events after successful payment
-      if (item.type === 'event') {
-        try {
-          // Fetch current event to get current seat count
-          const eventResponse = await fetch(
-            `${import.meta.env.VITE_API_URL}/events/${item.productId}`
-          );
-          if (eventResponse.ok) {
-            const event = await eventResponse.json();
-            const remainingSeats = event.seats - item.quantity;
-            
-            // Update event seats
-            await fetch(
-              `${import.meta.env.VITE_API_URL}/events/${item.productId}/seats`,
-              {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ seats: remainingSeats })
-              }
+          // Product information
+          productId: item.productId,
+          productType: item.type,
+          productTitle: item.name,
+          productPrice: item.price,
+          quantity: item.quantity,
+
+          // Payment information
+          paymentIntentId: paymentIntent.id,
+          paymentStatus: "succeeded" as const,
+          paymentAmount: paymentIntent.amount / 100, // Convert from cents
+          paymentCurrency: paymentIntent.currency,
+
+          // Event-specific information
+          ...(item.type === "event" && {
+            eventDate: item.date,
+            eventTime: item.time,
+            eventLocation: item.location,
+          }),
+
+          status: "confirmed" as const,
+        };
+
+        const bookingResult = await createBooking(bookingData).unwrap();
+
+        // ✅ UPDATE: Decrease seats for paid events after successful payment
+        if (item.type === "event") {
+          try {
+            // Fetch current event to get current seat count
+            const eventResponse = await fetch(
+              `${import.meta.env.VITE_API_URL}/events/${item.productId}`
             );
+            if (eventResponse.ok) {
+              const event = await eventResponse.json();
+              const remainingSeats = event.seats - item.quantity;
+
+              // Update event seats
+              await fetch(
+                `${import.meta.env.VITE_API_URL}/events/${
+                  item.productId
+                }/seats`,
+                {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ seats: remainingSeats }),
+                }
+              );
+            }
+          } catch (seatError) {
+            console.error("Error updating event seats:", seatError);
+            // Don't fail the whole process if seat update fails
           }
-        } catch (seatError) {
-          console.error('Error updating event seats:', seatError);
-          // Don't fail the whole process if seat update fails
         }
+
+        return bookingResult;
+      });
+
+      await Promise.all(bookingPromises);
+
+      // ✅ CLEAR CART after successful payment
+      if (user?.email) {
+        await clearCart({ userEmail: user.email }).unwrap();
       }
-      
-      return bookingResult;
-    });
 
-    await Promise.all(bookingPromises);
+      // ✅ CLEAR Stripe CardElement
+      const cardElement = elements?.getElement(CardElement);
+      if (cardElement) {
+        cardElement.clear();
+      }
 
-    // ✅ CLEAR CART after successful payment
-    if (user?.email) {
-      await clearCart({ userEmail: user.email }).unwrap();
+      // Redirect to success page
+      navigate("/payment-success", {
+        state: {
+          success: true,
+          cartItems: cartItems,
+          paymentIntent: paymentIntent,
+        },
+      });
+    } catch (err) {
+      console.error("Error creating bookings:", err);
+      // Still show success but with warning
+      navigate("/payment-success", {
+        state: {
+          success: true,
+          warning:
+            "Payment succeeded but there was an issue with booking creation.",
+        },
+      });
     }
-
-    // ✅ CLEAR Stripe CardElement
-    const cardElement = elements?.getElement(CardElement);
-    if (cardElement) {
-      cardElement.clear();
-    }
-
-    // Redirect to success page
-    navigate("/payment-success", { 
-      state: { 
-        success: true,
-        cartItems: cartItems,
-        paymentIntent: paymentIntent
-      } 
-    });
-
-  } catch (err) {
-    console.error("Error creating bookings:", err);
-    // Still show success but with warning
-    navigate("/payment-success", { 
-      state: { 
-        success: true,
-        warning: "Payment succeeded but there was an issue with booking creation."
-      } 
-    });
-  }
-};
-
+  };
 
   // Handle payment submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -216,7 +216,6 @@ const handleSuccessfulPayment = async (paymentIntent: any) => {
       // If no error, the payment is processing and user may be redirected
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
-      
     } finally {
       setIsLoading(false);
     }
@@ -225,7 +224,6 @@ const handleSuccessfulPayment = async (paymentIntent: any) => {
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10">
-        
         {/* Order Summary */}
         {cartItems.length > 0 ? (
           <div className=" p-6 lg:col-span-3">
@@ -339,7 +337,7 @@ const handleSuccessfulPayment = async (paymentIntent: any) => {
               {error}
             </div>
           )}
-          
+
           {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Payment Information */}
@@ -360,4 +358,3 @@ const handleSuccessfulPayment = async (paymentIntent: any) => {
   );
 };
 export default CheckOut;
-
