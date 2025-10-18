@@ -47,7 +47,7 @@ const Cart = () => {
               <p className="text-gray-500 text-lg">Your cart is empty</p>
               <button 
                 onClick={() => window.history.back()}
-                className="mt-4 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition-colors"
+                className="cursor-pointer mt-4 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition-colors"
               >
                 Continue Shopping
               </button>

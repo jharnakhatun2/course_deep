@@ -66,8 +66,11 @@ const CheckOut = () => {
   // Handle successful payment with booking creation and seat decrement
   const handleSuccessfulPayment = async (paymentIntent: any) => {
     try {
+      const paidEventItems = cartItems.filter(item => 
+      item.type === "event" && item.price > 0
+    );
       // Create bookings for each cart item and update seats
-      const bookingPromises = cartItems.map(async (item) => {
+      const bookingPromises = paidEventItems.map(async (item) => {
         const bookingData = {
           // User information
           userId: user?._id || "unknown",
@@ -97,38 +100,7 @@ const CheckOut = () => {
           status: "confirmed" as const,
         };
 
-        const bookingResult = await createBooking(bookingData).unwrap();
-
-        // ✅ UPDATE: Decrease seats for paid events after successful payment
-        if (item.type === "event") {
-          try {
-            // Fetch current event to get current seat count
-            const eventResponse = await fetch(
-              `${import.meta.env.VITE_API_URL}/events/${item.productId}`
-            );
-            if (eventResponse.ok) {
-              const event = await eventResponse.json();
-              const remainingSeats = event.seats - item.quantity;
-
-              // Update event seats
-              await fetch(
-                `${import.meta.env.VITE_API_URL}/events/${
-                  item.productId
-                }/seats`,
-                {
-                  method: "PATCH",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ seats: remainingSeats }),
-                }
-              );
-            }
-          } catch (seatError) {
-            console.error("Error updating event seats:", seatError);
-            // Don't fail the whole process if seat update fails
-          }
-        }
-
-        return bookingResult;
+        return await createBooking(bookingData).unwrap();
       });
 
       await Promise.all(bookingPromises);
@@ -223,7 +195,7 @@ const CheckOut = () => {
 
   return (
     <section className="py-10 bg-gray-100">
-      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10">
+      <div className="lg:max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10">
         {/* Order Summary */}
         {cartItems.length > 0 ? (
           <div className=" p-6 lg:col-span-3">
