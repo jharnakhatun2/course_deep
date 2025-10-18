@@ -4,6 +4,12 @@ import { useParams } from "react-router";
 import { useGetCoursesQuery } from "../../features/course/courseApi";
 import Loader from "../../ult/loader/Loader";
 import type { Course, Video } from "../../ult/types/types";
+import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+
+const breadcrumbItems = [
+    { label: "Courses", href: "/courses" },
+    { label: "Course" },
+  ];
 
 const CourseSinglePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +28,7 @@ const CourseSinglePage = () => {
   return (
     <main className="py-16">
       <div className="max-w-4xl mx-auto px-4">
+        <Breadcrumb items={breadcrumbItems} />
         <h1 className="text-3xl font-bold mb-4">{course.name}</h1>
         <p className="mb-6">{course.description}</p>
 

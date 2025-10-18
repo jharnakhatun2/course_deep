@@ -5,6 +5,11 @@ import { useGetBlogsQuery } from "../../features/blog/blogApi";
 import Loader from "../../ult/loader/Loader";
 import Pagination from "../../ult/pegination/Pagination";
 import { usePagination } from "../../ult/pegination/usePagination";
+import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+
+const breadcrumbItems = [
+  { label: "Blogs" }
+];
 
 const Blogs = () => {
   const {
@@ -61,6 +66,7 @@ const Blogs = () => {
         <div className="lg:col-span-3 order-2 lg:order-1">
           {/* total blogs */}
           <div className="flex items-center justify-between mb-6">
+            <Breadcrumb items={breadcrumbItems} />
             <p className="hidden sm:flex text-zinc-600">
               Showing{" "}
               <span className="font-bold px-1">

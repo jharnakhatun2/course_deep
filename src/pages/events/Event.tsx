@@ -7,6 +7,12 @@ import BuyTicket from "../../components/events/BuyTicket";
 import { useParams } from "react-router";
 import { useGetEventByIdQuery } from "../../features/event/eventApi";
 import Loader from "../../ult/loader/Loader";
+import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+
+ const breadcrumbItems = [
+    { label: "Events", href: "/events" },
+    { label: "Event" },
+  ];
 
 const Event = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +36,8 @@ const Event = () => {
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">
         <div className="lg:col-span-3">
-          <div className="relative overflow-hidden shadow">
+          <Breadcrumb items={breadcrumbItems} />
+          <div className="relative overflow-hidden shadow mt-1">
             <img
               src={event.image}
               alt="Event header"

@@ -6,6 +6,12 @@ import SingleBlogInfo from "../../components/latestBlog/SingleBlogInfo";
 import SingleAuthor from "../../components/latestBlog/SingleAuthor";
 import CommentsSection from "../../components/latestBlog/CommentsSection";
 import { useEffect } from "react";
+import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+
+const breadcrumbItems = [
+    { label: "Blogs", href: "/blogs" },
+    { label: "Blog" },
+  ];
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,6 +44,7 @@ const Blog = () => {
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Main Blog Content */}
         <div className="lg:col-span-3">
+          <Breadcrumb items={breadcrumbItems} />
           <Link
             to="/blogs"
             className="text-teal-500 hover:text-yellow-500 mb-4 inline-block "

@@ -7,6 +7,11 @@ import Pagination from "../../ult/pegination/Pagination";
 import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
 import { useState } from "react";
+import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+
+const breadcrumbItems = [
+  { label: "Courses" }
+];
 
 const Courses = () => {
   const {
@@ -59,6 +64,7 @@ const Courses = () => {
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
         {/* Left content */}
         <div className="lg:col-span-4">
+          <Breadcrumb items={breadcrumbItems} />
           <div className="flex items-center justify-between mb-2">
             {/* Title */}
             <h2 className="text-xl text-zinc-700 font-bold">
