@@ -87,7 +87,7 @@ const Courses = () => {
               of <span className="px-2 font-bold">{totalItems}</span> results
             </p>
           </div>
-          <div className="h-[1px] w-full bg-gray-500/20 -mt-2 mb-3"></div>
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-1 my-4"></div>
 
           {/* Course List */}
           {filteredCourses.length === 0 ? (

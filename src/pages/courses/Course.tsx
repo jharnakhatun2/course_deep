@@ -5,7 +5,9 @@ import { useGetCoursesQuery } from "../../features/course/courseApi";
 import Loader from "../../ult/loader/Loader";
 import type { Course, Video } from "../../ult/types/types";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
 
+//for breadcrumb
 const breadcrumbItems = [
     { label: "Courses", href: "/courses" },
     { label: "Course" },
@@ -26,9 +28,11 @@ const CourseSinglePage = () => {
   const handleEnroll = () => setEnrolled(true);
 
   return (
-    <main className="py-16">
-      <div className="max-w-4xl mx-auto px-4">
+   <section className="py-10 bg-gray-100">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="lg:col-span-3">
         <Breadcrumb items={breadcrumbItems} />
+        <div className="h-[1px] w-full bg-gray-500/20 my-3" />
         <h1 className="text-3xl font-bold mb-4">{course.name}</h1>
         <p className="mb-6">{course.description}</p>
 
@@ -58,8 +62,13 @@ const CourseSinglePage = () => {
             </div>
           ))}
         </div>
+        </div>
+        {/* Sidebar */}
+        <aside className="lg:col-span-1">
+          <SingleCourseSidebar />
+        </aside>
       </div>
-    </main>
+    </section>
   );
 };
 

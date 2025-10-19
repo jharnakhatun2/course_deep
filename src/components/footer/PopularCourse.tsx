@@ -31,7 +31,8 @@ const PopularCourse = () => {
             <p className="text-xs font-medium hover:text-yellow-500">
               {course.name}
             </p>
-            <span className="text-sm text-yellow-500">{course.price}</span>
+            {course.price > 0 ? (<span className="text-sm text-yellow-500">{course.price}</span>) : (<span className="text-sm text-teal-500">Free</span>)}
+            
           </div>
         </Link>
       ))}
