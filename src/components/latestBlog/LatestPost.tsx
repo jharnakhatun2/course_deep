@@ -2,12 +2,10 @@ import { useMemo, type FC } from "react";
 import { Link } from "react-router";
 import { useGetBlogsQuery } from "../../features/blog/blogApi";
 
-
-
 const LatestPost: FC = () => {
   const { data: blogs } = useGetBlogsQuery(undefined, {
-      refetchOnMountOrArgChange: false,
-    });
+    refetchOnMountOrArgChange: false,
+  });
 
   // Compute latest blogs safely using useMemo
   const latestPost = useMemo(() => {
@@ -32,10 +30,18 @@ const LatestPost: FC = () => {
         latestPost.map((blog) => (
           <Link
             to={`/blogs/${blog._id}`}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 group"
             key={blog._id}
           >
-            <img src={blog.image} className="w-24 rounded" alt={blog.title} />
+            <div className="relative overflow-hidden group">
+              <img
+                src={blog.image}
+                alt={blog.title}
+                className="w-24 rounded object-cover"
+              />
+              <div className="absolute inset-0 bg-yellow-500/50 transform -translate-x-full group-hover:translate-x-0 transition-smooth"/>
+            </div>
+
             <div>
               <p className="text-sm hover:text-yellow-500">{blog.title}</p>
               <span className="text-sm font-semibold">
