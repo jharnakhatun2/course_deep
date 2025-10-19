@@ -36,6 +36,7 @@ const BlogCard: React.FC<BlogPost> = ({
           alt={title}
           className="w-full h-48 object-cover transform transition-transform duration-500 group-hover:scale-110"
         />
+        {/* Overlay slides up */}
         <div
           className="absolute bottom-0 left-0 w-full h-0 bg-gray-100/70
   flex items-center justify-center group-hover:h-full overflow-hidden transition-smooth"

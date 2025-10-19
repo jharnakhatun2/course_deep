@@ -9,9 +9,7 @@ import { usePagination } from "../../ult/pegination/usePagination";
 import { useState } from "react";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 
-const breadcrumbItems = [
-  { label: "Courses" }
-];
+const breadcrumbItems = [{ label: "Courses" }];
 
 const Courses = () => {
   const {
@@ -64,18 +62,21 @@ const Courses = () => {
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
         {/* Left content */}
         <div className="lg:col-span-4">
-          <Breadcrumb items={breadcrumbItems} />
           <div className="flex items-center justify-between mb-2">
-            {/* Title */}
-            <h2 className="text-xl text-zinc-700 font-bold">
-              {category ? (
-                <>
-                  <span className="font-light">Courses in</span> {category}
-                </>
-              ) : (
-                "All Courses"
-              )}
-            </h2>
+            <div className="flex gap-5">
+              <Breadcrumb items={breadcrumbItems} />
+              {/* Title */}
+              <h2 className="text-zinc-700 font-bold">
+                {category ? (
+                  <>
+                    <span className="font-light">Courses in</span> {category}
+                  </>
+                ) : (
+                  "All Courses"
+                )}
+              </h2>
+            </div>
+
             {/* total course */}
             <p className="hidden sm:flex text-zinc-600">
               Showing{" "}
