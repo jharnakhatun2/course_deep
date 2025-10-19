@@ -19,7 +19,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
               {/* Date */}
               <DateCard date={blog.date} />
             </div>
-            <div className="sm:ml-20 relative sm:static border border-white/80 overflow-hidden shadow-sm hover:shadow-md transition duration-200 my-8">
+            <div className="sm:ml-20 relative sm:static border border-white overflow-hidden shadow-sm hover:shadow-md transition duration-200 my-8">
               {/* Image */}
               <img
                 src={blog.image}
@@ -58,7 +58,9 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                 </div>
 
                 {/* Short description */}
-                <p className="text-sm sm:text-base">{blog.content}</p>
+                <p className="text-sm sm:text-base">
+                  {blog.content.slice(0, 300) + "......."}
+                </p>
 
                 {/* Read More Button */}
                 <Button

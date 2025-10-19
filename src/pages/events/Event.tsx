@@ -37,7 +37,8 @@ const Event = () => {
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">
         <div className="lg:col-span-3">
           <Breadcrumb items={breadcrumbItems} />
-          <div className="relative overflow-hidden shadow mt-1">
+          <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+          <div className="relative overflow-hidden shadow ">
             <img
               src={event.image}
               alt="Event header"

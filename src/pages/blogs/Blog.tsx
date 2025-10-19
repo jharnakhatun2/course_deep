@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation } from "react-router";
+import { useParams, useLocation } from "react-router";
 import Loader from "../../ult/loader/Loader";
 import { useGetBlogByIdQuery } from "../../features/blog/blogApi";
 import SingleBlogSidebar from "../../components/latestBlog/SingleBlogSidebar";
@@ -8,10 +8,7 @@ import CommentsSection from "../../components/latestBlog/CommentsSection";
 import { useEffect } from "react";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 
-const breadcrumbItems = [
-    { label: "Blogs", href: "/blogs" },
-    { label: "Blog" },
-  ];
+const breadcrumbItems = [{ label: "Blogs", href: "/blogs" }, { label: "Blog" }];
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
@@ -45,18 +42,13 @@ const Blog = () => {
         {/* Main Blog Content */}
         <div className="lg:col-span-3">
           <Breadcrumb items={breadcrumbItems} />
-          <Link
-            to="/blogs"
-            className="text-teal-500 hover:text-yellow-500 mb-4 inline-block "
-          >
-            &larr; Back to Blogs
-          </Link>
+          <div className="h-[1px] w-full bg-gray-500/20 my-3" />
           {/* Blog Info */}
           <SingleBlogInfo blog={blog} />
           <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
           <SingleAuthor blog={blog} />
           <div className="h-[1px] w-full bg-gray-500/20 my-6"></div>
-          <CommentsSection blogId={blog._id} focusCommentId={focusCommentId}/>
+          <CommentsSection blogId={blog._id} focusCommentId={focusCommentId} />
         </div>
 
         {/* Sidebar */}
