@@ -45,20 +45,32 @@ const Card: React.FC<CourseCardProps> = ({
           className="absolute top-0 left-0 w-full h-0 bg-gray-100/70 flex items-center justify-center overflow-hidden
           group-hover:h-full transition-smooth"
         >
-         <Link to={`/course/${_id}`} className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-smooth">
+          <Link
+            to={`/course/${_id}`}
+            className="cursor-pointer text-sm uppercase bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded transition-smooth"
+          >
             View More
           </Link>
-          </div>
+        </div>
       </div>
 
       {/* Course Content */}
       <div className="p-4 relative z-10">
         <h3 className="font-semibold mb-2">
-          {price > 0 ? (<span className="bg-teal-500 text-white px-3 py-[2px]">Free</span>) :  (<span className="bg-yellow-500 text-white px-3 py-[2px]">{price}</span>) }
-          </h3>
+          {price > 0 ? (
+            <span className="bg-yellow-500 text-white px-3 py-[2px]">
+              ${price}
+            </span>
+          ) : (
+            <span className="bg-teal-500 text-white px-3 py-[2px]">Free</span>
+          )}
+        </h3>
         {/* title */}
         <Link to={`/course/${_id}`}>
-        <h3 className="hover:text-yellow-500 transition-smooth font-bold mb-2 text-zinc-700 uppercase">{title.slice(0, 23) + "..."} </h3></Link>
+          <h3 className="hover:text-yellow-500 transition-smooth font-bold mb-2 text-zinc-700 uppercase">
+            {title.slice(0, 23) + "..."}{" "}
+          </h3>
+        </Link>
         <p className="text-zinc-400">{description.slice(0, 50) + "..."}</p>
 
         {/* Info row with icons */}
@@ -85,7 +97,6 @@ const Card: React.FC<CourseCardProps> = ({
             ratings={ratings}
           />
         </div>
-        
       </div>
     </div>
   );
