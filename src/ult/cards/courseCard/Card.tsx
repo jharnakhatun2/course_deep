@@ -7,7 +7,7 @@ import { Link } from "react-router";
 type CourseCardProps = {
   _id: string;
   title: string;
-  description: string;
+  shortDes: string;
   imageUrl: string;
   lessons: string;
   students: number;
@@ -21,7 +21,7 @@ type CourseCardProps = {
 const Card: React.FC<CourseCardProps> = ({
   _id,
   title,
-  description,
+  shortDes,
   imageUrl,
   lessons,
   students,
@@ -31,6 +31,7 @@ const Card: React.FC<CourseCardProps> = ({
   teacherProfession,
   ratings,
 }) => {
+  console.log(shortDes);
   return (
     <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
       {/* Image Wrapper with Overlay */}
@@ -71,7 +72,7 @@ const Card: React.FC<CourseCardProps> = ({
             {title.slice(0, 23) + "..."}{" "}
           </h3>
         </Link>
-        <p className="text-zinc-400">{description.slice(0, 50) + "..."}</p>
+        <p className="text-zinc-400 mb-2">{shortDes.slice(0, 60) + "..."}</p>
 
         {/* Info row with icons */}
         <div className="flex gap-3 text-zinc-400 text-sm pt-1">

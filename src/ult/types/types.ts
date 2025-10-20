@@ -4,8 +4,8 @@ export interface User {
   email: string;
   password?: string;
   role: string;
-  createdAt: string; 
-  lastSignInTime?: string; 
+  createdAt: string;
+  lastSignInTime?: string;
 }
 
 export interface Course {
@@ -18,7 +18,10 @@ export interface Course {
   teacher: string;
   teacherProfession: string;
   shortDes: string;
-  description: string;
+  description: string[];
+  learnSummery: string;
+  whatYouWillLearn: string[];
+  closingNote: string;
   image: string;
   category: string;
   level: string;
@@ -66,25 +69,25 @@ export interface Booking {
   userId: string;
   userEmail: string;
   userName: string;
-  
+
   // Product information
   productId: string;
   productType: "course" | "event";
   productTitle: string;
   productPrice: number;
   quantity: number;
-  
+
   // Payment information
   paymentIntentId: string;
   paymentStatus: "pending" | "succeeded" | "failed";
   paymentAmount: number;
   paymentCurrency: string;
-  
+
   // Event-specific
   eventDate?: string;
   eventTime?: string;
   eventLocation?: string;
-  
+
   // Booking metadata
   status: "confirmed" | "cancelled";
   bookedAt?: string;
@@ -100,21 +103,21 @@ export interface Replay {
 }
 
 export interface Comment {
-  _id: string; 
+  _id: string;
   name: string;
   email: string;
   website?: string;
   comment: string;
   date: string;
   image: string;
-  replies?: Replay[]; 
+  replies?: Replay[];
 }
 
 export interface BlogPost {
-  _id: string;        
+  _id: string;
   title: string;
   author: string;
-  date: string;  
+  date: string;
   shortDes: string;
   content: string;
   category: string;
@@ -138,7 +141,7 @@ export interface CartItem {
   price: number;
   originalPrice: string;
   quantity: number;
-  type: 'course' | 'event';
+  type: "course" | "event";
   image: string;
   date?: string;
   time?: string;

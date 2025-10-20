@@ -30,7 +30,7 @@ export const courseApi = apiSlice.injectEndpoints({
     updateCourse: builder.mutation<Course, { id: string; data: Partial<Course> }>({
       query: ({ id, data }) => ({
         url: `/courses/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: (_result, _err, { id }) => [{ type: "Course", id }, "Course"],

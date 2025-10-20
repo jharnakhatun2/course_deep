@@ -35,7 +35,7 @@ const Courses = () => {
         const query = searchQuery.toLowerCase();
         return (
           course.name.toLowerCase().includes(query) ||
-          course.description.toLowerCase().includes(query)
+          course.shortDes.toLowerCase().includes(query)   
         );
       }) ?? [];
 

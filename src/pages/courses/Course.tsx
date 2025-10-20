@@ -7,6 +7,7 @@ import type { Course, Video } from "../../ult/types/types";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
 import CourseInfo from "../../components/courses/courses/CourseInfo";
+import CourseDescription from "../../components/courses/courses/CourseDescription";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -34,7 +35,7 @@ const CourseSinglePage = () => {
 
   return (
     <section className="py-10 bg-gray-100">
-      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">
         <div className="lg:col-span-3">
           {/* breadcrumb */}
           <Breadcrumb items={breadcrumbItems} />
@@ -46,9 +47,14 @@ const CourseSinglePage = () => {
               {course.name}
             </h1>
             {/* course info */}
-            <CourseInfo course={course}/>
+            <CourseInfo course={course} />
+            {/* course image */}
+            <div className="my-5 w-full">
+              <img src={course.image} alt={course.name} className="w-full border border-white"/>
+            </div>
+
             {/* description */}
-            <p className="mb-6">{course.description}</p>
+            <CourseDescription course={course}/>
           </div>
 
           {!enrolled && (
