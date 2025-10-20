@@ -6,6 +6,7 @@ import Loader from "../../ult/loader/Loader";
 import type { Course, Video } from "../../ult/types/types";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
+import { RiBookmarkFill } from "react-icons/ri";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -46,7 +47,7 @@ const CourseSinglePage = () => {
             </h1>
             {/* course info */}
             <div className="flex justify-between">
-              <div className="flex">
+              <div className="flex gap-10">
                 {/* instructor */}
                 <div className="flex gap-3">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">
@@ -193,7 +194,15 @@ const CourseSinglePage = () => {
                   </div>
                 </div>
                 {/* category */}
-                <div></div>
+                <div className="flex items-center gap-2">
+                    <RiBookmarkFill className="text-3xl text-yellow-500"/>
+                  <div>
+                    <h4 className="text-sm text-zinc-400 hover:text-yellow-500">
+                      Category
+                    </h4>
+                    <p className="text-sm text-zinc-600 font-bold"> {course.category}</p>
+                  </div>
+                </div>
               </div>
               {/* review */}
               <div></div>
