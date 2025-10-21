@@ -7,8 +7,9 @@ import type { Course, Video } from "../../ult/types/types";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
 import CourseInfo from "../../components/courses/courses/CourseInfo";
-import CourseDescription from "../../components/courses/courses/CourseDescription";
 import { MdPlayArrow } from "react-icons/md";
+import Modal from "../../components/courses/courses/Modal";
+import CourseTab from "../../components/courses/courses/CourseTab";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -19,8 +20,14 @@ const breadcrumbItems = [
 const CourseSinglePage = () => {
   const { id } = useParams<{ id: string }>();
   const [enrolled, setEnrolled] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: courses, isLoading, isError } = useGetCoursesQuery();
+
+  // Open modal
+  const handlePlayClick = () => setIsModalOpen(true);
+
+  // Close modal
+  const handleModalClose = () => setIsModalOpen(false);
 
   if (isLoading) return <Loader />;
   if (isError || !courses)
@@ -59,15 +66,15 @@ const CourseSinglePage = () => {
               />
               {/* Play button overlay */}
               <button
-                // onClick={() => setShowPromo(true)}
-                className="cursor-pointer absolute inset-0 flex items-center justify-center  text-7xl "
+                onClick={handlePlayClick}
+                className="cursor-pointer absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center  text-7xl "
               >
-               <MdPlayArrow  className="text-white hover:text-yellow-400 backdrop-blur-lg bg-yellow-500/70 hover:bg-white/50 shadow-[0_0_15px_#ffffff] rounded-full transition-smooth"/>
+                <MdPlayArrow className="text-white hover:text-yellow-400 backdrop-blur-lg bg-yellow-500/70 hover:bg-white/50 shadow-[0_0_15px_#ffffff] rounded-full transition-smooth" />
               </button>
             </div>
 
-            {/* description */}
-            <CourseDescription course={course}/>
+            {/* Course Tab */}
+            <CourseTab course={course}/>
           </div>
 
           {!enrolled && (
@@ -106,6 +113,14 @@ const CourseSinglePage = () => {
           <SingleCourseSidebar />
         </aside>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <Modal
+          promoVideo={course.promoVideo}
+          onClose={handleModalClose}
+        />
+      )}
     </section>
   );
 };
