@@ -8,6 +8,20 @@ export interface User {
   lastSignInTime?: string;
 }
 
+export interface Lesson {
+  title: string;
+  duration: string;
+  type: "video" | "exercise" | "quiz" | "assignment";
+}
+
+export interface CurriculumItem {
+  id: number;
+  title: string;
+  lectures: string;
+  duration: string;
+  lessons: Lesson[];
+}
+
 export interface Course {
   _id: string;
   name: string;
@@ -33,6 +47,7 @@ export interface Course {
   prerequisites: string[];
   promoVideo: string;
   videos: Video[];
+  curriculum: CurriculumItem[];
 }
 
 export interface Video {

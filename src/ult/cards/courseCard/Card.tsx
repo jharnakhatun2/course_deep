@@ -69,7 +69,7 @@ const Card: React.FC<CourseCardProps> = ({
         {/* title */}
         <Link to={`/course/${_id}`}>
           <h3 className="hover:text-yellow-500 transition-smooth font-bold mb-2 text-zinc-700 uppercase">
-            {title.slice(0, 23) + "..."}{" "}
+            {title?.slice(0, 23) + "..."}{" "}
           </h3>
         </Link>
 

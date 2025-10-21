@@ -34,8 +34,8 @@ const Courses = () => {
       .filter((course: Course) => {
         const query = searchQuery.toLowerCase();
         return (
-          course.name.toLowerCase().includes(query) ||
-          course.shortDes.toLowerCase().includes(query)   
+          course.name?.toLowerCase().includes(query) ||
+          course.shortDes?.toLowerCase().includes(query)   
         );
       }) ?? [];
 

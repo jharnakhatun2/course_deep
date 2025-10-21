@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import type { Course } from "../../../ult/types/types";
+import CourseContent from "./CourseContent";
 
 interface CourseTabProp {
   course: Course;
@@ -11,7 +12,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
       {/* name of each tab group should be unique */}
       <div className="tabs tabs-lift">
         {/* Course Description */}
-        <label className="tab text-zinc-700 text-xl font-poppins">
+        <label className="tab text-zinc-700 text-lg font-semibold">
           <input type="radio" name="my_tabs_4" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,12 +30,12 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </svg>
           Course Description
         </label>
-        <div className="tab-content bg-base-100 border-base-300 p-6">
+        <div className="tab-content bg-base-100 border-base-300 px-6 py-10">
           {course.description && <p className="mb-3 text-justify ">{course.description}</p>}
         </div>
 
         {/* What You Will Learn */}
-        <label className="tab text-zinc-700 text-xl font-poppins">
+        <label className="tab text-zinc-700 text-lg font-semibold">
           <input type="radio" name="my_tabs_4" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +53,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </svg>
           What You Will Learn
         </label>
-        <div className="tab-content bg-base-100 border-base-300 p-6">
+        <div className="tab-content bg-base-100 border-base-300 px-6 py-10">
           <ul className="list-disc pl-5 space-y-2 marker:text-yellow-400">
             {course.whatYouWillLearn?.map((item, index) => (
               <li key={index}>{item}</li>
@@ -60,7 +61,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </ul>
         </div>
 
-        <label className="tab text-zinc-700 text-xl font-poppins">
+        <label className="tab text-zinc-700 text-lg font-semibold">
           <input type="radio" name="my_tabs_4" defaultChecked />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,8 +79,8 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </svg>
           Course content
         </label>
-        <div className="tab-content bg-base-100 border-base-300 p-6">
-          Tab content 3
+        <div className="tab-content bg-base-100 border-base-300 px-6 py-10">
+          <CourseContent course={course}/>
         </div>
       </div>
     </div>

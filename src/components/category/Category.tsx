@@ -28,12 +28,21 @@ interface CategoryProps {
 const Category: FC<CategoryProps> = ({ courses }) => {
   const navigate = useNavigate();
 
+courses.forEach((course, index) => {
+  if (!course.category || !course.shortDes) {
+    console.warn(`Course ${index} is missing category or description`, course);
+  }
+});
+
   // same category name use one one
   const uniqueCategories = Array.from(
-    new Map(
-      courses.map((course: Course) => [course.category, course.shortDes])
+    new Map( courses
+      .filter(course => course.category && course.shortDes)
+      .map((course: Course) => [course.category, course.shortDes])
     ).entries()
   ).map(([category, shortDes]) => ({ category, shortDes }));
+
+  console.log(uniqueCategories)
 
   return (
     <section className="text-zinc-800 bg-gray-100 py-8 lg:py-12">
@@ -57,9 +66,9 @@ const Category: FC<CategoryProps> = ({ courses }) => {
 
           {/* Category cards */}
           <div className="flex-2 flex flex-wrap justify-center  gap-5 sm:gap-7 py-8 lg:py-12">
-            {uniqueCategories.map((cat) => (
+            {uniqueCategories.map((cat, index) => (
               <div
-                key={cat.category}
+                key={index}
                 className="aspect-auto w-full sm:w-[48%] md:w-[30%] lg:w-[45%] xl:w-[30%] flex flex-col items-center text-center p-4 rounded-2xl 
              border border-white backdrop-blur-lg bg-white/10 shadow-2xl shadow-gray-600/10
              transform transition-transform duration-300 hover:scale-105 hover:shadow-gray-500/15 cursor-pointer"
@@ -90,3 +99,4 @@ const Category: FC<CategoryProps> = ({ courses }) => {
 };
 
 export default Category;
+
