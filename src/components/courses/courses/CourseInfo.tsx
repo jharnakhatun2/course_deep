@@ -148,7 +148,7 @@ const CourseInfo: FC<CourseInfoProp> = ({ course }) => {
           </div>
         </div>
         {/* category */}
-        <div className="flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-2">
           <RiBookmarkFill className="text-3xl text-yellow-500" />
           <div>
             <h4 className="text-sm text-zinc-400 hover:text-yellow-500">

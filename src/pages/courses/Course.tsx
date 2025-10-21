@@ -44,7 +44,7 @@ const CourseSinglePage = () => {
           {/* course content */}
           <div>
             {/* title */}
-            <h1 className="text-3xl font-bold mb-4 text-zinc-600">
+            <h1 className="text-2xl sm:text-3xl font-semibold mb-4 text-zinc-600">
               {course.name}
             </h1>
             {/* course info */}
@@ -62,7 +62,7 @@ const CourseSinglePage = () => {
                 // onClick={() => setShowPromo(true)}
                 className="cursor-pointer absolute inset-0 flex items-center justify-center  text-7xl "
               >
-               <MdPlayArrow  className="text-zinc-500 bg-white rounded-full"/>
+               <MdPlayArrow  className="text-white hover:text-yellow-400 backdrop-blur-lg bg-yellow-500/70 hover:bg-white/50 shadow-[0_0_15px_#ffffff] rounded-full transition-smooth"/>
               </button>
             </div>
 
