@@ -79,7 +79,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </svg>
           Course content
         </label>
-        <div className="tab-content bg-base-100 border-base-300 px-6 py-10">
+        <div className="tab-content bg-base-100 border-base-300 px-6 pt-10 pb-5">
           <CourseContent course={course}/>
         </div>
       </div>
