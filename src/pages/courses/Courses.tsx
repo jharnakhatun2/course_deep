@@ -56,7 +56,7 @@ const Courses = () => {
     return (
       <p className="text-center py-10 text-red-500">Failed to load courses!</p>
     );
-
+    
   return (
     <section className="py-12 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">

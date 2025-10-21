@@ -8,6 +8,7 @@ import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
 import CourseInfo from "../../components/courses/courses/CourseInfo";
 import CourseDescription from "../../components/courses/courses/CourseDescription";
+import { MdPlayArrow } from "react-icons/md";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -48,9 +49,21 @@ const CourseSinglePage = () => {
             </h1>
             {/* course info */}
             <CourseInfo course={course} />
-            {/* course image */}
-            <div className="my-5 w-full">
-              <img src={course.image} alt={course.name} className="w-full border border-white"/>
+
+            {/* Course image with play button */}
+            <div className="relative my-5 w-full">
+              <img
+                src={course.image}
+                alt={course.name}
+                className="w-full border border-white"
+              />
+              {/* Play button overlay */}
+              <button
+                // onClick={() => setShowPromo(true)}
+                className="cursor-pointer absolute inset-0 flex items-center justify-center  text-7xl "
+              >
+               <MdPlayArrow  className="text-zinc-500 bg-white rounded-full"/>
+              </button>
             </div>
 
             {/* description */}
