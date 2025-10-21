@@ -31,7 +31,9 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           Course Description
         </label>
         <div className="tab-content bg-base-100 border-base-300 px-6 py-10">
-          {course.description && <p className="mb-3 text-justify ">{course.description}</p>}
+          {course.description && (
+            <p className="mb-3 text-justify ">{course.description}</p>
+          )}
         </div>
 
         {/* What You Will Learn */}
@@ -80,7 +82,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           Course content
         </label>
         <div className="tab-content bg-base-100 border-base-300 px-6 pt-10 pb-5">
-          <CourseContent course={course}/>
+          <CourseContent course={course} />
         </div>
       </div>
     </div>

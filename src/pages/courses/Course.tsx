@@ -9,6 +9,7 @@ import CourseInfo from "../../components/courses/courses/CourseInfo";
 import { MdPlayArrow } from "react-icons/md";
 import Modal from "../../components/courses/courses/Modal";
 import CourseTab from "../../components/courses/courses/CourseTab";
+import InstructorProfile from "../../components/courses/courses/InstructorProfile";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -67,6 +68,9 @@ const CourseSinglePage = () => {
 
             {/* Course Tab */}
             <CourseTab course={course}/>
+
+            {/* Instructor Profile */}
+            <InstructorProfile/>
           </div>
         </div>
 

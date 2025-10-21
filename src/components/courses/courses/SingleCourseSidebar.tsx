@@ -8,12 +8,11 @@ interface CourseEnrollProps {
   course: Course;
 }
 
-const SingleCourseSidebar:FC<CourseEnrollProps> = ({course}) => {
+const SingleCourseSidebar: FC<CourseEnrollProps> = ({ course }) => {
   return (
     <div className="space-y-10">
-
       {/* Course Enroll */}
-      <CourseEnroll course={course}/>
+      <CourseEnroll course={course} />
 
       {/* Course Intro */}
       <CourseIntro />
