@@ -10,6 +10,8 @@ import { MdPlayArrow } from "react-icons/md";
 import Modal from "../../components/courses/courses/Modal";
 import CourseTab from "../../components/courses/courses/CourseTab";
 import InstructorProfile from "../../components/courses/courses/InstructorProfile";
+import Reviews from "../../components/courses/review/Review";
+import ReviewForm from "../../components/courses/review/ReviewForm";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -71,6 +73,12 @@ const CourseSinglePage = () => {
 
             {/* Instructor Profile */}
             <InstructorProfile/>
+
+            {/* Display Review */}
+            <Reviews />
+
+            {/* Add Review */}
+            <ReviewForm />
           </div>
         </div>
 
