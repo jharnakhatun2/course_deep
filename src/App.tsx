@@ -25,6 +25,7 @@ import About from "./pages/about/About";
 import Cart from "./components/cart/Cart";
 import CheckOutWrapper from "./components/checkout/CheckOutWrapper";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import InstructorProfilePage from "./pages/instructor/Instructor";
 
 
 
@@ -42,6 +43,7 @@ const App: FC = () => {
         { path: "/about", element: <About /> },
         { path: "/courses", element: <Courses /> },
         { path: "/course/:id", element: <Course /> },
+        { path: "/instructor", element: <InstructorProfilePage /> },
         { path: "/events", element: <Events /> },
         { path: "/events/:id", element:  <Event />},
         { path: "/blogs", element: <Blogs /> },
