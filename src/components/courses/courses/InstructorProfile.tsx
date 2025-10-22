@@ -1,13 +1,17 @@
 import React from "react";
+import type { Course } from "../../../ult/types/types";
+
 
 interface InstructorProfileProps {
   name?: string;
   title?: string;
   bio?: string;
   imageUrl?: string;
+  course: Course;
 }
 
 const InstructorProfile: React.FC<InstructorProfileProps> = ({
+  course,
   name = "Merry Jhonson",
   title = "Back-End Developer",
   bio = "Encyclopaedia galactica Orion's sword explorations vanquish the impossible, astonishment radio telescope with pretty stories for which there's little good.",
@@ -15,7 +19,7 @@ const InstructorProfile: React.FC<InstructorProfileProps> = ({
 }) => {
   return (
     <div className="max-w-7xl mx-auto">
-      <h2 className="text-xl text-zinc-700 font-semibold mb-2 mt-12">
+      <h2 className="text-2xl text-zinc-700 font-semibold mb-2 mt-12">
         About Instructor
       </h2>
 
@@ -23,13 +27,13 @@ const InstructorProfile: React.FC<InstructorProfileProps> = ({
         <div className="flex flex-col md:flex-row gap-6">
           {/* Profile Image */}
           <div className="flex-shrink-0">
-            <img src={imageUrl} alt={name} className="w-20 h-20 object-cover" />
+            <img src={imageUrl} alt={course.teacher} className="w-20 h-20 object-cover" />
           </div>
 
           {/* Profile Information */}
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-zinc-600 mb-1">{name}</h3>
-            <p className="text-zinc-500 mb-4">{title}</p>
+            <h3 className="text-[17px] font-semibold text-zinc-600">{course.teacher}</h3>
+            <p className="text-zinc-500 mb-4">{course.teacherProfession}</p>
             <p className="text-zinc-500 leading-relaxed mb-6">{bio}</p>
 
             {/* View Profile Button */}

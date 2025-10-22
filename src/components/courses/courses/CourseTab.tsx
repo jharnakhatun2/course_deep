@@ -8,11 +8,11 @@ interface CourseTabProp {
 
 const CourseTab: FC<CourseTabProp> = ({ course }) => {
   return (
-    <div>
+    <div className="sm:mt-20">
       {/* name of each tab group should be unique */}
       <div className="tabs tabs-lift">
         {/* Course Description */}
-        <label className="tab text-zinc-700 text-lg font-semibold">
+        <label className="tab text-zinc-700 text-lg font-semibold font-garamond">
           <input type="radio" name="my_tabs_4" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
         </div>
 
         {/* What You Will Learn */}
-        <label className="tab text-zinc-700 text-lg font-semibold">
+        <label className="tab text-zinc-700 text-lg font-semibold font-garamond">
           <input type="radio" name="my_tabs_4" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
           </ul>
         </div>
 
-        <label className="tab text-zinc-700 text-lg font-semibold">
+        <label className="tab text-zinc-700 text-lg font-semibold font-garamond">
           <input type="radio" name="my_tabs_4" defaultChecked />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -79,9 +79,9 @@ const CourseTab: FC<CourseTabProp> = ({ course }) => {
               d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
             />
           </svg>
-          Course content
+          Course Content
         </label>
-        <div className="tab-content bg-base-100 border-base-300 px-6 pt-10 pb-5">
+        <div className="tab-content bg-base-100 px-6 py-10">
           <CourseContent course={course} />
         </div>
       </div>

@@ -43,7 +43,7 @@ const CourseContent: FC<CourseContentProp> = ({ course }) => {
         </div>
 
         {/* Accordion */}
-        <div className="bg-white rounded-b-lg shadow-sm border border-gray-200">
+        <div className="bg-white/80 backdrop-blur-lg shadow-[0_0_1px_#ffffff] border border-gray-100">
           {course.curriculum.map((item, index) => {
             const isOpen = openItems.includes(item.id);
 
@@ -73,10 +73,10 @@ const CourseContent: FC<CourseContentProp> = ({ course }) => {
                   </svg>
 
                   <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-4">
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900">
+                    <h3 className="text-sm sm:text-base font-semibold text-zinc-700">
                       {item.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 flex-shrink-0">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-500 flex-shrink-0">
                       <span>{item.lectures}</span>
                       <span>•</span>
                       <span>{item.duration}</span>
@@ -153,7 +153,7 @@ const CourseContent: FC<CourseContentProp> = ({ course }) => {
                                     />
                                   </svg>
                                 )}
-                                <span className="text-xs sm:text-sm text-gray-700 truncate">
+                                <span className="text-xs sm:text-sm text-zinc-500 truncate">
                                   {lesson.title}
                                 </span>
                               </div>

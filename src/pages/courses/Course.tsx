@@ -12,6 +12,7 @@ import CourseTab from "../../components/courses/courses/CourseTab";
 import InstructorProfile from "../../components/courses/courses/InstructorProfile";
 import Reviews from "../../components/courses/review/Review";
 import ReviewForm from "../../components/courses/review/ReviewForm";
+import InfoCard from "../../components/courses/courses/InfoCard";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -66,13 +67,14 @@ const CourseSinglePage = () => {
               >
                 <MdPlayArrow className="text-white hover:text-yellow-400 backdrop-blur-lg bg-yellow-500/70 hover:bg-white/50 shadow-[0_0_15px_#ffffff] rounded-full transition-smooth" />
               </button>
+              <InfoCard />
             </div>
 
             {/* Course Tab */}
             <CourseTab course={course}/>
 
             {/* Instructor Profile */}
-            <InstructorProfile/>
+            <InstructorProfile course={course}/>
 
             {/* Display Review */}
             <Reviews />
