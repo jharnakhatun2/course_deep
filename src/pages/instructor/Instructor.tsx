@@ -1,10 +1,5 @@
-import React, { useState } from 'react';
-import { MdOutlinePhone } from 'react-icons/md';
-import { TiSocialFacebook } from "react-icons/ti";
-import { IoMailSharp } from 'react-icons/io5';
-import { CiTwitter } from "react-icons/ci";
-import { FiLinkedin } from 'react-icons/fi';
 import InstructorInfo from '../../components/instructor/InstructorInfo';
+import MessageForm from '../../components/instructor/MessageForm';
 
 interface Course {
   name: string;
@@ -14,11 +9,7 @@ interface Course {
 }
 
 const InstructorProfilePage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  
 
   const courses: Course[] = [
     { name: 'Information Technology', lesson: 'Software testing', complexity: 'Easy', length: '90 mins' },
@@ -30,17 +21,7 @@ const InstructorProfilePage: React.FC = () => {
     { name: 'Bussiness Law', lesson: 'Principles', complexity: 'Easy', length: '60 mins' }
   ];
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    alert('Message sent!');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  
 
   return (
     <section className="py-20 bg-gray-100">
@@ -52,41 +33,7 @@ const InstructorProfilePage: React.FC = () => {
           <InstructorInfo/>
 
           {/* Send Message Form */}
-          <div className="bg-white shadow-lg mt-8 p-6">
-            <h3 className="text-xl font-bold mb-6">SEND MESSAGE</h3>
-            <div className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-yellow-500"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-yellow-500"
-              />
-              <textarea
-                name="message"
-                placeholder="Message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={5}
-                className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-yellow-500 resize-none"
-              />
-              <button
-                onClick={handleSubmit}
-                className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded"
-              >
-                SEND NOW
-              </button>
-            </div>
-          </div>
+          <MessageForm />
         </div>
 
         {/* Main Content */}
