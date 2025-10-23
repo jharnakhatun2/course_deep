@@ -3,19 +3,19 @@ import { FiBookOpen } from "react-icons/fi";
 import { FaUsers } from "react-icons/fa";
 import TeacherCard from "./TeacherCard";
 import { Link } from "react-router";
+import type { Teacher } from "../../types/types";
 
 type CourseCardProps = {
   _id: string;
   title: string;
   shortDes: string;
+  ratings: number;
+  time: string;
+  teacher: Teacher;
   imageUrl: string;
   lessons: string;
   students: number;
   price: number;
-  time: string;
-  teacherName: string;
-  teacherProfession: string;
-  ratings: number;
 };
 
 const Card: React.FC<CourseCardProps> = ({
@@ -27,11 +27,9 @@ const Card: React.FC<CourseCardProps> = ({
   students,
   time,
   price,
-  teacherName,
-  teacherProfession,
   ratings,
+  teacher
 }) => {
-  
   return (
     <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
       {/* Image Wrapper with Overlay */}
@@ -96,8 +94,8 @@ const Card: React.FC<CourseCardProps> = ({
         <div className="flex items-center justify-between">
           <TeacherCard
             time={time}
-            name={teacherName}
-            profession={teacherProfession}
+            name={teacher.name}
+            profession={teacher.profession}
             ratings={ratings}
           />
         </div>

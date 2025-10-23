@@ -86,8 +86,7 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
                   shortDes={course.shortDes}
                   ratings={course.ratings}
                   time={course.time}
-                  teacherName={course.teacher}
-                  teacherProfession={course.teacherProfession}
+                  teacher={course.teacher}
                   imageUrl={course.image}
                   lessons={course.lessons}
                   students={course.studentsEnrolled}

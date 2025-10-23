@@ -1,19 +1,18 @@
 type InstructorCardProps = {
   name: string;
   image: string;
-  role: string;
-  twitterProfile: string;
-  facebookProfile: string;
-  linkedinProfile: string;
+  profession: string;
+  twitter?: string;
+  facebook?: string;
+  linkedin?: string;
 };
 
 const InstructorCard: React.FC<InstructorCardProps> = ({
   name,
   image,
-  role,
-  twitterProfile,
-  facebookProfile,
-  linkedinProfile,
+  profession,
+  twitter,
+  linkedin,
 }) => {
   const iconTransition =
     "text-yellow-500 hover:text-teal-300 transform hover:scale-120 transition-smooth";
@@ -26,7 +25,7 @@ const InstructorCard: React.FC<InstructorCardProps> = ({
       />
       <div className="flex-1 my-4">
         <p className="text-xl text-white font-lobster">{name}</p>
-        <p className="text-teal-300">{role}</p>
+        <p className="text-teal-300 text-sm">{profession}</p>
       </div>
       <div className="flex items-center justify-center p-3 space-x-3 border-t-1 border-zinc-300">
         <a
@@ -47,7 +46,7 @@ const InstructorCard: React.FC<InstructorCardProps> = ({
         </a>
         <a
           rel="noopener noreferrer"
-          href={twitterProfile}
+          href={twitter}
           title="Twitter"
           className={iconTransition}
         >
@@ -62,7 +61,7 @@ const InstructorCard: React.FC<InstructorCardProps> = ({
         </a>
         <a
           rel="noopener noreferrer"
-          href={linkedinProfile}
+          href={linkedin}
           title="LinkedIn"
           className={iconTransition}
         >
@@ -77,7 +76,7 @@ const InstructorCard: React.FC<InstructorCardProps> = ({
         </a>
         <a
           rel="noopener noreferrer"
-          href={facebookProfile}
+          href="https://github.com/"
           title="GitHub"
           className={iconTransition}
         >

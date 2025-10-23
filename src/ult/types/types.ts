@@ -31,6 +31,7 @@ export interface CurriculumItem {
 
 export interface Teacher {
   name: string;
+  role: string;
   profession: string; 
   experience?: string; 
   specialistIn?: string; 
@@ -78,8 +79,6 @@ export interface Course {
   videos: Video[];
   curriculum: CurriculumItem[];
 }
-
-
 
 export interface Event {
   _id: string;

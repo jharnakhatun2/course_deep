@@ -49,7 +49,7 @@ const Home = () => {
       <Category courses={courses || []} />
       <CourseCards courses={courses || []} />
       <EventList events={events || []} />
-      <Instructor />
+      <Instructor courses={courses || []}/>
       <BannerEvent />
       <Testimonials />
       <LatestBlog blogs={blogs} />

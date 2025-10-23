@@ -1,7 +1,4 @@
-import React, { useRef } from "react";
-import img1 from "../../assets/img/team/1.webp";
-import img2 from "../../assets/img/team/2.webp";
-import img3 from "../../assets/img/team/3.webp";
+import { useRef, type FC } from "react";
 import SectionTitle from "../../ult/title/SectionTitle";
 import type { Settings } from "react-slick";
 import LinkText from "../../ult/linkText/LinkText";
@@ -9,60 +6,13 @@ import NextBtn from "../../ult/slideButton/nextBtn";
 import PrevBtn from "../../ult/slideButton/preBtn";
 import Slider from "react-slick";
 import InstructorCard from "./InstructorCard";
+import type { Course, Teacher } from "../../ult/types/types";
 
-type InstructorType = {
-  name: string;
-  role: string;
-  image: string;
-  twitterProfile: string;
-  facebookProfile: string;
-  linkedinProfile: string;
-};
+interface CourseCardsProps {
+  courses: Course[];
+}
 
-const instructors: InstructorType[] = [
-  {
-    name: "Parveen Anand",
-    role: "Lead Designer",
-    image: img1,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  },
-  {
-    name: "Diana Petersen",
-    role: "Lead Marketer",
-    image: img2,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  },
-  {
-    name: "Larry Parker",
-    role: "Lead Developer",
-    image: img3,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  },
-  {
-    name: "Larry Parker",
-    role: "Lead Developer",
-    image: img3,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  },
-  {
-    name: "Diana Petersen",
-    role: "Lead Marketer",
-    image: img2,
-    twitterProfile: "https://twitter.com/javaScripLogic",
-    facebookProfile: "https://www.facebook.com/jharnakhatun2/",
-    linkedinProfile: "https://www.linkedin.com/in/jharna-khatun2/",
-  },
-];
-
-const Instructor: React.FC = () => {
+const Instructor: FC<CourseCardsProps> = ({ courses }) => {
   const sliderRef = useRef<Slider | null>(null);
 
   const settings: Settings = {
@@ -91,6 +41,10 @@ const Instructor: React.FC = () => {
       },
     ],
   };
+
+  const uniqueTeachers: Teacher[] = Array.from(
+    new Map(courses.map((c) => [c.teacher.name, c.teacher])).values()
+  );
 
   return (
     <section className="py-8 lg:py-12 bg-gradient-to-b from-gray-200 to-zinc-500">
@@ -121,15 +75,14 @@ const Instructor: React.FC = () => {
         {/* Slider */}
         <div className="py-8 mt-4">
           <Slider ref={sliderRef} {...settings}>
-            {instructors.map((instructor, index) => (
+            {uniqueTeachers.map((teacher, index) => (
               <div key={index} className="px-8">
                 <InstructorCard
-                  name={instructor.name}
-                  image={instructor.image}
-                  role={instructor.role}
-                  twitterProfile={instructor.twitterProfile}
-                  facebookProfile={instructor.facebookProfile}
-                  linkedinProfile={instructor.linkedinProfile}
+                  name={teacher.name}
+                  image={teacher.image || ""}
+                  profession={teacher.profession}
+                  twitter={teacher.socialLinks?.twitter}
+                  linkedin={teacher.socialLinks?.linkedin}
                 />
               </div>
             ))}
