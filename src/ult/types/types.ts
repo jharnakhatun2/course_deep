@@ -8,6 +8,13 @@ export interface User {
   lastSignInTime?: string;
 }
 
+export interface Video {
+  id: string;
+  title: string;
+  url: string;
+  free: boolean;
+}
+
 export interface Lesson {
   title: string;
   duration: string;
@@ -22,6 +29,28 @@ export interface CurriculumItem {
   lessons: Lesson[];
 }
 
+export interface Teacher {
+  name: string;
+  profession: string; 
+  experience?: string; 
+  specialistIn?: string; 
+  currentWork?: string; 
+  contact?: {
+    phone?: string;
+    mobile?: string;
+    email?: string;
+  };
+  socialLinks?: {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    googlePlus?: string;
+  };
+  biography?: string; 
+  image?: string; 
+}
+
+
 export interface Course {
   _id: string;
   name: string;
@@ -29,7 +58,7 @@ export interface Course {
   ratings: number;
   lessons: string;
   time: string;
-  teacher: string;
+  teacher: Teacher;
   teacherProfession: string;
   shortDes: string;
   description: string[];
@@ -50,12 +79,7 @@ export interface Course {
   curriculum: CurriculumItem[];
 }
 
-export interface Video {
-  id: string;
-  title: string;
-  url: string;
-  free: boolean;
-}
+
 
 export interface Event {
   _id: string;

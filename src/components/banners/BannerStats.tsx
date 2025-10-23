@@ -38,7 +38,7 @@ const BannerStats: React.FC = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center p-6 rounded-sm bg-white/30 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
+              className="flex flex-col items-center justify-center py-8 rounded-sm bg-white/30 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
             >
               <p className="text-4xl font-extrabold text-gray-800">
                 <CounterValue initialValue={stat.value} />

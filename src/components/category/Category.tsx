@@ -65,20 +65,20 @@ courses.forEach((course, index) => {
           </div>
 
           {/* Category cards */}
-          <div className="flex-2 flex flex-wrap justify-center  gap-5 sm:gap-7 py-8 lg:py-12">
+          <div className="flex-2 flex flex-wrap justify-center gap-5 py-8 lg:py-12">
             {uniqueCategories.map((cat, index) => (
               <div
                 key={index}
                 className="aspect-auto w-full sm:w-[48%] md:w-[30%] lg:w-[45%] xl:w-[30%] flex flex-col items-center text-center p-4 rounded-2xl 
              border border-white backdrop-blur-lg bg-white/10 shadow-2xl shadow-gray-600/10
-             transform transition-transform duration-300 hover:scale-105 hover:shadow-gray-500/15 cursor-pointer"
+             transform transition-smooth hover:scale-105 hover:shadow-gray-500/15 cursor-pointer"
               >
                 {iconMap[cat.category]}
                 <h3 className="mt-4 text-md font-semibold text-zinc-600 uppercase">
                   {cat.category}
                 </h3>
                 <div className="w-12 h-[2px] bg-gray-200 my-2"></div>
-                <p className="text-sm text-gray-400">{cat.shortDes}</p>
+                <p className="text-sm text-zinc-400">{cat.shortDes}</p>
                 <button
                   onClick={() =>
                     navigate(

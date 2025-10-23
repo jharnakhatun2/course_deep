@@ -9,7 +9,7 @@ type ButtonProps = {
 
 const Button = ({ children, className, url, onClick }: ButtonProps) => {
   const baseClass =
-    "inline-block w-auto px-4 py-3 uppercase text-sm transition-smooth cursor-pointer";
+    "inline-block w-auto px-5 py-3 uppercase text-sm transition-smooth cursor-pointer";
 
   if (url) {
     return (
