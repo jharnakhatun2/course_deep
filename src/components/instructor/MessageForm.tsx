@@ -51,7 +51,7 @@ const MessageForm = () => {
         />
         <button
           onClick={handleSubmit}
-          className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-8 transition-smooth cursor-pointer text-xs tracking-wide"
+          className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-4.5 transition-smooth cursor-pointer text-xs tracking-wide"
         >
           SEND NOW
         </button>
