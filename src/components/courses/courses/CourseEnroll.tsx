@@ -56,7 +56,9 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-sm">Duration : 30 days</span>
+            <span className="text-sm">
+              Duration : {course.totalDays ?? "30 Days"}
+            </span>
           </div>
 
           <div className="h-[1px] w-full bg-gray-500/20 my-3" />
@@ -69,7 +71,7 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
             >
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
-            <span className="text-sm">Lectures: {course.lessons}</span>
+            <span className="text-sm">Lectures: {course.totalLectures}</span>
           </div>
 
           <div className="h-[1px] w-full bg-gray-500/20 my-3" />
@@ -107,7 +109,11 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-sm">Certificate of Completion</span>
+            <span className="text-sm">
+              {course.certificate
+                ? "Certificate of Completion"
+                : "No Certificate"}
+            </span>
           </div>
         </div>
       </div>

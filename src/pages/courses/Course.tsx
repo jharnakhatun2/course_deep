@@ -37,7 +37,6 @@ const CourseSinglePage = () => {
       <p className="text-center py-10 text-red-500">Failed to load course!</p>
     ); 
 
-    console.log(course)
   return (
     <section className="py-10 bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-10">

@@ -31,7 +31,7 @@ const Card: React.FC<CourseCardProps> = ({
   teacher
 }) => {
   return (
-    <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto cursor-pointer group">
+    <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full max-w-sm mx-auto group">
       {/* Image Wrapper with Overlay */}
       <div className="relative overflow-hidden">
         <img

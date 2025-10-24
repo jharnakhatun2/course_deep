@@ -71,7 +71,7 @@ courses.forEach((course, index) => {
                 key={index}
                 className="aspect-auto w-full sm:w-[48%] md:w-[30%] lg:w-[45%] xl:w-[30%] flex flex-col items-center text-center p-4 rounded-2xl 
              border border-white backdrop-blur-lg bg-white/10 shadow-2xl shadow-gray-600/10
-             transform transition-smooth hover:scale-105 hover:shadow-gray-500/15 cursor-pointer"
+             transform transition-smooth hover:scale-105 hover:shadow-gray-500/15"
               >
                 {iconMap[cat.category]}
                 <h3 className="mt-4 text-md font-semibold text-zinc-600 uppercase">

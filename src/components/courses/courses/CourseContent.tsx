@@ -30,9 +30,9 @@ const CourseContent: FC<CourseContentProp> = ({ course }) => {
         {/* Header */}
         <div className=" mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-xs sm:text-sm text-gray-700">
-            <span className="font-semibold">101</span> sections •{" "}
-            <span className="font-semibold">597</span> lectures •{" "}
-            <span className="font-semibold">56h 28m</span> total length
+            <span className="font-semibold">{course.totalSection}</span> sections •{" "}
+            <span className="font-semibold">{course.totalLectures}</span> lectures •{" "}
+            <span className="font-semibold">{course.totalDurationLength}</span> total length
           </div>
           <button
             onClick={allExpanded ? collapseAll : expandAll}

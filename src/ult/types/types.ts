@@ -86,6 +86,10 @@ export interface Course {
   promoVideo: string;
   videos: Video[];
   curriculum: CurriculumItem[];
+  totalDays: string;
+  totalDurationLength: string;
+  totalLectures: number;
+  totalSection: number;
 }
 
 export interface Event {
