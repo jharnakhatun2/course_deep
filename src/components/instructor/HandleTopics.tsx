@@ -1,56 +1,12 @@
-interface Course {
-  name: string;
-  lesson: string;
-  complexity: string;
-  length: string;
+import type { FC } from "react";
+import type { TopicsHandle } from "../../ult/types/types";
+
+interface HandleTopicsProps {
+  topicsHandling: TopicsHandle[];
 }
 
-const HandleTopics = () => {
-  const courses: Course[] = [
-    {
-      name: "Information Technology",
-      lesson: "Software testing",
-      complexity: "Easy",
-      length: "90 mins",
-    },
-    {
-      name: "Fashion Technolgy",
-      lesson: "Designing",
-      complexity: "standard",
-      length: "60 mins",
-    },
-    {
-      name: "photography",
-      lesson: "Animation",
-      complexity: "standard",
-      length: "60 mins",
-    },
-    {
-      name: "Electronics",
-      lesson: "Hardware process",
-      complexity: "Hard",
-      length: "90 mins",
-    },
-    {
-      name: "Computer Application",
-      lesson: "Micro Processor",
-      complexity: "Hard",
-      length: "70 mins",
-    },
-    {
-      name: "IT&Software",
-      lesson: "Opearating System",
-      complexity: "Standard",
-      length: "60 mins",
-    },
-    {
-      name: "Bussiness Law",
-      lesson: "Principles",
-      complexity: "Easy",
-      length: "60 mins",
-    },
-  ];
-
+const HandleTopics:FC<HandleTopicsProps> = ({topicsHandling}) => {
+  
   const tableHeaderStyle =
     "px-6 py-4 text-left text-xs text-zinc-600 font-normal";
   const tableContentStyle =
@@ -70,13 +26,13 @@ const HandleTopics = () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course, index) => (
+            {topicsHandling.map((course, index) => (
               <tr
                 key={index}
                 className="border border-gray-200 hover:bg-gray-50  transition-smooth"
               >
-                <td className={tableContentStyle}>{course.name}</td>
-                <td className={tableContentStyle}>{course.lesson}</td>
+                <td className={tableContentStyle}>{course.courseName}</td>
+                <td className={tableContentStyle}>{course.lessonName}</td>
                 <td className={tableContentStyle}>{course.complexity}</td>
                 <td className={tableContentStyle}>{course.length}</td>
               </tr>

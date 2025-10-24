@@ -7,14 +7,17 @@ import { useGetCoursesQuery } from "../../features/course/courseApi";
 import Loader from "../../ult/loader/Loader";
 
 const InstructorProfilePage: React.FC = () => {
- const { name } = useParams();
+  const { name } = useParams();
   const decodedName = decodeURIComponent(name || "");
 
   // Fetch all courses
   const { data: courses, isLoading, isError } = useGetCoursesQuery();
 
-  if (isLoading) return <Loader />
-  if (isError) return <p className="text-center text-red-500 py-20">Failed to load data.</p>;
+  if (isLoading) return <Loader />;
+  if (isError)
+    return (
+      <p className="text-center text-red-500 py-20">Failed to load data.</p>
+    );
 
   // Find the course with matching teacher name
   const course = courses?.find(
@@ -23,9 +26,7 @@ const InstructorProfilePage: React.FC = () => {
 
   if (!course) {
     return (
-      <p className="text-center text-gray-500 py-20">
-        Instructor not found!
-      </p>
+      <p className="text-center text-gray-500 py-20">Instructor not found!</p>
     );
   }
 
@@ -37,7 +38,7 @@ const InstructorProfilePage: React.FC = () => {
         {/* Left Sidebar */}
         <div className="lg:col-span-1">
           {/* Profile Card */}
-          <InstructorInfo teacher={teacher}/>
+          <InstructorInfo teacher={teacher} />
 
           {/* Send Message Form */}
           <MessageForm />
@@ -46,22 +47,16 @@ const InstructorProfilePage: React.FC = () => {
         {/* Main Content */}
         <div className="lg:col-span-3">
           {/* Header */}
-          <InstructorHeader />
+          <InstructorHeader teacher={teacher} />
 
           {/* Biography */}
           <div className="mb-8">
             <h2 className="text-xl text-zinc-700 mb-4">Biography</h2>
-            <p className="text-zinc-500 mb-4">
-              Fusce eleifend donec sapien sed phase lusa. Pellentesque lacus
-              vamus lorem arcu semper duiacCras ornare arcu avamus nda leo.
-              Etiam ind arcu morbi us iusto mauris tempus pharetra interdum at
-              congue semper purus. acus vamu lorem arcu semper duiacCras ornare
-              arcu
-            </p>
+            <p className="text-zinc-500 mb-4">{teacher.biography}</p>
           </div>
 
           {/* Topics Handling */}
-          <HandleTopics />
+          <HandleTopics topicsHandling={teacher.topicsHandling} />
         </div>
       </div>
     </section>

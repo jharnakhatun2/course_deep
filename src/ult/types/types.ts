@@ -29,6 +29,13 @@ export interface CurriculumItem {
   lessons: Lesson[];
 }
 
+export interface TopicsHandle {
+  courseName: string;
+  lessonName: string;
+  complexity: string;
+  length: string;
+}
+
 export interface Teacher {
   name: string;
   role: string;
@@ -49,6 +56,7 @@ export interface Teacher {
   };
   biography?: string; 
   image?: string; 
+  topicsHandling: TopicsHandle[];
 }
 
 
