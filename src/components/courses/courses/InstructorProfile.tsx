@@ -1,5 +1,6 @@
 import React from "react";
 import type { Teacher } from "../../../ult/types/types";
+import { Link } from "react-router";
 
 
 interface InstructorProfileProps {
@@ -27,9 +28,9 @@ const InstructorProfile: React.FC<InstructorProfileProps> = ({teacher}) => {
             <p className="text-gray-400 leading-relaxed mb-6 text-sm">{teacher.biography}</p>
 
             {/* View Profile Button */}
-            <button className="py-2 px-5 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500 transition-smooth cursor-pointer text-sm">
+            <Link to={`/instructor/${encodeURIComponent(teacher.name)}`} className="py-2 px-5 text-center bg-zinc-100 hover:bg-yellow-500 text-zinc-800 hover:text-white border border-gray-300 hover:border-yellow-500 transition-smooth cursor-pointer text-sm">
               VIEW PROFILE
-            </button>
+            </Link>
           </div>
         </div>
       </div>

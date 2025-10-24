@@ -41,11 +41,11 @@ export interface Teacher {
     mobile?: string;
     email?: string;
   };
-  socialLinks?: {
-    facebook?: string;
-    twitter?: string;
-    linkedin?: string;
-    googlePlus?: string;
+  socialLinks: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+    googlePlus: string;
   };
   biography?: string; 
   image?: string; 
