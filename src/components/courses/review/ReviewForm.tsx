@@ -101,7 +101,7 @@ const ReviewForm: React.FC = () => {
           {/* Submit Button */}
           <button
             onClick={handleSubmit}
-            className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-8 py-3 transition-colors uppercase cursor-pointer"
+            className="py-2 px-8.5 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold transition-smooth uppercase cursor-pointer"
           >
             Submit
           </button>

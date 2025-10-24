@@ -14,7 +14,7 @@ const CourseInfo: FC<CourseInfoProp> = ({ course }) => {
         <div className="flex gap-3">
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">
             {/* Teacher avatar */}
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -136,7 +136,8 @@ const CourseInfo: FC<CourseInfoProp> = ({ course }) => {
                   </mask>
                 </defs>
               </g>
-            </svg>
+            </svg> */}
+            <img src={course.teacher.image} alt={course.teacher.name} className="w-10 h-10 object-cover rounded-full border border-yellow-400 shadow-[0_0_5px_#fcc600]"/>
           </div>
 
           {/* Teacher Details */}
@@ -144,7 +145,7 @@ const CourseInfo: FC<CourseInfoProp> = ({ course }) => {
             <h4 className="text-sm text-zinc-400 hover:text-yellow-500">
               Instructor
             </h4>
-            <p className="text-sm text-zinc-600 font-bold"> {course.teacher}</p>
+            <p className="text-sm text-zinc-600 font-bold"> {course.teacher.name}</p>
           </div>
         </div>
         {/* category */}

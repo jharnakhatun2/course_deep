@@ -59,7 +59,7 @@ const Reviews: React.FC = () => {
             <img
               src={review.avatar}
               alt={review.author}
-              className="w-16 h-16 object-cover "
+              className="w-16 h-16 object-cover border border-yellow-400/20 p-1"
             />
             
             <div className="flex-1">
