@@ -1,34 +1,19 @@
-import React from 'react';
-import { AiFillStar } from 'react-icons/ai';
+import React from "react";
+import { AiFillStar } from "react-icons/ai";
+import { useGetCourseReviewsQuery } from "../../../features/reviews/reviewsApi";
+import Loader from "../../../ult/loader/Loader";
+import type { Review } from "../../../ult/types/types";
 
-interface Review {
-  id: number;
-  author: string;
-  date: string;
-  rating: number;
-  content: string;
-  avatar: string;
+interface ReviewFormProps {
+  courseId: string;
 }
 
-const Reviews: React.FC = () => {
-  const reviews: Review[] = [
-    {
-      id: 1,
-      author: 'Lavin Duster',
-      date: 'March 7, 2016',
-      rating: 5,
-      content: 'Brunch fap cardigan, gentrify put a bird on it distillery mumblecore you probably haven\'t heard of them asymmetrical bushwick. Put a bird on it schlitz fashion.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop'
-    },
-    {
-      id: 2,
-      author: 'Tim Cook',
-      date: 'March 5, 2016',
-      rating: 5,
-      content: 'Fixie sartorial cray flexitarian pop-up health goth single-origin coffee sriracha',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop'
-    }
-  ];
+const Reviews: React.FC<ReviewFormProps> = ({ courseId }) => {
+  const {
+    data: reviews = [],
+    isLoading,
+    isError,
+  } = useGetCourseReviewsQuery(courseId);
 
   const renderStars = (rating: number) => {
     return (
@@ -43,42 +28,54 @@ const Reviews: React.FC = () => {
     );
   };
 
+  if (isLoading) return <Loader />;
+
+  if (isError) {
+    return (
+      <p className="text-center text-red-500 py-8">Failed to load reviews.</p>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto py-12">
       <div className="mb-3">
         <h2 className="text-2xl text-zinc-700 font-semibold">Reviews</h2>
-        <p className="text-zinc-600 text-sm">There Are {reviews.length} Reviews On This Course</p>
+        <p className="text-zinc-600 text-sm">
+          There Are <span className="w-5 h-5 bg-yellow-100/30 px-2 rounded">{reviews.length}</span> {reviews.length > 1 ? "Reviews" : "Review"} On This Course
+        </p>
       </div>
 
       <div className="space-y-4">
-        {reviews.map((review) => (
+        {reviews.map((review: Review) => (
           <div
-            key={review.id}
+            key={review._id}
             className="bg-white/60 backdrop-blur-lg border border-gray-200 p-6 sm:flex gap-4"
           >
             <img
-              src={review.avatar}
-              alt={review.author}
+              src={review.image}
+              alt={review.name}
               className="w-16 h-16 object-cover border border-yellow-400/20 p-1"
             />
-            
+
             <div className="flex-1">
               <div className="sm:flex items-center justify-between mb-2">
                 <div>
                   <h3 className="text-zinc-900">
-                    {review.author}
+                    {review.name}
                     <span className="text-gray-500 font-normal"> – </span>
                     <span className="text-gray-500 font-normal text-sm">
-                      {review.date}
+                      {new Date(review.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
                     </span>
                   </h3>
                 </div>
-                {renderStars(review.rating)}
+                {renderStars(review.ratings)}
               </div>
-              
-              <p className="text-zinc-500 leading-relaxed">
-                "{review.content}"
-              </p>
+
+              <p className="text-gray-400 text-sm"><span className="text-xl text-yellow-400">❛</span> {review.review} <span className="text-xl text-yellow-400">❜</span></p>
             </div>
           </div>
         ))}

@@ -77,10 +77,10 @@ const CourseSinglePage = () => {
             <InstructorProfile teacher={course.teacher}/>
 
             {/* Display Review */}
-            <Reviews />
+            <Reviews courseId={course._id}/>
 
             {/* Add Review */}
-            <ReviewForm />
+            <ReviewForm courseId={course._id}/>
           </div>
         </div>
 

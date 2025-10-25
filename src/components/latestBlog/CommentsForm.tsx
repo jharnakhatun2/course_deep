@@ -12,8 +12,7 @@ const CommentsForm: FC<Props> = ({ blogId }) => {
   const [addComment] = useAddCommentMutation();
   const navigate = useNavigate();
   const { user, isAuthenticated  } = useAuth()
-  console.log(user)
-  console.log(user?.email)
+  
 
   
   // Local form state

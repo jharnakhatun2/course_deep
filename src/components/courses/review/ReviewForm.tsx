@@ -1,26 +1,123 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdStar } from "react-icons/io";
+import { useAddCourseReviewMutation } from "../../../features/reviews/reviewsApi";
+import { showErrorToast, showSuccessToast } from "../../../ult/toast/toast";
+import { useAuth } from "../../../hook/useAuth";
+import { useNavigate } from "react-router";
 
-const ReviewForm: React.FC = () => {
-  const [rating, setRating] = useState<number>(0);
-  const [hoverRating, setHoverRating] = useState<number>(0);
-  const [reviewText, setReviewText] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+interface ReviewFormProps {
+  courseId: string;
+}
 
-  const handleSubmit = () => {
-    if (!reviewText || !name || !email) {
-      alert("Please fill in all required fields");
+interface FormData {
+  rating: number;
+  hoverRating: number;
+  reviewText: string;
+  name: string;
+  email: string;
+}
+
+const ReviewForm: React.FC<ReviewFormProps> = ({ courseId }) => {
+   const [addCourseReview, { isLoading }] = useAddCourseReviewMutation();
+   const { user, isAuthenticated  } = useAuth();
+   const navigate = useNavigate();
+
+  // Local form state
+  const [formData, setFormData] = useState<FormData>({
+    rating: 0,
+    hoverRating: 0,
+    reviewText: "",
+    name: "",
+    email: "",
+  });
+
+  // Auto-fill form when user is authenticated
+    useEffect(() => {
+      if (isAuthenticated && user) {
+        setFormData(prev => ({
+          ...prev,
+          name: user.name || "",
+          email: user.email || ""
+        }));
+      }
+    }, [isAuthenticated, user]);
+ 
+
+  // Destructure form data for easier access
+  const { rating, hoverRating, reviewText, name, email } = formData;
+
+  // Handle input changes
+  const handleInputChange = (field: keyof FormData, value: string | number) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      // Save form data in sessionStorage to use after login
+      sessionStorage.setItem("pendingReview", JSON.stringify({ courseId, ...formData }));
+      navigate("/login", { state: { from: `/course/${courseId}`, message: "Please login to submit your review" } });
       return;
     }
-    console.log({ rating, reviewText, name, email });
-    alert("Review submitted!");
-    // Reset form
-    setRating(0);
-    setReviewText("");
-    setName("");
-    setEmail("");
+
+    if (!reviewText || !name || !email || rating === 0) return;
+
+    try {
+      const reviewData = {
+        name,
+        email,
+        review: reviewText,
+        ratings: rating,
+      };
+
+      // Send data to backend
+      await addCourseReview({ courseId, data: reviewData }).unwrap();
+
+      showSuccessToast("🎉 Review submitted successfully!");
+      
+      // Reset form
+      setFormData({
+        rating: 0,
+        hoverRating: 0,
+        reviewText: "",
+        name: "",
+        email: "",
+      });
+    } catch (error) {
+      console.error("Failed to submit review:", error);
+      showErrorToast("❌ Failed to submit review. Please try again later.");
+    }
   };
+
+  // Handle restoring pending comment after login
+    useEffect(() => {
+      if (isAuthenticated) {
+        const pendingReview = sessionStorage.getItem("pendingReview");
+        
+        if (pendingReview) {
+          const { courseId: pendingCourseId, ...savedFormData } = JSON.parse(pendingReview);
+          
+          // Only restore if it's for the current course
+          if (pendingCourseId === courseId) {
+            setFormData(prev => ({
+              ...prev,
+              ...savedFormData,
+              // Keep user's name/email if they're logged in now
+              name: user?.name || prev.name,
+              email: user?.email || prev.email
+            }));
+            
+            // Clear the pending comment
+            sessionStorage.removeItem("pendingReview");
+          }
+        }
+      }
+    }, [isAuthenticated, courseId, user]);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -33,7 +130,7 @@ const ReviewForm: React.FC = () => {
           <span className="text-red-500">*</span>
         </p>
 
-        <div>
+        <form onSubmit={handleSubmit}>
           {/* Rating */}
           <div className="mb-6">
             <label className="block text-zinc-600 mb-2">Your Rating</label>
@@ -42,9 +139,9 @@ const ReviewForm: React.FC = () => {
                 <button
                   key={star}
                   type="button"
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
+                  onClick={() => handleInputChange("rating", star)}
+                  onMouseEnter={() => handleInputChange("hoverRating", star)}
+                  onMouseLeave={() => handleInputChange("hoverRating", 0)}
                   className="focus:outline-none transition-colors cursor-pointer"
                 >
                   <IoMdStar
@@ -66,9 +163,10 @@ const ReviewForm: React.FC = () => {
             </label>
             <textarea
               value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
+              onChange={(e) => handleInputChange("reviewText", e.target.value)}
               rows={6}
               className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"
+              required
             />
           </div>
 
@@ -80,8 +178,11 @@ const ReviewForm: React.FC = () => {
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"
+              onChange={(e) => handleInputChange("name", e.target.value)}
+              className={`w-full px-4 py-3 border ${isAuthenticated ? "text-zinc-400 border-gray-200 cursor-not-allowed": " border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"}`}
+              required
+              disabled={isAuthenticated}
+              placeholder={isAuthenticated ? "" : "Enter your name"}
             />
           </div>
 
@@ -93,19 +194,25 @@ const ReviewForm: React.FC = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              className={`w-full px-4 py-3 border ${isAuthenticated ? "text-zinc-400 border-gray-200 cursor-not-allowed": " border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-transparent"}`}
+              required
+              disabled={isAuthenticated}
+              placeholder={isAuthenticated ? "" : "Enter your email"}
             />
           </div>
 
           {/* Submit Button */}
           <button
-            onClick={handleSubmit}
-            className="py-2 px-8.5 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold transition-smooth uppercase cursor-pointer"
+            type="submit"
+            disabled={isLoading}
+            className={`py-2 px-8.5 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold transition-smooth uppercase cursor-pointer ${
+              isLoading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            Submit
+            {isLoading ? "Submitting..." : "Submit"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

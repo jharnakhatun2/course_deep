@@ -59,6 +59,15 @@ export interface Teacher {
   topicsHandling: TopicsHandle[];
 }
 
+export interface Review {
+  _id: string;
+  name: string;
+  email: string;
+  review: string;
+  ratings: number;
+  date: string;
+  image: string;
+}
 
 export interface Course {
   _id: string;
