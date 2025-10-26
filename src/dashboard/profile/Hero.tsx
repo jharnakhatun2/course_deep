@@ -60,7 +60,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
                       <FaBookOpen  className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
                       <span className="text-2xl sm:text-3xl font-bold text-white">{stats.totalCourses}</span>
                     </div>
-                    <p className="text-zinc-500 text-xs sm:text-sm">Active Courses</p>
+                    <p className="text-blue-500 text-xs sm:text-sm">Active Courses</p>
                   </div>
         
                   <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-lg rounded-xl p-4 sm:p-5 border border-green-400/30">
@@ -68,7 +68,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
                       <FiCheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-400" />
                       <span className="text-2xl sm:text-3xl font-bold text-white">{stats.completedCourses}</span>
                     </div>
-                    <p className="text-zinc-500 text-xs sm:text-sm">Completed</p>
+                    <p className="text-green-500 text-xs sm:text-sm">Completed</p>
                   </div>
         
                   <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-lg rounded-xl p-4 sm:p-5 border border-purple-400/30">
@@ -76,7 +76,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
                       <SlCalender  className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                       <span className="text-2xl sm:text-3xl font-bold text-white">{stats.upcomingEvents}</span>
                     </div>
-                    <p className="text-zinc-500 text-xs sm:text-sm">Upcoming Events</p>
+                    <p className="text-purple-500 text-xs sm:text-sm">Upcoming Events</p>
                   </div>
         
                   <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-lg rounded-xl p-4 sm:p-5 border border-orange-400/30">
@@ -84,7 +84,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
                       <CiClock2 className="w-6 h-6 sm:w-8 sm:h-8 text-orange-400" />
                       <span className="text-2xl sm:text-3xl font-bold text-white">{stats.hoursLearned}</span>
                     </div>
-                    <p className="text-zinc-500 text-xs sm:text-sm">Hours Learned</p>
+                    <p className="text-orange-500 text-xs sm:text-sm">Hours Learned</p>
                   </div>
                 </div>
     </div>
