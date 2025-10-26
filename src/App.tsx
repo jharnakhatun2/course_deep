@@ -3,7 +3,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Error from "./pages/Error";
-import { UserDashboard } from "./dashboard/UserDashboard";
 import PrivateRoute from "./components/route/PrivateRoute";
 import Blogs from "./pages/blogs/Blogs";
 import Blog from "./pages/blogs/Blog";
@@ -26,6 +25,8 @@ import Cart from "./components/cart/Cart";
 import CheckOutWrapper from "./components/checkout/CheckOutWrapper";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import InstructorProfilePage from "./pages/instructor/Instructor";
+import UserDashboard from "./dashboard/UserDashboard";
+import LessonPage from "./dashboard/LessonPage";
 
 
 
@@ -52,6 +53,7 @@ const App: FC = () => {
         { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
         { path: "/payment-success", element: <PaymentSuccess/>},
         { path: "/login", element: <Login /> },
+        { path: "/lesson", element: <LessonPage /> },
         {
           path: "/dashboard",
           element: (
@@ -59,6 +61,17 @@ const App: FC = () => {
               <UserDashboard />
             </PrivateRoute>
           ),
+          children: [
+      {
+        index: true, // default child (when only /dashboard)
+        element: <div>Welcome to your Dashboard!</div>,
+      },
+      // {
+      //   path: "lesson/:id",
+      //   element: <LessonPage />,
+      // },
+      
+    ],
         },
         { path: "/terms", element: <Terms /> },
         { path: "/privacy", element: <Privacy /> },
