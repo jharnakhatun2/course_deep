@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { NotesSection } from "./lesson/NotesSection";
 import { LessonSidebar } from "./lesson/LessonSidebar";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { LuNotebookPen } from "react-icons/lu";
 import YouTube from "react-youtube";
+import NotesSection from "./lesson/NotesSection";
 
 const courseVideos = [
   { id: "ODKIxaSMgpU", title: "A complete roadmap to learn Reactjs" },
@@ -72,14 +72,12 @@ const LessonPage: React.FC = () => {
   return (
     <section className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col">
-        
+
         {/* Title */}
         <div className="flex items-center">
-          <FaArrowAltCircleLeft className="inline-block mr-2" />
-          <h1 className="text-lg font-semibold text-zinc-600">
-            {currentVideo.title}
-          </h1>
+          <h1 className="font-garamond text-2xl font-semibold text-zinc-600">{currentVideo.title}</h1>
         </div>
+        <div className="h-[1px] w-full bg-gray-500/20 my-3" />
 
         {/* Content Area */}
         <main className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 mt-2">
@@ -97,14 +95,14 @@ const LessonPage: React.FC = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mb-6">
+            <div className="flex mb-6 justify-end gap-4">
               <button
                 onClick={goToPrevVideo}
                 disabled={currentVideoIndex === 0}
-                className={`px-6 py-2 rounded-lg ${
+                className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
                   currentVideoIndex === 0
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                    : "border border-yellow-400 hover:bg-yellow-500 text-zinc-800"
                 }`}
               >
                 Previous
@@ -112,10 +110,10 @@ const LessonPage: React.FC = () => {
               <button
                 onClick={goToNextVideo}
                 disabled={currentVideoIndex === courseVideos.length - 1}
-                className={`px-6 py-2 rounded-lg ${
+                className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
                   currentVideoIndex === courseVideos.length - 1
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                    : "bg-yellow-400 hover:bg-yellow-500 text-zinc-800"
                 }`}
               >
                 Next
@@ -123,6 +121,11 @@ const LessonPage: React.FC = () => {
             </div>
 
             {/* Notes Section */}
+            <div className="flex items-center gap-2 text-zinc-600 font-semibold text-lg mb-2">
+              <LuNotebookPen className="text-teal-500"/> 
+              <h3>Notes</h3>
+            </div>
+             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
             <NotesSection />
           </section>
 
