@@ -1,52 +1,138 @@
-import React from "react";
-import { NotesSection } from "./NotesSection";
-import { LessonSidebar } from "./LessonSidebar";
+import React, { useState } from "react";
+import { NotesSection } from "./lesson/NotesSection";
+import { LessonSidebar } from "./lesson/LessonSidebar";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
+import YouTube from "react-youtube";
 
+const courseVideos = [
+  { id: "ODKIxaSMgpU", title: "A complete roadmap to learn Reactjs" },
+  {
+    id: "N_Lfqk6oQ7o",
+    title: "React Fundamentals - Why React is a Declarative",
+  },
+  { id: "f3dfaXM33Pg", title: "How to do Development Setup for ReactJS" },
+  { id: "D_cUdRtPG-M", title: " Deep Understanding of JSX" },
+  {
+    id: "GgurJ_3y0Jg",
+    title: "Understanding React Components,State vs. Props",
+  },
+  {
+    id: "CvNvRaS3u60",
+    title: "An Introduction to React Hooks - Functional Components",
+  },
+  { id: "IQjB-U9X680", title: "How to Manage State with useState React Hook" },
+  { id: "M0yi7bdz-fA", title: "useEffect React Hook for Side Effects" },
+  { id: "nt-TB3f5kp4", title: "How to write Custom Hooks in React" },
+  { id: "LNwEpMLLFTw", title: "What is the useRef hook in React" },
+  { id: "dtwVjJMnOsw", title: "React Higher-Order Components with Example" },
+  { id: "rysTbzKOEO0", title: "ReactJS Virtual DOM" },
+  { id: "qGGu46ZoMqQ", title: "What is React memo?" },
+  { id: "QSLKhwYKBc4", title: "useCallback and useMemo React Hooks" },
+  { id: "rpc3zYrYbTc", title: "What is Prop Drilling in React?" },
+  { id: "yijn4ZIBxVA", title: "React Context API - What is Context" },
+  { id: "ey0SYV-OBo4", title: "What is Redux - When to use Redux?" },
+  { id: "PMyPyT8N4m8", title: "When to use useReducer?" },
+  {
+    id: "XKfep8AlOz8",
+    title:
+      "What is Code Splitting? How does Code Splitting Work Under the Hood?",
+  },
+];
 
 const LessonPage: React.FC = () => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const currentVideo = courseVideos[currentVideoIndex];
+
+  const goToNextVideo = () => {
+    if (currentVideoIndex < courseVideos.length - 1) {
+      setCurrentVideoIndex(currentVideoIndex + 1);
+    }
+  };
+
+  const goToPrevVideo = () => {
+    if (currentVideoIndex > 0) {
+      setCurrentVideoIndex(currentVideoIndex - 1);
+    }
+  };
+
+  const goToVideo = (index: number) => {
+    setCurrentVideoIndex(index);
+  };
+
+  const youtubeOpts = {
+    height: "400",
+    width: "100%",
+    playerVars: {
+      autoplay: 0,
+      modestbranding: 1,
+      rel: 0,
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-[#0c0c16] text-gray-100 flex flex-col">
-      {/* Title */}
-      <header className="border-b border-gray-700 px-6 py-4">
-        <h1 className="text-lg font-semibold text-purple-400">🎥 80-6 Final Steps</h1>
-      </header>
+    <section className="bg-gray-100">
+      <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col">
+        
+        {/* Title */}
+        <div className="flex items-center">
+          <FaArrowAltCircleLeft className="inline-block mr-2" />
+          <h1 className="text-lg font-semibold text-zinc-600">
+            {currentVideo.title}
+          </h1>
+        </div>
 
-      {/* Content Area */}
-      <main className="flex flex-1 overflow-hidden">
-        {/* Left Section */}
-        <section className="w-full md:w-3/4 p-6 overflow-y-auto">
-          {/* Video */}
-          <div className="bg-black rounded-xl overflow-hidden mb-6">
-            <video
-              className="w-full rounded-lg"
-              controls
-              poster="/thumbnail.jpg"
-            >
-              <source src="/video.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+        {/* Content Area */}
+        <main className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 mt-2">
+          {/* Left Section */}
+          <section className="lg:col-span-2">
+            {/* Video */}
+            <div className="bg-black overflow-hidden mb-6">
+              <div className="w-full rounded-lg">
+                <YouTube
+                  videoId={currentVideo.id}
+                  opts={youtubeOpts}
+                  className="w-full rounded-lg"
+                />
+              </div>
+            </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex justify-between mb-6">
-            <button className="bg-gray-800 hover:bg-gray-700 text-sm px-4 py-2 rounded-lg">
-              Previous
-            </button>
-            <button className="bg-purple-600 hover:bg-purple-700 text-sm px-4 py-2 rounded-lg">
-              Next
-            </button>
-          </div>
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mb-6">
+              <button
+                onClick={goToPrevVideo}
+                disabled={currentVideoIndex === 0}
+                className={`px-6 py-2 rounded-lg ${
+                  currentVideoIndex === 0
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                }`}
+              >
+                Previous
+              </button>
+              <button
+                onClick={goToNextVideo}
+                disabled={currentVideoIndex === courseVideos.length - 1}
+                className={`px-6 py-2 rounded-lg ${
+                  currentVideoIndex === courseVideos.length - 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                }`}
+              >
+                Next
+              </button>
+            </div>
 
-          {/* Notes Section */}
-          <NotesSection />
-        </section>
+            {/* Notes Section */}
+            <NotesSection />
+          </section>
 
-        {/* Right Sidebar */}
-        <aside className="hidden md:block w-1/4 bg-[#151526] border-l border-gray-800 overflow-y-auto">
-          <LessonSidebar />
-        </aside>
-      </main>
-    </div>
+          {/* Right Sidebar */}
+          <aside className="hidden md:block bg-[#151526] border-l border-gray-800 overflow-y-auto lg:col-span-1">
+            <LessonSidebar courseVideos={courseVideos} currentVideoIndex={currentVideoIndex} goToVideo={goToVideo}/>
+          </aside>
+        </main>
+      </div>
+    </section>
   );
 };
 
