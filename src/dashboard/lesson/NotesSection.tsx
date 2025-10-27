@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { BsThreeDots, BsTypeBold } from "react-icons/bs";
+import { BsTypeBold } from "react-icons/bs";
 import { CgFormatItalic, CgFormatUnderline } from "react-icons/cg";
 import { GrStrikeThrough } from "react-icons/gr";
 import { IoIosList } from "react-icons/io";
@@ -13,7 +13,7 @@ import {
 } from "react-icons/pi";
 import { LiaEdit } from "react-icons/lia";
 import { TiDeleteOutline } from "react-icons/ti";
-
+import { LuNotebookText } from "react-icons/lu";
 
 interface EditorState {
   bold: boolean;
@@ -164,15 +164,15 @@ const NotesSection: React.FC = () => {
   }, []);
 
   const handleEditNote = (index: number) => {
-  const noteToEdit = savedNotes[index];
-  setTitle(noteToEdit.title);
-  editorRef.current!.innerHTML = noteToEdit.content;
-  setSavedNotes(savedNotes.filter((_, i) => i !== index));
-};
+    const noteToEdit = savedNotes[index];
+    setTitle(noteToEdit.title);
+    editorRef.current!.innerHTML = noteToEdit.content;
+    setSavedNotes(savedNotes.filter((_, i) => i !== index));
+  };
 
-const handleDeleteNote = (index: number) => {
-  setSavedNotes(savedNotes.filter((_, i) => i !== index));
-};
+  const handleDeleteNote = (index: number) => {
+    setSavedNotes(savedNotes.filter((_, i) => i !== index));
+  };
 
   const inputStyle =
     "transition-smooth border border-gray-200 rounded p-3 w-full focus:outline-none focus:shadow-[0_0_15px_#c1c1c1] backdrop-blur-lg bg-white/50";
@@ -317,7 +317,7 @@ const handleDeleteNote = (index: number) => {
             {/* Save Button */}
             <button
               onClick={saveNote}
-              className="px-6 py-2 mt-3 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth bg-yellow-500 hover:bg-yellow-500 text-zinc-800"
+              className="px-6 py-2 mt-3 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth bg-yellow-500 hover:bg-yellow-600 text-zinc-800 hover:text-white/70"
             >
               Save Note
             </button>
@@ -326,38 +326,52 @@ const handleDeleteNote = (index: number) => {
 
         {/* Saved Notes Section */}
         {savedNotes.map((note, index) => (
-  <div
-    key={index}
-    className="relative bg-zinc-800/50 backdrop-blur-xl shadow-xl border border-white p-6 hover:border-yellow-500/50 transition-smooth"
-  >
-    {/* Title and Menu */}
-    <div className="flex items-start justify-between mb-3">
-      <h3 className="text-xl font-semibold text-slate-200">{note.title}</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <LuNotebookText className="text-yellow-500" />
+              <h2 className="text-xl text-zinc-700">Saved Notes</h2>{" "}
+            </div>
+            <div className="h-[1px] w-full bg-zinc-500/20 -mt-2" />
+          {/* Saved Data */}
+          <div
+            key={index}
+            className="relative bg-zinc-800/50 backdrop-blur-xl shadow-xl border border-white p-6 hover:border-yellow-500/50 transition-smooth"
+          >
+            {/* Title and Menu */}
+            <div className="flex items-start justify-between mb-3">
+              <h3 className="text-xl font-semibold text-slate-200">
+                {note.title}
+              </h3>
 
-      {/* Dropdown Menu */}
-      <div className="flex items-center gap-1">
-        <div onClick={() => handleEditNote(index)}><LiaEdit className="text-yellow-400 text-2xl cursor-pointer"/></div>
-        <div onClick={() => handleDeleteNote(index)}><TiDeleteOutline className="text-red-700 text-2xl cursor-pointer"/></div>
-      </div>
-    </div>
+              {/* Dropdown Menu */}
+              <div className="flex items-center gap-1">
+                <div onClick={() => handleEditNote(index)}>
+                  <LiaEdit className="text-white hover:text-yellow-400 text-2xl cursor-pointer transition-smooth" />
+                </div>
+                <div onClick={() => handleDeleteNote(index)}>
+                  <TiDeleteOutline className="text-zinc-900 hover:text-teal-400 text-2xl cursor-pointer transition-smooth" />
+                </div>
+              </div>
+            </div>
 
-    {/* Note Content */}
-    <div
-      className="text-yellow-400 prose prose-invert max-w-none"
-      dangerouslySetInnerHTML={{ __html: note.content }}
-    />
+            {/* Note Content */}
+            <div
+              className="text-yellow-400 prose prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: note.content }}
+            />
 
-    {/* Date */}
-    <span className="text-sm text-slate-300">
-      Last Update : {new Date(note.timestamp).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      })}
-    </span>
-  </div>
-))}
-
+            {/* Date */}
+            <span className="text-sm text-slate-300">
+              Last Update :{" "}
+              {new Date(note.timestamp).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          </div>
+        ))}
       </div>
 
       <style>{`

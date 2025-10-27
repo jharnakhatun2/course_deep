@@ -88,7 +88,7 @@ export const LessonSidebar = ({
           placeholder="Search Lesson"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-[#1e1e2f] border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white placeholder-gray-500"
+          className="w-full border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500 text-white placeholder-gray-500 bg-white/5 backdrop-blur-lg shadow-[inset_2px_2px_1px_rgba(0,0,0,0.3)]"
         />
       </div>
 
@@ -105,11 +105,11 @@ export const LessonSidebar = ({
           if (!hasVideos) return null;
 
           return (
-            <div key={module.id} className="border border-gray-700 rounded-lg overflow-hidden">
+            <div key={module.id} className="border border-zinc-700 rounded overflow-hidden">
               {/* Module Header */}
               <button
                 onClick={() => toggleModule(module.id)}
-                className="w-full flex items-center justify-between p-3 hover:bg-[#1e1e2f] transition-colors rounded-lg"
+                className="w-full flex items-center justify-between p-3 hover:bg-zinc-800 transition-smooth rounded bg-white/10 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -117,7 +117,7 @@ export const LessonSidebar = ({
                       moduleCompleted
                         ? "bg-green-500 text-white"
                         : moduleInProgress
-                        ? "bg-yellow-500 text-black"
+                        ? "bg-yellow-500 text-zinc-800"
                         : "bg-gray-700 text-gray-400"
                     }`}
                   >
@@ -139,7 +139,7 @@ export const LessonSidebar = ({
 
               {/* Module Lessons with smooth height transition */}
               <div
-                className={`transition-all duration-300 ease-in-out ${
+                className={`transition-smooth ${
                   isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                 }`}
                 style={{

@@ -84,12 +84,12 @@ const LessonPage: React.FC = () => {
           {/* Left Section */}
           <section className="lg:col-span-2">
             {/* Video */}
-            <div className="bg-black overflow-hidden mb-6">
-              <div className="w-full rounded-lg">
+            <div className="bg-zinc-800 overflow-hidden mb-6 rounded">
+              <div className="w-full rounded">
                 <YouTube
                   videoId={currentVideo.id}
                   opts={youtubeOpts}
-                  className="w-full rounded-lg"
+                  className="w-full rounded"
                 />
               </div>
             </div>
@@ -102,7 +102,7 @@ const LessonPage: React.FC = () => {
                 className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
                   currentVideoIndex === 0
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "border border-yellow-400 hover:bg-yellow-500 text-zinc-800"
+                    : "border border-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
                 }`}
               >
                 Previous
@@ -113,7 +113,7 @@ const LessonPage: React.FC = () => {
                 className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
                   currentVideoIndex === courseVideos.length - 1
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-yellow-400 hover:bg-yellow-500 text-zinc-800"
+                    : "bg-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
                 }`}
               >
                 Next
@@ -130,7 +130,7 @@ const LessonPage: React.FC = () => {
           </section>
 
           {/* Right Sidebar */}
-          <aside className="hidden md:block bg-[#151526] border-l border-gray-800 overflow-y-auto lg:col-span-1">
+          <aside className="hidden md:block bg-zinc-800 border-l border-gray-300 overflow-y-auto lg:col-span-1 rounded">
             <LessonSidebar courseVideos={courseVideos} currentVideoIndex={currentVideoIndex} goToVideo={goToVideo}/>
           </aside>
         </main>
