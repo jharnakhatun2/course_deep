@@ -99,6 +99,7 @@ export interface Course {
   totalDurationLength: string;
   totalLectures: number;
   totalSection: number;
+  progress: number;
 }
 
 export interface Event {

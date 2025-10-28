@@ -3,7 +3,8 @@ import {  FaBookOpen } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { SlCalender } from "react-icons/sl";
 import type { FC } from "react";
-import type { Course, Event } from "../UserDashboard";
+import type { Event } from "../UserDashboard";
+import type { Course } from "../../ult/types/types";
 
 const userProfile = {
     name: 'Alex Johnson',
@@ -15,7 +16,7 @@ const userProfile = {
 
 
   interface HeroProps{
-    courses: Course[];
+    courses: Course[]
     events: Event[];
   }
 

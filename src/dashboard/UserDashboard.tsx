@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import Hero from "./profile/Hero";
 import ProfileSidebar from "./profile/ProfileSidebar";
 import CourseEvent from "./profile/CourseEvent";
+import { useGetCoursesQuery } from "../features/course/courseApi";
+import Loader from "../ult/loader/Loader";
 
-export interface Course {
-  id: string;
-  title: string;
-  progress: number;
-  duration: string;
-  level: string;
-  nextLesson: string;
-}
 
 export interface Event {
   id: string;
@@ -33,40 +27,12 @@ const UserDashboard: React.FC = () => {
     "overview"
   );
 
-  const courses: Course[] = [
-    {
-      id: "1",
-      title: "Advanced React & TypeScript",
-      progress: 68,
-      duration: "12 weeks",
-      level: "Advanced",
-      nextLesson: "Context API Deep Dive",
-    },
-    {
-      id: "2",
-      title: "Full Stack Web Development",
-      progress: 45,
-      duration: "16 weeks",
-      level: "Intermediate",
-      nextLesson: "RESTful API Design",
-    },
-    {
-      id: "3",
-      title: "Data Structures & Algorithms",
-      progress: 92,
-      duration: "10 weeks",
-      level: "Advanced",
-      nextLesson: "Dynamic Programming",
-    },
-    {
-      id: "4",
-      title: "Cloud Architecture with AWS",
-      progress: 30,
-      duration: "14 weeks",
-      level: "Intermediate",
-      nextLesson: "EC2 and Load Balancing",
-    },
-  ];
+  const {data: courses, isLoading: courseLoading ,isError: courseError} = useGetCoursesQuery(undefined, {
+      refetchOnMountOrArgChange: false,
+    });
+    
+    console.log(courses);
+  
 
   const events: Event[] = [
     {
@@ -103,7 +69,12 @@ const UserDashboard: React.FC = () => {
     },
   ];
 
-  
+  // Loading & Error for Data
+  if (courseLoading) return <Loader />;
+  if (courseError || !courses)
+    return (
+      <p className="text-center py-10 text-red-500">Failed to load courses!</p>
+    );
 
   return (
     <div className="bg-gray-100">
@@ -142,7 +113,7 @@ const UserDashboard: React.FC = () => {
                 : "bg-white/10 text-zinc-400 hover:bg-white/20"
             }`}
           >
-            Events
+            My Events
           </button>
         </div>
 

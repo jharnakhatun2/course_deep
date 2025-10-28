@@ -1,7 +1,9 @@
 import { IoIosCode } from "react-icons/io"
 import { SlCalender } from "react-icons/sl"
-import type { Course, Event } from "../UserDashboard"
+import type { Event } from "../UserDashboard"
 import type { FC } from "react";
+import type { Course } from "../../ult/types/types";
+import CourseCardUser from "./CourseCardUser";
 
 interface CourseEventProps {
     courses: Course[];
@@ -22,38 +24,7 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                   </h2>
                   <div className="space-y-3 sm:space-y-4">
                     {courses.slice(0, 2).map((course) => (
-                      <div
-                        key={course.id}
-                        className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow "
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-yellow-500 font-semibold text-sm sm:text-base truncate">
-                              {course.title}
-                            </h3>
-                            <p className="text-gray-400 text-xs sm:text-sm truncate">
-                              Next: {course.nextLesson}
-                            </p>
-                          </div>
-                          <span className="px-2 sm:px-3 py-1 bg-purple-500/30 text-white rounded-full text-xs whitespace-nowrap self-start">
-                            {course.level}
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                          <div
-                            className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-smooth"
-                            style={{ width: `${course.progress}%` }}
-                          />
-                        </div>
-                        <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="text-gray-400">
-                            {course.progress}% Complete
-                          </span>
-                          <span className="text-gray-400">
-                            {course.duration}
-                          </span>
-                        </div>
-                      </div>
+                      <CourseCardUser key={course._id} course={course} />
                     ))}
                   </div>
                 </div>
@@ -91,7 +62,7 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                 </div>
               </div>
             )}
-
+            {/* My Courses Card */}
             {activeTab === "courses" && (
               <div className="bg-gray-200 backdrop-blur-lg rounded-xl p-4 sm:p-5 md:p-6 border border-white">
                 <h2 className="text-lg sm:text-xl font-bold text-zinc-500 mb-3 sm:mb-4">
@@ -99,41 +70,13 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                 </h2>
                 <div className="space-y-3 sm:space-y-4">
                   {courses.map((course) => (
-                    <div
-                      key={course.id}
-                      className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-yellow-500 font-semibold text-sm sm:text-base truncate">
-                            {course.title}
-                          </h3>
-                          <p className="text-gray-400 text-xs sm:text-sm truncate">
-                            Next: {course.nextLesson}
-                          </p>
-                        </div>
-                        <span className="px-2 sm:px-3 py-1 bg-purple-500/30 text-white rounded-full text-xs whitespace-nowrap self-start">
-                          {course.level}
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                        <div
-                          className="bg-gradient-to-r from-yellow-50 to-yellow-300 h-2 rounded-full transition-all"
-                          style={{ width: `${course.progress}%` }}
-                        />
-                      </div>
-                      <div className="flex items-center justify-between text-xs sm:text-sm">
-                        <span className="text-gray-400">
-                          {course.progress}% Complete
-                        </span>
-                        <span className="text-gray-400">{course.duration}</span>
-                      </div>
-                    </div>
+                    <CourseCardUser key={course._id} course={course} />
                   ))}
                 </div>
               </div>
             )}
 
+            {/* My Event card */}
             {activeTab === "events" && (
               <div className="bg-gray-200 backdrop-blur-lg rounded-xl p-4 sm:p-5 md:p-6 border border-white">
                 <h2 className="text-lg sm:text-xl font-bold text-zinc-500 mb-3 sm:mb-4">
