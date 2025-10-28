@@ -88,7 +88,7 @@ export const LessonSidebar = ({
           placeholder="Search Lesson"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500 text-white placeholder-gray-500 bg-white/5 backdrop-blur-lg shadow-[inset_2px_2px_1px_rgba(0,0,0,0.3)]"
+          className="w-full border border-zinc-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500 text-white placeholder-gray-500 bg-white/5 backdrop-blur-lg shadow-[inset_2px_2px_1px_rgba(0,0,0,0.3)]"
         />
       </div>
 
@@ -105,11 +105,11 @@ export const LessonSidebar = ({
           if (!hasVideos) return null;
 
           return (
-            <div key={module.id} className="border border-zinc-700 rounded overflow-hidden">
+            <div key={module.id} className="border border-zinc-700 overflow-hidden">
               {/* Module Header */}
               <button
                 onClick={() => toggleModule(module.id)}
-                className="w-full flex items-center justify-between p-3 hover:bg-zinc-800 transition-smooth rounded bg-white/10 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
+                className="w-full flex items-center justify-between p-3 hover:bg-zinc-800 transition-smooth bg-white/10 backdrop-blur-lg shadow-[0_0_5px_#ffffff] cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -118,7 +118,7 @@ export const LessonSidebar = ({
                         ? "bg-green-500 text-white"
                         : moduleInProgress
                         ? "bg-yellow-500 text-zinc-800"
-                        : "bg-gray-700 text-gray-400"
+                        : "bg-zinc-500 text-gray-300"
                     }`}
                   >
                     {module.id + 1}
@@ -146,7 +146,7 @@ export const LessonSidebar = ({
                   overflow: isExpanded ? "visible" : "hidden",
                 }}
               >
-                <div className="px-2 pb-2 space-y-1">
+                <div className="px-2 pb-2 space-y-1 my-2">
                   {module.videos.map((video, idx) => {
                     const videoIndex = module.startIndex + idx;
                     const isCurrentVideo = videoIndex === currentVideoIndex;
@@ -156,12 +156,12 @@ export const LessonSidebar = ({
                       <div
                         key={video.id}
                         onClick={() => goToVideo(videoIndex)}
-                        className={`p-2 rounded-lg cursor-pointer transition-colors ${
+                        className={`p-2 rounded cursor-pointer transition-smooth hover:bg-white/10 ${
                           isCurrentVideo
-                            ? "bg-yellow-500 text-black"
+                            ? "bg-yellow-500 text-black hover:bg-yellow-500"
                             : isCompleted
-                            ? "bg-[#1e1e2f] text-gray-300"
-                            : "hover:bg-[#1e1e2f] text-gray-400"
+                            ? "text-gray-300"
+                            : "text-gray-400"
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ export const LessonSidebar = ({
                                 ? "bg-black text-yellow-500 font-bold"
                                 : isCompleted
                                 ? "bg-green-500 text-white"
-                                : "bg-gray-700 text-gray-400"
+                                : "bg-zinc-600 text-gray-400"
                             }`}
                           >
                             {isCompleted ? "✓" : idx + 1}
@@ -228,18 +228,18 @@ const courseVideos = [
 ];
 
 // Demo Component
-export default function App() {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+// export default function App() {
+//   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
-  return (
-    <div className="min-h-screen bg-gray-900 p-4">
-      <div className="max-w-md mx-auto bg-[#151526] rounded-lg shadow-xl">
-        <LessonSidebar
-          courseVideos={courseVideos}
-          currentVideoIndex={currentVideoIndex}
-          goToVideo={setCurrentVideoIndex}
-        />
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="min-h-screen bg-gray-900 p-4">
+//       <div className="max-w-md mx-auto bg-[#151526] rounded shadow-xl">
+//         <LessonSidebar
+//           courseVideos={courseVideos}
+//           currentVideoIndex={currentVideoIndex}
+//           goToVideo={setCurrentVideoIndex}
+//         />
+//       </div>
+//     </div>
+//   );
+// }
