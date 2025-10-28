@@ -43,22 +43,26 @@ const LessonPage: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const currentVideo = courseVideos[currentVideoIndex];
 
+  // Next Navigation Handlers
   const goToNextVideo = () => {
     if (currentVideoIndex < courseVideos.length - 1) {
       setCurrentVideoIndex(currentVideoIndex + 1);
     }
   };
 
+  // Prev Navigation Handlers
   const goToPrevVideo = () => {
     if (currentVideoIndex > 0) {
       setCurrentVideoIndex(currentVideoIndex - 1);
     }
   };
 
+  // Direct Video Selection Handler
   const goToVideo = (index: number) => {
     setCurrentVideoIndex(index);
   };
 
+  // YouTube Player Options
   const youtubeOpts = {
     height: "400",
     width: "100%",
@@ -72,10 +76,11 @@ const LessonPage: React.FC = () => {
   return (
     <section className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col">
-
         {/* Title */}
         <div className="flex items-center">
-          <h1 className="font-garamond text-2xl font-semibold text-zinc-600">{currentVideo.title}</h1>
+          <h1 className="font-garamond text-2xl font-semibold text-zinc-600">
+            {currentVideo.title}
+          </h1>
         </div>
         <div className="h-[1px] w-full bg-gray-500/20 my-3" />
 
@@ -122,16 +127,20 @@ const LessonPage: React.FC = () => {
 
             {/* Notes Section */}
             <div className="flex items-center gap-2 text-zinc-600 font-semibold text-lg mb-2">
-              <LuNotebookPen className="text-teal-500"/> 
+              <LuNotebookPen className="text-teal-500" />
               <h3>Notes</h3>
             </div>
-             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
+            <div className="h-[1px] w-full bg-gray-500/20 my-3" />
             <NotesSection />
           </section>
 
           {/* Right Sidebar */}
           <aside className="hidden md:block bg-zinc-800 border-l border-gray-300 overflow-y-auto lg:col-span-1 rounded">
-            <LessonSidebar courseVideos={courseVideos} currentVideoIndex={currentVideoIndex} goToVideo={goToVideo}/>
+            <LessonSidebar
+              courseVideos={courseVideos}
+              currentVideoIndex={currentVideoIndex}
+              goToVideo={goToVideo}
+            />
           </aside>
         </main>
       </div>
