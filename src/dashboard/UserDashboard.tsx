@@ -4,16 +4,9 @@ import ProfileSidebar from "./profile/ProfileSidebar";
 import CourseEvent from "./profile/CourseEvent";
 import { useGetCoursesQuery } from "../features/course/courseApi";
 import Loader from "../ult/loader/Loader";
+import { useGetUserBookingsQuery } from "../features/bookings/bookingsApi";
+import { useAuth } from "../hook/useAuth";
 
-
-export interface Event {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  type: string;
-  status: "upcoming" | "ongoing" | "completed";
-}
 
 export interface Achievement {
   id: string;
@@ -26,61 +19,35 @@ const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "events">(
     "overview"
   );
-
+ const { user } = useAuth();
+ const userEmail = user?.email;
   const {data: courses, isLoading: courseLoading ,isError: courseError} = useGetCoursesQuery(undefined, {
       refetchOnMountOrArgChange: false,
     });
-    
-    console.log(courses);
-  
+  // ✅ User Bookings Query (only if email exists)
+  const {data: userBookings, isLoading: bookingLoading, isError: bookingError} = useGetUserBookingsQuery(userEmail ?? "", { skip: !userEmail });
 
-  const events: Event[] = [
-    {
-      id: "1",
-      title: "React Performance Workshop",
-      date: "Oct 28, 2025",
-      time: "2:00 PM - 4:00 PM",
-      type: "Workshop",
-      status: "upcoming",
-    },
-    {
-      id: "2",
-      title: "Coding Competition: Algorithm Sprint",
-      date: "Oct 30, 2025",
-      time: "10:00 AM - 1:00 PM",
-      type: "Competition",
-      status: "upcoming",
-    },
-    {
-      id: "3",
-      title: "Career Panel: Tech Industry Insights",
-      date: "Nov 2, 2025",
-      time: "6:00 PM - 7:30 PM",
-      type: "Seminar",
-      status: "upcoming",
-    },
-    {
-      id: "4",
-      title: "TypeScript Best Practices",
-      date: "Oct 25, 2025",
-      time: "3:00 PM - 5:00 PM",
-      type: "Workshop",
-      status: "completed",
-    },
-  ];
+  const eventBookings = userBookings?.filter(
+  (booking) => booking.productType === "event"
+);
+// const courseBookings = userBookings?.filter(
+//   (booking) => booking.productType === "course"
+// );
+    
 
   // Loading & Error for Data
-  if (courseLoading) return <Loader />;
-  if (courseError || !courses)
+  if (courseLoading || bookingLoading) return <Loader />;
+  if (courseError || bookingError || !courses)
     return (
-      <p className="text-center py-10 text-red-500">Failed to load courses!</p>
+      <p className="text-center py-10 text-red-500">Failed to load Data!</p>
     );
 
+    console.log("Bookings:", eventBookings);
   return (
     <div className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
         {/* User Profile */}
-        <Hero courses={courses} events={events} />
+        <Hero courses={courses} events={eventBookings} />
 
         {/* course and event info */}
         {/* Tabs */}
@@ -119,7 +86,7 @@ const UserDashboard: React.FC = () => {
 
         {/* Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <CourseEvent activeTab={activeTab} courses={courses} events={events} />
+          <CourseEvent activeTab={activeTab} courses={courses} events={eventBookings} />
           {/* Sidebar */}
           <ProfileSidebar />
         </div>

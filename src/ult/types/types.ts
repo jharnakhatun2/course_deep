@@ -124,7 +124,7 @@ export interface Event {
 
 // ✅ UPDATED: Booking interface
 export interface Booking {
-  _id?: string;
+  _id: string;
   // User information
   userId: string;
   userEmail: string;
@@ -144,13 +144,13 @@ export interface Booking {
   paymentCurrency: string;
 
   // Event-specific
-  eventDate?: string;
-  eventTime?: string;
-  eventLocation?: string;
+  eventDate: string;
+  eventTime: string;
+  eventLocation: string;
 
   // Booking metadata
-  status: "confirmed" | "cancelled";
-  bookedAt?: string;
+  status: "confirmed" | "cancelled" | "upcoming" | "ongoing" | "completed";
+  bookedAt: string;
 }
 
 export interface Replay {

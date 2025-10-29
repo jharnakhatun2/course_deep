@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+
+import {  Link, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../app/hooks";
 import { authApi, useLogoutMutation } from "../../features/auth/authApi";
 import { logout } from "../../features/auth/authSlice";
 import { useAuth } from "../../hook/useAuth";
+import { useState } from "react";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -19,8 +20,7 @@ const Menu = () => {
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
   const navigate = useNavigate();
-  const { user } = useAuth()
-  console.log(user)
+  const { user } = useAuth();
 
   // logout function
   const logOut = async () => {
@@ -80,7 +80,13 @@ const Menu = () => {
                 Logout
               </button>
               <span>|</span>
-              <FaUserCircle className="cursor-pointer" />
+              <Link
+                to="/dashboard"
+                className="cursor-pointer hover:text-black transition-smooth"
+              >
+                <FaUserCircle />
+              </Link>
+              
             </div>
           ) : (
             <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8">

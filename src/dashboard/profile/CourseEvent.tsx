@@ -1,13 +1,12 @@
 import { IoIosCode } from "react-icons/io"
 import { SlCalender } from "react-icons/sl"
-import type { Event } from "../UserDashboard"
 import type { FC } from "react";
-import type { Course } from "../../ult/types/types";
+import type { Booking, Course } from "../../ult/types/types";
 import CourseCardUser from "./CourseCardUser";
 
 interface CourseEventProps {
     courses: Course[];
-    events: Event[];
+    events?: Booking[];
     activeTab: "overview" | "courses" | "events";
 }
 
@@ -35,25 +34,24 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                     Upcoming Events
                   </h2>
                   <div className="space-y-3">
-                    {events
-                      .filter((e) => e.status === "upcoming")
+                    {events?.filter((e) => e.status === "upcoming")
                       .slice(0, 3)
                       .map((event) => (
                         <div
-                          key={event.id}
+                          key={event._id}
                           className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-teal-500 font-semibold mb-1 text-sm sm:text-base">
-                                {event.title}
+                                {event.productTitle}
                               </h3>
                               <p className="text-gray-400 text-xs sm:text-sm">
-                                {event.date} • {event.time}
+                                {event.eventDate} • {event.eventTime}
                               </p>
                             </div>
                             <span className="px-2 sm:px-3 py-1 bg-blue-500/30 text-white rounded-full text-xs whitespace-nowrap self-start">
-                              {event.type}
+                              {event.productType}
                             </span>
                           </div>
                         </div>
@@ -83,19 +81,19 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                   All Events
                 </h2>
                 <div className="space-y-3">
-                  {events.map((event) => (
+                  {events?.map((event) => (
                     <div
-                      key={event.id}
+                      key={event._id}
                       className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
                     >
                       <div className="flex flex-col gap-2">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                           <div className="flex-1 min-w-0">
                             <h3 className="text-teal-500 font-semibold mb-1 text-sm sm:text-base">
-                              {event.title}
+                              {event.productTitle}
                             </h3>
                             <p className="text-gray-400 text-xs sm:text-sm">
-                              {event.date} • {event.time}
+                              {event.eventDate} • {event.eventTime}
                             </p>
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
@@ -111,7 +109,7 @@ const CourseEvent:FC<CourseEventProps> = ({courses, events, activeTab}) => {
                               {event.status}
                             </span>
                             <span className="px-2 sm:px-3 py-1 bg-purple-500/30 text-white rounded-full text-xs whitespace-nowrap">
-                              {event.type}
+                              {event.productType}
                             </span>
                           </div>
                         </div>

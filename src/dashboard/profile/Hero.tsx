@@ -3,8 +3,7 @@ import {  FaBookOpen } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { SlCalender } from "react-icons/sl";
 import type { FC } from "react";
-import type { Event } from "../UserDashboard";
-import type { Course } from "../../ult/types/types";
+import type { Booking, Course } from "../../ult/types/types";
 
 const userProfile = {
     name: 'Alex Johnson',
@@ -17,7 +16,7 @@ const userProfile = {
 
   interface HeroProps{
     courses: Course[]
-    events: Event[];
+    events?: Booking[];
   }
 
 const Hero:FC<HeroProps> = ({courses, events}) => {
@@ -25,7 +24,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
      const stats = {
     totalCourses: courses.length,
     completedCourses: courses.filter(c => c.progress === 100).length,
-    upcomingEvents: events.filter(e => e.status === 'upcoming').length,
+    upcomingEvents: events?.filter(e => e.status === 'upcoming').length,
     hoursLearned: 187
   };
 
