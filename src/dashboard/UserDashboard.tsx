@@ -42,17 +42,18 @@ const UserDashboard: React.FC = () => {
       <p className="text-center py-10 text-red-500">Failed to load Data!</p>
     );
 
-    console.log("Bookings:", eventBookings);
+    console.log(user);
   return (
     <div className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
         {/* User Profile */}
-        <Hero courses={courses} events={eventBookings} />
+        <Hero courses={courses} events={eventBookings} user={user}/>
 
         {/* course and event info */}
         {/* Tabs */}
         <div className="flex gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 pt-7">
           <button
+            type="button"
             onClick={() => setActiveTab("overview")}
             className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
               activeTab === "overview"
@@ -63,6 +64,7 @@ const UserDashboard: React.FC = () => {
             Overview
           </button>
           <button
+          type="button"
             onClick={() => setActiveTab("courses")}
             className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
               activeTab === "courses"

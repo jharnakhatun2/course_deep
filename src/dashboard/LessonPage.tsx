@@ -102,6 +102,7 @@ const LessonPage: React.FC = () => {
             {/* Navigation Buttons */}
             <div className="flex mb-6 justify-end gap-4">
               <button
+              type="button"
                 onClick={goToPrevVideo}
                 disabled={currentVideoIndex === 0}
                 className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
@@ -113,6 +114,7 @@ const LessonPage: React.FC = () => {
                 Previous
               </button>
               <button
+              type="button"
                 onClick={goToNextVideo}
                 disabled={currentVideoIndex === courseVideos.length - 1}
                 className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${

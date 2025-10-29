@@ -1,30 +1,24 @@
-import { CiClock2, CiMail, CiMapPin} from "react-icons/ci";
-import {  FaBookOpen } from 'react-icons/fa';
+import { CiClock2, CiMail} from "react-icons/ci";
+import {  FaBookOpen, FaUser } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { SlCalender } from "react-icons/sl";
 import type { FC } from "react";
-import type { Booking, Course } from "../../ult/types/types";
-
-const userProfile = {
-    name: 'Alex Johnson',
-    email: 'alex.johnson@mls.edu',
-    location: 'San Francisco, CA',
-    memberSince: 'January 2024',
-    avatar: 'AJ'
-  };
+import type { Booking, Course, User } from "../../ult/types/types";
+import { IoTimeOutline } from "react-icons/io5";
 
 
   interface HeroProps{
     courses: Course[]
     events?: Booking[];
+    user?: User | null ;
   }
 
-const Hero:FC<HeroProps> = ({courses, events}) => {
+const Hero:FC<HeroProps> = ({courses, events, user}) => {
 
      const stats = {
     totalCourses: courses.length,
     completedCourses: courses.filter(c => c.progress === 100).length,
-    upcomingEvents: events?.filter(e => e.status === 'upcoming').length,
+    upcomingEvents: events?.filter(e => e.status === 'confirmed').length,
     hoursLearned: 187
   };
 
@@ -33,22 +27,22 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
         {/* Header */}
                 <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 mb-4 md:mb-6 border border-white sm:w-[800px]">
                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold flex-shrink-0">
-                      {userProfile.avatar}
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-yellow-500 to-teal-500 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold flex-shrink-0">
+                      <FaUser />
                     </div>
-                    <div className="text-center sm:text-left flex-1">
-                      <h1 className="text-2xl sm:text-3xl font-bold text-zinc-500">{userProfile.name}</h1>
-                      <div className="flex flex-col text-zinc-500 text-xs sm:text-sm">
-                        <span className="flex items-center gap-1">
-                          <CiMail className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span className="break-all">{userProfile.email}</span>
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <CiMapPin className="w-3 h-3 sm:w-4 sm:h-4" />
-                          {userProfile.location}
+                    <div className="text-center sm:text-left flex-1 space-y-1">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-zinc-600">{user?.name}</h1>
+                      <div className="flex flex-col text-zinc-500 text-sm">
+                        <span className="flex items-center gap-2">
+                          <CiMail className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
+                          <span className="break-all">{user?.email}</span>
                         </span>
                       </div>
-                      <p className="text-gray-400 text-xs sm:text-sm mt-1">Member since {userProfile.memberSince}</p>
+                      <div className="flex items-center gap-2">
+                        <IoTimeOutline className="w-4 h-4 text-yellow-500" />
+                        <p className="text-gray-400 text-sm mt-1">Member since {user?.createdAt ? new Date(user.createdAt).toLocaleString("en-US", {month: "long",year: "numeric",}): "January 2025"}</p>
+                      </div>
+                     
                     </div>
                   </div>
                 </div>
@@ -76,7 +70,7 @@ const Hero:FC<HeroProps> = ({courses, events}) => {
                       <SlCalender  className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                       <span className="text-2xl sm:text-3xl font-bold text-white">{stats.upcomingEvents}</span>
                     </div>
-                    <p className="text-purple-500 text-xs sm:text-sm">Upcoming Events</p>
+                    <p className="text-purple-500 text-xs sm:text-sm">Enrolled Events</p>
                   </div>
         
                   <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-lg rounded-xl p-4 sm:p-5 border border-orange-400/30">

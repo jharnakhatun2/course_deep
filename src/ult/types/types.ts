@@ -5,7 +5,7 @@ export interface User {
   password?: string;
   role: string;
   createdAt: string;
-  lastSignInTime?: string;
+  lastSignInTime: string;
 }
 
 export interface Video {
