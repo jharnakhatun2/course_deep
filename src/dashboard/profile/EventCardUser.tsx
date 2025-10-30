@@ -1,14 +1,16 @@
-import type { FC } from "react";
+import { type FC } from "react";
 import type { Booking } from "../../ult/types/types";
 
 interface EventCardUserProps {
   event: Booking;
+  onTicketDownload: (event: Booking) => void;
 }
-const EventCardUser: FC<EventCardUserProps> = ({ event }) => {
+const EventCardUser: FC<EventCardUserProps> = ({ event, onTicketDownload }) => {
+
   return (
     <div
       key={event._id}
-      className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
+      className="bg-white/30 rounded-lg p-3 sm:p-5 hover:bg-white/60 transition-smooth hover:shadow"
     >
       <div className="flex flex-col gap-2">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
@@ -49,8 +51,8 @@ const EventCardUser: FC<EventCardUserProps> = ({ event }) => {
                 className={`px-2 sm:px-3 py-1 rounded-full text-xs whitespace-nowrap ${
                   event.status === "upcoming"
                     ? "bg-blue-500/30 text-white"
-                    : event.status === "ongoing"
-                    ? "bg-green-500/30 text-white"
+                    : event.status === "confirmed"
+                    ? "bg-green-500/20 text-zinc-500"
                     : "bg-gray-500/30 text-white"
                 }`}
               >
@@ -62,7 +64,7 @@ const EventCardUser: FC<EventCardUserProps> = ({ event }) => {
             </div>
             <button
               type="button"
-              onClick={() => {}}
+              onClick={() => onTicketDownload(event)}
               className="mt-5 px-6 py-2 cursor-pointer font-semibold uppercase text-xs shadow transition-smooth border border-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white "
             >
               Download Ticket

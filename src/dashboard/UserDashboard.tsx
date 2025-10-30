@@ -6,6 +6,8 @@ import { useGetCoursesQuery } from "../features/course/courseApi";
 import Loader from "../ult/loader/Loader";
 import { useGetUserBookingsQuery } from "../features/bookings/bookingsApi";
 import { useAuth } from "../hook/useAuth";
+import EventTicket from "./profile/EventTicket";
+import type { Booking } from "../ult/types/types";
 
 
 export interface Achievement {
@@ -19,6 +21,8 @@ const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "events">(
     "overview"
   );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedEvent, setSelectedEvent] = useState<Booking | null>(null);
  const { user } = useAuth();
  const userEmail = user?.email;
   const {data: courses, isLoading: courseLoading ,isError: courseError} = useGetCoursesQuery(undefined, {
@@ -27,13 +31,25 @@ const UserDashboard: React.FC = () => {
   // ✅ User Bookings Query (only if email exists)
   const {data: userBookings, isLoading: bookingLoading, isError: bookingError} = useGetUserBookingsQuery(userEmail ?? "", { skip: !userEmail });
 
-  const eventBookings = userBookings?.filter(
-  (booking) => booking.productType === "event"
-);
+  
 // const courseBookings = userBookings?.filter(
 //   (booking) => booking.productType === "course"
 // );
-    
+
+const eventBookings = userBookings?.filter(
+  (booking) => booking.productType === "event"
+);
+
+// Event Booking ticket download    
+ const handleTicketDownload = (event: Booking) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
 
   // Loading & Error for Data
   if (courseLoading || bookingLoading) return <Loader />;
@@ -88,11 +104,20 @@ const UserDashboard: React.FC = () => {
 
         {/* Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <CourseEvent activeTab={activeTab} courses={courses} events={eventBookings} />
+          <CourseEvent activeTab={activeTab} courses={courses} events={eventBookings} onTicketDownload={handleTicketDownload}/>
           {/* Sidebar */}
           <ProfileSidebar />
         </div>
       </div>
+      {/* Single Modal */}
+      
+      {selectedEvent && (
+        <EventTicket 
+          event={selectedEvent} 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

@@ -9,9 +9,10 @@ interface CourseEventProps {
   courses: Course[];
   events?: Booking[];
   activeTab: "overview" | "courses" | "events";
+  onTicketDownload: (event: Booking) => void;
 }
 
-const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab }) => {
+const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicketDownload }) => {
   return (
     <div className="lg:col-span-2">
       {activeTab === "overview" && (
@@ -89,7 +90,7 @@ const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab }) => {
           <div className="space-y-3">
             {events && events.length > 0 ? (
               events.map((event) => (
-                <EventCardUser key={event._id} event={event} />
+                <EventCardUser key={event._id} event={event} onTicketDownload={onTicketDownload}/>
               ))
             ) : (
               <p className="text-zinc-400 text-center py-4">
