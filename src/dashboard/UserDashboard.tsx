@@ -9,7 +9,6 @@ import { useAuth } from "../hook/useAuth";
 import EventTicket from "./profile/EventTicket";
 import type { Booking } from "../ult/types/types";
 
-
 export interface Achievement {
   id: string;
   title: string;
@@ -23,25 +22,32 @@ const UserDashboard: React.FC = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<Booking | null>(null);
- const { user } = useAuth();
- const userEmail = user?.email;
-  const {data: courses, isLoading: courseLoading ,isError: courseError} = useGetCoursesQuery(undefined, {
-      refetchOnMountOrArgChange: false,
-    });
-  // ✅ User Bookings Query (only if email exists)
-  const {data: userBookings, isLoading: bookingLoading, isError: bookingError} = useGetUserBookingsQuery(userEmail ?? "", { skip: !userEmail });
+  const { user } = useAuth();
+  const userEmail = user?.email;
+  const {
+    data: courses,
+    isLoading: courseLoading,
+    isError: courseError,
+  } = useGetCoursesQuery(undefined, {
+    refetchOnMountOrArgChange: false,
+  });
+  // User Bookings Query (only if email exists)
+  const {
+    data: userBookings,
+    isLoading: bookingLoading,
+    isError: bookingError,
+  } = useGetUserBookingsQuery(userEmail ?? "", { skip: !userEmail });
 
-  
-// const courseBookings = userBookings?.filter(
-//   (booking) => booking.productType === "course"
-// );
+  // const courseBookings = userBookings?.filter(
+  //   (booking) => booking.productType === "course"
+  // );
 
-const eventBookings = userBookings?.filter(
-  (booking) => booking.productType === "event"
-);
+  const eventBookings = userBookings?.filter(
+    (booking) => booking.productType === "event"
+  );
 
-// Event Booking ticket download    
- const handleTicketDownload = (event: Booking) => {
+  // Event Booking ticket download
+  const handleTicketDownload = (event: Booking) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
@@ -58,12 +64,12 @@ const eventBookings = userBookings?.filter(
       <p className="text-center py-10 text-red-500">Failed to load Data!</p>
     );
 
-    console.log(user);
+  console.log(user);
   return (
     <div className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
         {/* User Profile */}
-        <Hero courses={courses} events={eventBookings} user={user}/>
+        <Hero courses={courses} events={eventBookings} user={user} />
 
         {/* course and event info */}
         {/* Tabs */}
@@ -80,7 +86,7 @@ const eventBookings = userBookings?.filter(
             Overview
           </button>
           <button
-          type="button"
+            type="button"
             onClick={() => setActiveTab("courses")}
             className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
               activeTab === "courses"
@@ -104,17 +110,22 @@ const eventBookings = userBookings?.filter(
 
         {/* Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <CourseEvent activeTab={activeTab} courses={courses} events={eventBookings} onTicketDownload={handleTicketDownload}/>
+          <CourseEvent
+            activeTab={activeTab}
+            courses={courses}
+            events={eventBookings}
+            onTicketDownload={handleTicketDownload}
+          />
           {/* Sidebar */}
           <ProfileSidebar />
         </div>
       </div>
       {/* Single Modal */}
-      
+
       {selectedEvent && (
-        <EventTicket 
-          event={selectedEvent} 
-          isModalOpen={isModalOpen} 
+        <EventTicket
+          event={selectedEvent}
+          isModalOpen={isModalOpen}
           modalClose={handleCloseModal}
         />
       )}

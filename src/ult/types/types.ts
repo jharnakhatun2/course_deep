@@ -120,6 +120,7 @@ export interface Event {
   country: string;
   seats: number;
   discussItems: string[];
+  status:  "upcoming" | "ongoing" | "completed";
 }
 
 // ✅ UPDATED: Booking interface

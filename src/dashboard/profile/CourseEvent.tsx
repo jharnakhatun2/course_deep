@@ -4,15 +4,24 @@ import type { FC } from "react";
 import type { Booking, Course } from "../../ult/types/types";
 import CourseCardUser from "./CourseCardUser";
 import EventCardUser from "./EventCardUser";
+import { useGetEventsQuery } from "../../features/event/eventApi";
+import UpcomingEvent from "./UpcomingEvent";
+
 
 interface CourseEventProps {
   courses: Course[];
   events?: Booking[];
   activeTab: "overview" | "courses" | "events";
   onTicketDownload: (event: Booking) => void;
+  userEmail?: string;
 }
 
 const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicketDownload }) => {
+  const { data: allEvents } = useGetEventsQuery();
+  
+
+ 
+
   return (
     <div className="lg:col-span-2">
       {activeTab === "overview" && (
@@ -35,28 +44,11 @@ const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicke
               Upcoming Events
             </h2>
             <div className="space-y-3">
-              {events
+              {allEvents
                 ?.filter((e) => e.status === "upcoming")
                 .slice(0, 3)
                 .map((event) => (
-                  <div
-                    key={event._id}
-                    className="bg-white/30 rounded-lg p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-teal-500 font-semibold mb-1 text-sm sm:text-base">
-                          {event.productTitle}
-                        </h3>
-                        <p className="text-gray-400 text-xs sm:text-sm">
-                          {event.eventDate} • {event.eventTime}
-                        </p>
-                      </div>
-                      <span className="px-2 sm:px-3 py-1 bg-blue-500/30 text-white rounded-full text-xs whitespace-nowrap self-start">
-                        {event.productType}
-                      </span>
-                    </div>
-                  </div>
+                  <UpcomingEvent key={event._id} event={event} />
                 ))}
             </div>
           </div>

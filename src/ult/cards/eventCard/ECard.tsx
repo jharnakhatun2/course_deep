@@ -13,6 +13,19 @@ const ECard: FC<ECardProps> = ({ event }) => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
+   // Function to extract date parts from ISO date string
+  const getDateParts = (dateString: string) => {
+    const date = new Date(dateString);
+    
+    return {
+      day: date.getDate().toString(),
+      month: date.toLocaleDateString('en-US', { month: 'short' }),
+      weekday: date.toLocaleDateString('en-US', { weekday: 'long' })
+    };
+  };
+
+  const dateParts = getDateParts(event.date);
+
   const handleRegisterClick = () => {
     if (!user?.email) {
       navigate("/login", { state: { from: `/events/${event._id}` } });
@@ -22,6 +35,7 @@ const ECard: FC<ECardProps> = ({ event }) => {
   };
 
   if (loading) return <Loader />;
+
   return (
     <div
       key={event._id}
@@ -41,13 +55,13 @@ const ECard: FC<ECardProps> = ({ event }) => {
         {/* Date Section */}
         <div className="flex-1 text-left">
           <div className="flex items-baseline-last">
-            <div className="text-5xl text-yellow-500">{event.day}</div>
-            <div className="uppercase text-gray-400 font-light">
-              {event.month}
+            <div className="text-5xl text-yellow-500">{dateParts.day}</div>
+            <div className="uppercase text-gray-400 font-light text-sm ml-1">
+              {dateParts.month}
             </div>
           </div>
-          <div className="uppercase text-2xl text-zinc-400 font-light">
-            {event.weekday}
+          <div className="uppercase text-xl text-zinc-400 font-light">
+            {dateParts.weekday}
           </div>
         </div>
 
