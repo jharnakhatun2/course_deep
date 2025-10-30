@@ -35,7 +35,7 @@ const CourseSinglePage = () => {
   if (isError || !course)
     return (
       <p className="text-center py-10 text-red-500">Failed to load course!</p>
-    ); 
+    );
 
   return (
     <section className="py-10 bg-gray-100">
@@ -62,6 +62,7 @@ const CourseSinglePage = () => {
               />
               {/* Play button overlay */}
               <button
+                type="button"
                 onClick={handlePlayClick}
                 className="cursor-pointer absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center  text-7xl "
               >
@@ -71,22 +72,22 @@ const CourseSinglePage = () => {
             </div>
 
             {/* Course Tab */}
-            <CourseTab course={course}/>
+            <CourseTab course={course} />
 
             {/* Instructor Profile */}
-            <InstructorProfile teacher={course.teacher}/>
+            <InstructorProfile teacher={course.teacher} />
 
             {/* Display Review */}
-            <Reviews courseId={course._id}/>
+            <Reviews courseId={course._id} />
 
             {/* Add Review */}
-            <ReviewForm courseId={course._id}/>
+            <ReviewForm courseId={course._id} />
           </div>
         </div>
 
         {/* Sidebar */}
         <aside className="lg:col-span-1">
-          <SingleCourseSidebar course={course}/>
+          <SingleCourseSidebar course={course} />
         </aside>
       </div>
 

@@ -23,7 +23,7 @@ const Hero:FC<HeroProps> = ({courses, events, user}) => {
   };
 
   return (
-    <div className="sm:flex gap-10">
+    <div className="sm:flex gap-10 mt-3">
         {/* Header */}
                 <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 mb-4 md:mb-6 border border-white sm:w-[800px]">
                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">

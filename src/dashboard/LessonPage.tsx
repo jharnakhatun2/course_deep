@@ -3,6 +3,7 @@ import { LessonSidebar } from "./lesson/LessonSidebar";
 import { LuNotebookPen } from "react-icons/lu";
 import YouTube from "react-youtube";
 import NotesSection from "./lesson/NotesSection";
+import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
 
 const courseVideos = [
   { id: "ODKIxaSMgpU", title: "A complete roadmap to learn Reactjs" },
@@ -37,6 +38,12 @@ const courseVideos = [
     title:
       "What is Code Splitting? How does Code Splitting Work Under the Hood?",
   },
+];
+
+//for breadcrumb
+const breadcrumbItems = [
+  { label: "My Dashboard", href: "/dashboard" },
+  { label: "Lesson" },
 ];
 
 const LessonPage: React.FC = () => {
@@ -77,7 +84,8 @@ const LessonPage: React.FC = () => {
     <section className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col">
         {/* Title */}
-        <div className="flex items-center">
+        <div className="">
+           <Breadcrumb items={breadcrumbItems} />
           <h1 className="font-garamond text-2xl font-semibold text-zinc-600">
             {currentVideo.title}
           </h1>

@@ -8,6 +8,7 @@ import { useGetUserBookingsQuery } from "../features/bookings/bookingsApi";
 import { useAuth } from "../hook/useAuth";
 import EventTicket from "./profile/EventTicket";
 import type { Booking } from "../ult/types/types";
+import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
 
 export interface Achievement {
   id: string;
@@ -15,6 +16,8 @@ export interface Achievement {
   description: string;
   earnedDate: string;
 }
+
+const breadcrumbItems = [{ label: "My Dashboard" }];
 
 const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "events">(
@@ -68,6 +71,7 @@ const UserDashboard: React.FC = () => {
   return (
     <div className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
+        <Breadcrumb items={breadcrumbItems} />
         {/* User Profile */}
         <Hero courses={courses} events={eventBookings} user={user} />
 
