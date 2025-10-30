@@ -115,7 +115,7 @@ const eventBookings = userBookings?.filter(
         <EventTicket 
           event={selectedEvent} 
           isModalOpen={isModalOpen} 
-          setIsModalOpen={handleCloseModal}
+          modalClose={handleCloseModal}
         />
       )}
     </div>
