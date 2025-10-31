@@ -1,16 +1,38 @@
 import { type FC } from "react";
 import type { Course } from "../../../ult/types/types";
+import { useAuth } from "../../../hook/useAuth";
+import { useLocation, useNavigate } from "react-router";
+import Loader from "../../../ult/loader/Loader";
 
 interface CourseEnrollProps {
   course: Course;
 }
 
 const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleEnrollClick = () => {
+    if (!user?.email) {
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+    navigate(`/courses/${course._id}`);
+  };
+
+  if (loading) return <Loader />;
+
   return (
     <div className="border border-gray-500/20 text-zinc-500 lg:mt-8">
       {/* Header Button */}
-      <button className="cursor-pointer w-full bg-yellow-400 hover:bg-yellow-500 transition-colors py-6 px-6 text-gray-900 font-semibold text-lg uppercase tracking-wide">
-        Enroll Now
+      <button onClick={handleEnrollClick} className="cursor-pointer w-full bg-yellow-400 hover:bg-yellow-500 transition-smooth py-6 px-6 text-gray-900 font-bold text-sm sm:text-lg uppercase">
+
+        {user?.email
+          ? (course.price <= 0 ? "Enroll for Free" : "Buy Now")
+          : "Login To Enroll"
+        }
+
       </button>
 
       {/* Content */}
@@ -20,8 +42,8 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
           <span className="text-gray-500 text-sm uppercase tracking-wide font-semibold">
             Price:
           </span>
-          <span className="text-4xl font-bold text-gray-900 ml-2">
-            £{course.price ?? "39.00"}
+          <span className="text-2xl sm:text-3xl font-bold text-gray-900 ml-2">
+            {course.price > 0 ? `$ ${course.price || "39.00"}` : "Free"}
           </span>
         </div>
 
