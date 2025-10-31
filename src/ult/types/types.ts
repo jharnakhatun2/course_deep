@@ -212,3 +212,100 @@ export interface CartItem {
   duration?: string;
   userEmail: string;
 }
+
+//course enrollment
+export interface Enrollment {
+  _id: string;
+  // User information
+  userId: string;
+  userEmail: string;
+  userName: string;
+
+  // Course information
+  courseId: string;
+  courseTitle: string;
+  courseDescription: string;
+  courseImage: string;
+  instructorName: string;
+  coursePrice: number;
+  isFree: boolean;
+
+  // Curriculum and progress tracking
+  curriculum: CurriculumItem[];
+  allLessons: EnrollmentLesson[];
+  progress: number;
+  completedLessons: string[];
+  currentLesson: string | null;
+  currentDay: number;
+  status: "active" | "completed" | "cancelled";
+
+  // Payment information (for paid courses)
+  paymentIntentId?: string;
+  paymentStatus?: "pending" | "succeeded" | "failed";
+  paymentAmount?: number;
+  paymentCurrency?: string;
+
+  // Metadata
+  enrolledAt: string;
+  lastAccessedAt: string;
+  completedAt: string | null;
+}
+
+export interface EnrollmentLesson {
+  lessonId: string;
+  dayId: number;
+  dayTitle: string;
+  title: string;
+  duration: string;
+  type: "video" | "exercise" | "quiz" | "assignment";
+  order: number;
+}
+
+export interface CourseContent {
+  enrollmentId: string;
+  courseId: string;
+  courseTitle: string;
+  courseImage: string;
+  instructor: Teacher;
+  progress: number;
+  currentLesson: string | null;
+  currentDay: number;
+  completedLessons: string[];
+  curriculum: EnrichedCurriculumItem[];
+}
+
+export interface EnrichedCurriculumItem {
+  id: number;
+  title: string;
+  duration: string;
+  lectures: string;
+  lessons: EnrichedLesson[];
+}
+
+export interface EnrichedLesson {
+  lessonId: string;
+  title: string;
+  duration: string;
+  type: "video" | "exercise" | "quiz" | "assignment";
+  isCompleted: boolean;
+  isLocked: boolean;
+}
+
+// Progress update payload
+export interface ProgressUpdate {
+  lessonId?: string;
+  completed?: boolean;
+  progress?: number;
+  currentDay?: number;
+}
+
+export interface CompleteLessonPayload {
+  lessonId: string;
+  nextLessonId?: string;
+  currentDay?: number;
+}
+
+export interface DuplicateCheckResponse {
+  isEnrolled: boolean;
+  enrollment?: Enrollment;
+}
