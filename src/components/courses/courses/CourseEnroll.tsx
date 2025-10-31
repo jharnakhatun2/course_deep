@@ -1,8 +1,12 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import type { Course } from "../../../ult/types/types";
 import { useAuth } from "../../../hook/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import Loader from "../../../ult/loader/Loader";
+import { useAppDispatch } from "../../../app/hooks";
+import { useCheckDuplicateEnrollmentQuery, useCreateEnrollmentMutation } from "../../../features/enrollments/enrollmentsApi";
+import { setActiveEnrollment } from "../../../features/enrollments/enrollmentsSlice";
+import { showErrorToast, showSuccessToast } from "../../../ult/toast/toast";
 
 interface CourseEnrollProps {
   course: Course;
@@ -12,28 +16,97 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const [isEnrolling, setIsEnrolling] = useState(false);
+  const [createEnrollment] = useCreateEnrollmentMutation();
 
-  const handleEnrollClick = () => {
+   // Check if user is already enrolled
+  const { data: duplicateCheck } = useCheckDuplicateEnrollmentQuery(
+    { userEmail: user?.email || '', courseId: course._id },
+    { skip: !user?.email }
+  );
+
+const handleEnrollClick = async () => {
     if (!user?.email) {
       navigate("/login", { state: { from: location.pathname } });
       return;
     }
-    navigate(`/courses/${course._id}`);
+
+    // Check if already enrolled
+    if (duplicateCheck?.isEnrolled) {
+      navigate("/dashboard");
+      return;
+    }
+
+    // For free courses, create enrollment and redirect to dashboard
+    if (course.price <= 0) {
+      setIsEnrolling(true);
+      try {
+        const enrollmentData = {
+          userId: user._id,
+          userEmail: user.email,
+          userName: user.name,
+          courseId: course._id,
+          paymentStatus: "succeeded" as const,
+          paymentAmount: 0,
+          paymentCurrency: "USD"
+        };
+
+        const result = await createEnrollment(enrollmentData).unwrap();
+        
+        if (result.enrollment) {
+          // Set the active enrollment in Redux state
+          dispatch(setActiveEnrollment(result.enrollment));
+          showSuccessToast("Successfully enrolled in the course!");
+          
+          // Redirect to dashboard which will show the course content
+          navigate("/dashboard", { 
+            state: { 
+              newlyEnrolled: true,
+              courseId: course._id,
+              enrollmentId: result.enrollment._id 
+            } 
+          });
+        }
+      } catch (error: any) {
+        console.error("Enrollment failed:", error);
+        const errorMessage = error?.message || "Enrollment failed. Please try again.";
+        showErrorToast(errorMessage);
+      } finally {
+        setIsEnrolling(false);
+      }
+    } else {
+      // For paid courses, go to course details page
+      navigate(`/courses/${course._id}`);
+    }
   };
 
   if (loading) return <Loader />;
 
+  const isAlreadyEnrolled = duplicateCheck?.isEnrolled;
+
   return (
     <div className="border border-gray-500/20 text-zinc-500 lg:mt-8">
       {/* Header Button */}
-      <button onClick={handleEnrollClick} className="cursor-pointer w-full bg-yellow-400 hover:bg-yellow-500 transition-smooth py-6 px-6 text-gray-900 font-bold text-sm sm:text-lg uppercase">
-
-        {user?.email
-          ? (course.price <= 0 ? "Enroll for Free" : "Buy Now")
-          : "Login To Enroll"
+      <button 
+        onClick={handleEnrollClick} 
+        disabled={isEnrolling || isAlreadyEnrolled}
+        className={`cursor-pointer w-full transition-smooth py-6 px-6 font-bold text-sm sm:text-lg uppercase ${
+          isAlreadyEnrolled 
+            ? 'bg-green-500 text-white' 
+            : 'bg-yellow-400 hover:bg-yellow-500 text-gray-900'
+        } disabled:opacity-50 disabled:cursor-not-allowed`}
+      >
+        {!user?.email
+          ? "Login To Enroll"
+          : isAlreadyEnrolled
+          ? "Already Enrolled"
+          : course.price <= 0 
+            ? (isEnrolling ? "Enrolling..." : "Enroll for Free") 
+            : "Buy Now"
         }
-
       </button>
+
 
       {/* Content */}
       <div className="p-6">
