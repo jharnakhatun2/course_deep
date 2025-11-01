@@ -1,7 +1,7 @@
 import { IoIosCode } from "react-icons/io";
 import { SlCalender } from "react-icons/sl";
 import type { FC } from "react";
-import type { Booking, Course } from "../../ult/types/types";
+import type { Booking, Enrollment } from "../../ult/types/types";
 import CourseCardUser from "./CourseCardUser";
 import EventCardUser from "./EventCardUser";
 import { useGetEventsQuery } from "../../features/event/eventApi";
@@ -9,18 +9,17 @@ import UpcomingEvent from "./UpcomingEvent";
 
 
 interface CourseEventProps {
-  courses: Course[];
   events?: Booking[];
+  courseEnrollments?: Enrollment[];
   activeTab: "overview" | "courses" | "events";
   onTicketDownload: (event: Booking) => void;
   userEmail?: string;
 }
 
-const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicketDownload }) => {
+const CourseEvent: FC<CourseEventProps> = ({ events, courseEnrollments, activeTab, onTicketDownload }) => {
   const { data: allEvents } = useGetEventsQuery();
-  
 
- 
+  console.log(courseEnrollments);
 
   return (
     <div className="lg:col-span-2">
@@ -32,7 +31,7 @@ const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicke
               Continue Learning
             </h2>
             <div className="space-y-3 sm:space-y-4">
-              {courses.slice(0, 2).map((course) => (
+              {courseEnrollments?.slice(0, 2).map((course) => (
                 <CourseCardUser key={course._id} course={course} />
               ))}
             </div>
@@ -61,8 +60,8 @@ const CourseEvent: FC<CourseEventProps> = ({ courses, events, activeTab, onTicke
             All Courses
           </h2>
           <div className="space-y-3 sm:space-y-4">
-            {courses && courses.length > 0 ? (
-              courses.map((course) => (
+            {courseEnrollments && courseEnrollments.length > 0 ? (
+              courseEnrollments.map((course) => (
                 <CourseCardUser key={course._id} course={course} />
               ))
             ) : (

@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import type { Course } from "../../ult/types/types";
+import type { Enrollment } from "../../ult/types/types";
 import { Link } from "react-router";
 
 interface CourseCardUserProps {
-  course: Course;
+  course: Enrollment;
 }
 
 const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
@@ -13,17 +13,17 @@ const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
       className="bg-white/30 grid grid-cols-1 sm:grid-cols-3 gap-5 rounded p-3 sm:p-4 hover:bg-white/60 transition-smooth hover:shadow"
     >
       <div className="sm:col-span-1">
-        <img src={course.image} alt={course.name} className="rounded" />
+        <img src={course.courseImage} alt={course.courseTitle} className="rounded" />
       </div>
       <div className="sm:col-span-2 space-y-5">
         {/* course content */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
           <div className="flex-1 min-w-0 space-y-1">
             <h3 className="text-zinc-600 font-semibold text-sm sm:text-xl truncate">
-              {course.name}
+              {course.courseTitle}
             </h3>
             <p className="text-zinc-500 text-sm sm:text-lg truncate">
-              {course.teacher.name}
+              {course.instructorName}
             </p>
           </div>
         </div>

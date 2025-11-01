@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Hero from "./profile/Hero";
 import ProfileSidebar from "./profile/ProfileSidebar";
 import CourseEvent from "./profile/CourseEvent";
-import { useGetCoursesQuery } from "../features/course/courseApi";
 import Loader from "../ult/loader/Loader";
 import { useGetUserBookingsQuery } from "../features/bookings/bookingsApi";
 import { useAuth } from "../hook/useAuth";
 import EventTicket from "./profile/EventTicket";
 import type { Booking } from "../ult/types/types";
 import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
+import { useGetUserEnrollmentsQuery } from "../features/enrollments/enrollmentsApi";
 
 export interface Achievement {
   id: string;
@@ -27,14 +27,15 @@ const UserDashboard: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<Booking | null>(null);
   const { user } = useAuth();
   const userEmail = user?.email;
+
+  // course enrollment and User Bookings Query (only if email exists)
+  
   const {
-    data: courses,
-    isLoading: courseLoading,
-    isError: courseError,
-  } = useGetCoursesQuery(undefined, {
-    refetchOnMountOrArgChange: false,
-  });
-  // User Bookings Query (only if email exists)
+    data: courseEnrollments,
+    isLoading: enrollmentLoading,
+    isError: enrollmentError,
+  } = useGetUserEnrollmentsQuery(userEmail ?? "", { skip: !userEmail });
+
   const {
     data: userBookings,
     isLoading: bookingLoading,
@@ -61,19 +62,18 @@ const UserDashboard: React.FC = () => {
   };
 
   // Loading & Error for Data
-  if (courseLoading || bookingLoading) return <Loader />;
-  if (courseError || bookingError || !courses)
+  if ( bookingLoading || enrollmentLoading) return <Loader />;
+  if ( bookingError || enrollmentError || !courseEnrollments || !userBookings)
     return (
       <p className="text-center py-10 text-red-500">Failed to load Data!</p>
     );
 
-  console.log(user);
   return (
     <div className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
         <Breadcrumb items={breadcrumbItems} />
         {/* User Profile */}
-        <Hero courses={courses} events={eventBookings} user={user} />
+        <Hero courseEnrollments={courseEnrollments} events={eventBookings} user={user} />
 
         {/* course and event info */}
         {/* Tabs */}
@@ -116,9 +116,9 @@ const UserDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           <CourseEvent
             activeTab={activeTab}
-            courses={courses}
             events={eventBookings}
             onTicketDownload={handleTicketDownload}
+            courseEnrollments={courseEnrollments}
           />
           {/* Sidebar */}
           <ProfileSidebar />

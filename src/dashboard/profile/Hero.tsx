@@ -3,21 +3,21 @@ import {  FaBookOpen, FaUser } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { SlCalender } from "react-icons/sl";
 import type { FC } from "react";
-import type { Booking, Course, User } from "../../ult/types/types";
+import type { Booking, Enrollment, User } from "../../ult/types/types";
 import { IoTimeOutline } from "react-icons/io5";
 
 
   interface HeroProps{
-    courses: Course[]
+    courseEnrollments: Enrollment[]
     events?: Booking[];
     user?: User | null ;
   }
 
-const Hero:FC<HeroProps> = ({courses, events, user}) => {
+const Hero:FC<HeroProps> = ({courseEnrollments, events, user}) => {
 
      const stats = {
-    totalCourses: courses.length,
-    completedCourses: courses.filter(c => c.progress === 100).length,
+    totalCourses: courseEnrollments.length,
+    completedCourses: courseEnrollments.filter(c => c.progress === 100).length,
     upcomingEvents: events?.filter(e => e.status === 'confirmed').length,
     hoursLearned: 187
   };
