@@ -7,6 +7,21 @@ interface CourseCardUserProps {
 }
 
 const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
+
+  // Calculate real progress
+  const calculateProgress = (enrollment: Enrollment): number => {
+    if (!enrollment.allLessons || enrollment.allLessons.length === 0) {
+      return enrollment.progress || 0;
+    }
+
+    const completedCount = enrollment.completedLessons?.length || 0;
+    const totalLessons = enrollment.allLessons.length;
+
+    return Math.round((completedCount / totalLessons) * 100);
+  };
+
+  const progress = calculateProgress(course);
+
   return (
     <div
       key={course._id}
@@ -31,10 +46,10 @@ const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
         <div className="relative w-full bg-gray-700 rounded-full h-2">
           <div
             className="bg-gradient-to-r from-yellow-100 to-yellow-300 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${course.progress || 70}%` }}
+            style={{ width: `${progress}%` }}
           ></div>
           <span className="absolute right-0 -top-6 text-sm text-zinc-700 font-semibold">
-            {course.progress || 70}%
+            {progress}%
           </span>
         </div>
         {/* buttons */}
