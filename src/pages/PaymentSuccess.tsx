@@ -16,7 +16,7 @@ const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [clearCart] = useClearCartMutation();
-  const { user } = useAuth(); 
+  const { user } = useAuth();
 
   const { success, cartItems = [], warning, paymentIntent, enrolledCourses } = (location.state as LocationState) || {};
 
@@ -46,7 +46,7 @@ const PaymentSuccess = () => {
         <div className="bg-white p-3 rounded-lg shadow-md text-center">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Payment Failed</h2>
           <p className="text-gray-600 mb-4">There was an issue with your payment.</p>
-          <button 
+          <button
             onClick={() => navigate('/cart')}
             className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
           >
@@ -72,7 +72,7 @@ const PaymentSuccess = () => {
           </div>
 
           <h1 className="text-3xl font-bold text-green-600 mb-4">Payment Successful! 🎉</h1>
-          
+
           {enrolledCourses ? (
             <p className="text-gray-600 mb-6">Your courses have been enrolled and payment processed successfully!</p>
           ) : (
@@ -88,20 +88,20 @@ const PaymentSuccess = () => {
           {/* Order Summary */}
           <div className="bg-gray-50 rounded-lg p-6 mb-6 text-left">
             <h3 className="text-xl font-bold mb-4 text-yellow-500">Order Summary :</h3>
-            
+
             {/* Course Items */}
-            {courseItems.map((item: any) => (
+            {courseItems.map((item: CartItem) => (
               <div key={item.productId} className="sm:flex justify-between items-center py-2 border-b border-gray-200">
                 <div>
                   <p className="font-medium">Course : {item.name}</p>
                   <p className="text-sm text-gray-500">
-                    Instructor: {item.teacher} • Duration: {item.duration}
+                    {item.type === 'course' ? 'Course' : 'Event'}  Quantity: <span className="font-bold">{item.quantity}</span>
                   </p>
                 </div>
                 <p>Price : <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span></p>
               </div>
             ))}
-            
+
             {/* Event Items */}
             {eventItems.map((item: any) => (
               <div key={item.productId} className="sm:flex justify-between items-center py-2 border-b border-gray-200">
@@ -114,7 +114,7 @@ const PaymentSuccess = () => {
                 <p>Price : <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span></p>
               </div>
             ))}
-            
+
             {paymentIntent && (
               <div className="mt-4 pt-4 border-t">
                 <p className="text-sm text-gray-600">
@@ -129,13 +129,13 @@ const PaymentSuccess = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className="cursor-pointer bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600 transition-colors"
             >
               {enrolledCourses ? 'Go to My Courses' : 'My Dashboard'}
             </button>
-            <button 
+            <button
               onClick={() => navigate('/courses')}
               className="cursor-pointer bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600 transition-colors"
             >

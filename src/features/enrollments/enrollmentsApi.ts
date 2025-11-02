@@ -1,10 +1,10 @@
 import { apiSlice } from "../api/apiSlice";
-import type { 
-  Enrollment, 
-  CourseContent, 
-  ProgressUpdate, 
+import type {
+  Enrollment,
+  CourseContent,
+  ProgressUpdate,
   CompleteLessonPayload,
-  DuplicateCheckResponse 
+  DuplicateCheckResponse,
 } from "../../ult/types/types";
 
 export const enrollmentsApi = apiSlice.injectEndpoints({
@@ -16,6 +16,7 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
     }),
 
     // GET enrollments by user email with course details
+    //http://localhost:5000/enrollments/user/email
     getUserEnrollments: builder.query<Enrollment[], string>({
       query: (email) => `/enrollments/user/${email}`,
       providesTags: ["Enrollments"],
@@ -23,20 +24,20 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
 
     // POST new enrollment (for both free and paid courses)
     createEnrollment: builder.mutation<
-      { 
-        _id: string; 
-        message: string; 
-        enrollment: Enrollment & { courseDetails?: any } 
+      {
+        _id: string;
+        message: string;
+        enrollment: Enrollment & { courseDetails?: any };
       },
       {
         // User information
         userId: string;
         userEmail: string;
         userName: string;
-        
+
         // Course information
         courseId: string;
-        
+
         // Payment information (for paid courses)
         paymentIntentId?: string;
         paymentStatus?: "pending" | "succeeded" | "failed";
@@ -54,11 +55,11 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
 
     // UPDATE enrollment progress and mark lesson as completed
     updateEnrollmentProgress: builder.mutation<
-      { 
-        success: boolean; 
-        message: string; 
-        progress: number; 
-        completedLessons: string[] 
+      {
+        success: boolean;
+        message: string;
+        progress: number;
+        completedLessons: string[];
       },
       { enrollmentId: string; updates: ProgressUpdate }
     >({
@@ -84,12 +85,12 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
 
     // MARK lesson as completed
     completeLesson: builder.mutation<
-      { 
-        success: boolean; 
-        message: string; 
-        progress: number; 
-        completedLessons: string[]; 
-        nextLessonId: string | null 
+      {
+        success: boolean;
+        message: string;
+        progress: number;
+        completedLessons: string[];
+        nextLessonId: string | null;
       },
       { enrollmentId: string; data: CompleteLessonPayload }
     >({
@@ -106,13 +107,13 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
       DuplicateCheckResponse,
       { userEmail: string; courseId: string }
     >({
-      query: ({ userEmail, courseId }) => 
+      query: ({ userEmail, courseId }) =>
         `/enrollments/check-duplicate/${courseId}?userEmail=${userEmail}`,
     }),
   }),
 });
 
-export const { 
+export const {
   useGetEnrollmentsQuery,
   useGetUserEnrollmentsQuery,
   useCreateEnrollmentMutation,
@@ -120,5 +121,5 @@ export const {
   useGetEnrollmentQuery,
   useGetCourseContentQuery,
   useCompleteLessonMutation,
-  useCheckDuplicateEnrollmentQuery
+  useCheckDuplicateEnrollmentQuery,
 } = enrollmentsApi;
