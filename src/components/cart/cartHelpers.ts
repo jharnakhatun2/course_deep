@@ -24,25 +24,28 @@ export const createCartItemFromEvent = (
     date: event.date,
     time: event.time,
     location: event.location,
+    teacher: event.speaker || "Event Speaker",
+    ratings: "0"
   };
 };
 
 export const createCartItemFromCourse = (
   course: Course
 ): Omit<CartItem, "quantity" | "userEmail"> => {
-  const priceString = course.price.replace("$", "").replace(",", "");
-  const priceValue = parseFloat(priceString) || 0;
+  
+  const price = course.price as number;
+  const ratings = course.ratings as number;
 
   return {
     _id: course._id,
     productId: course._id,
     name: course.name,
-    price: priceValue,
-    originalPrice: course.price,
+    price: price,
+    originalPrice: `$${price.toFixed(2)}`,
     type: "course",
     image: course.image,
-    teacher: course.teacher,
-    ratings: course.ratings,
+    teacher: course.teacher.name,
+    ratings: ratings.toString(),
     duration: course.time,
   };
 };
@@ -153,6 +156,45 @@ export const canAddEventToCart = async (
     return { 
       canAdd: false, 
       reason: "Unable to verify booking status. Please try again." 
+    };
+  }
+};
+
+// Check if course can be added to cart (for paid Course)
+export const canAddCourseToCart = async (
+  userEmail: string,
+  course: Course
+): Promise<{ canAdd: boolean; reason?: string }> => {
+  // If free course, no need to check - free courses are enrolled directly
+  if (course.price <= 0) {
+    return { canAdd: true };
+  }
+
+  // For paid courses, check if already enrolled
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/enrollments/check-duplicate/${course._id}?userEmail=${userEmail}`
+    );
+    
+    if (!response.ok) {
+      throw new Error('Failed to check duplicate enrollment');
+    }
+    
+    const duplicateCheck = await response.json();
+    
+    if (duplicateCheck.isEnrolled) {
+      return { 
+        canAdd: false, 
+        reason: "You are already enrolled in this course." 
+      };
+    }
+
+    return { canAdd: true };
+  } catch (error) {
+    console.error('Error checking if course can be added to cart:', error);
+    return { 
+      canAdd: false, 
+      reason: "Unable to verify enrollment status. Please try again." 
     };
   }
 };

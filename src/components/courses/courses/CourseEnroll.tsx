@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../app/hooks";
 import { useCheckDuplicateEnrollmentQuery, useCreateEnrollmentMutation } from "../../../features/enrollments/enrollmentsApi";
 import { setActiveEnrollment } from "../../../features/enrollments/enrollmentsSlice";
 import { showErrorToast, showSuccessToast } from "../../../ult/toast/toast";
+import { useAddToCartMutation } from "../../../features/cart/cartApi";
 
 interface CourseEnrollProps {
   course: Course;
@@ -19,6 +20,7 @@ const CourseEnroll: FC<CourseEnrollProps> = ({ course }) => {
   const dispatch = useAppDispatch();
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [createEnrollment] = useCreateEnrollmentMutation();
+  const [addToCart] = useAddToCartMutation();
 
    // Check if user is already enrolled
   const { data: duplicateCheck } = useCheckDuplicateEnrollmentQuery(
@@ -76,13 +78,35 @@ const handleEnrollClick = async () => {
         setIsEnrolling(false);
       }
     } else {
-      // For paid courses, go to course details page
-      navigate(`/courses/${course._id}`);
+      // For paid courses, add to cart and redirect to cart page
+      try {
+        const cartItemData = {
+          productId: course._id,
+          quantity: 1,
+          type: "course" as const,
+          userEmail: user.email,
+          name: course.name,
+          price: course.price,
+          originalPrice: course.price.toString(),
+          image: course.image,
+          teacher: course.teacher?.name,
+          ratings: course.ratings?.toString(),
+          duration: course.time
+        };
+
+        await addToCart(cartItemData).unwrap();
+        showSuccessToast("Course added to cart!");
+        navigate("/cart");
+      } catch (error: any) {
+        console.error("Add to cart failed:", error);
+        const errorMessage = error?.data?.error || "Failed to add course to cart. Please try again.";
+        showErrorToast(errorMessage);
+      }
     }
   };
 
-  if (loading) return <Loader />;
 
+  if (loading) return <Loader />;
   const isAlreadyEnrolled = duplicateCheck?.isEnrolled;
 
   return (

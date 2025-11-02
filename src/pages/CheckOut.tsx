@@ -12,6 +12,8 @@ import {
 import { useAuth } from "../hook/useAuth";
 import { useCreateBookingMutation } from "../features/bookings/bookingsApi";
 import { useClearCartMutation } from "../features/cart/cartApi";
+import { showErrorToast } from "../ult/toast/toast";
+import { useCreateEnrollmentMutation } from "../features/enrollments/enrollmentsApi";
 
 interface LocationState {
   cartItems: CartItem[];
@@ -30,6 +32,7 @@ const CheckOut = () => {
   // ADD: New hooks for booking creation
   const { user } = useAuth();
   const [createBooking] = useCreateBookingMutation();
+   const [createEnrollment] = useCreateEnrollmentMutation();
   const [clearCart] = useClearCartMutation();
 
   // Stripe payment state
@@ -63,54 +66,68 @@ const CheckOut = () => {
     setCouponCode("");
   };
 
-  // Handle successful payment with booking creation and seat decrement
+  // Handle successful payment with booking creation AND course enrollment
   const handleSuccessfulPayment = async (paymentIntent: any) => {
     try {
       const paidEventItems = cartItems.filter(item => 
-      item.type === "event" && item.price > 0
-    );
-      // Create bookings for each cart item and update seats
+        item.type === "event" && item.price > 0
+      );
+      
+      const paidCourseItems = cartItems.filter(item => 
+        item.type === "course" && item.price > 0
+      );
+
+      // Create bookings for events
       const bookingPromises = paidEventItems.map(async (item) => {
         const bookingData = {
-          // User information
           userId: user?._id || "unknown",
           userEmail: user?.email || "unknown",
           userName: user?.name || "Customer",
-
-          // Product information
           productId: item.productId,
           productType: item.type,
           productTitle: item.name,
           productPrice: item.price,
           quantity: item.quantity,
-
-          // Payment information
           paymentIntentId: paymentIntent.id,
           paymentStatus: "succeeded" as const,
-          paymentAmount: paymentIntent.amount / 100, // Convert from cents
+          paymentAmount: paymentIntent.amount / 100,
           paymentCurrency: paymentIntent.currency,
-
-          // Event-specific information
           ...(item.type === "event" && {
             eventDate: item.date,
             eventTime: item.time,
             eventLocation: item.location,
           }),
-
           status: "confirmed" as const,
         };
 
         return await createBooking(bookingData).unwrap();
       });
 
-      await Promise.all(bookingPromises);
+      // Create enrollments for courses
+      const enrollmentPromises = paidCourseItems.map(async (item) => {
+        const enrollmentData = {
+          userId: user?._id || "unknown",
+          userEmail: user?.email || "unknown",
+          userName: user?.name || "Customer",
+          courseId: item.productId,
+          paymentIntentId: paymentIntent.id,
+          paymentStatus: "succeeded" as const,
+          paymentAmount: item.price,
+          paymentCurrency: "USD"
+        };
 
-      // ✅ CLEAR CART after successful payment
+        return await createEnrollment(enrollmentData).unwrap();
+      });
+
+      // Wait for all operations to complete
+      await Promise.all([...bookingPromises, ...enrollmentPromises]);
+
+      // Clear cart after successful payment
       if (user?.email) {
         await clearCart({ userEmail: user.email }).unwrap();
       }
 
-      // ✅ CLEAR Stripe CardElement
+      // Clear Stripe CardElement
       const cardElement = elements?.getElement(CardElement);
       if (cardElement) {
         cardElement.clear();
@@ -122,16 +139,18 @@ const CheckOut = () => {
           success: true,
           cartItems: cartItems,
           paymentIntent: paymentIntent,
+          enrolledCourses: paidCourseItems.length > 0
         },
       });
     } catch (err) {
-      console.error("Error creating bookings:", err);
+      console.error("Error processing payment:", err);
+      showErrorToast("Payment succeeded but there was an issue with processing your order.");
+      
       // Still show success but with warning
       navigate("/payment-success", {
         state: {
           success: true,
-          warning:
-            "Payment succeeded but there was an issue with booking creation.",
+          warning: "Payment succeeded but there was an issue with order processing.",
         },
       });
     }

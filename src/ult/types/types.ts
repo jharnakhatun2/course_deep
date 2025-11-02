@@ -200,15 +200,15 @@ export interface CartItem {
   productId: string;
   name: string;
   price: number;
-  originalPrice: string;
+  originalPrice: number | string;
   quantity: number;
   type: "course" | "event";
   image: string;
   date?: string;
   time?: string;
   location?: string;
-  teacher?: string;
-  ratings?: string;
+  teacher: string;
+  ratings: string;
   duration?: string;
   userEmail: string;
 }

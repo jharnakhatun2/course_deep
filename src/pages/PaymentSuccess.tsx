@@ -2,6 +2,15 @@ import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useClearCartMutation } from "../features/cart/cartApi";
 import { useAuth } from "../hook/useAuth";
+import type { CartItem } from "../ult/types/types";
+
+interface LocationState {
+  success: boolean;
+  cartItems: CartItem[];
+  warning?: string;
+  paymentIntent?: any;
+  enrolledCourses?: boolean;
+}
 
 const PaymentSuccess = () => {
   const location = useLocation();
@@ -9,10 +18,9 @@ const PaymentSuccess = () => {
   const [clearCart] = useClearCartMutation();
   const { user } = useAuth(); 
 
-  const { success, cartItems = [], warning, paymentIntent } = location.state || {};
+  const { success, cartItems = [], warning, paymentIntent, enrolledCourses } = (location.state as LocationState) || {};
 
   useEffect(() => {
-    // Use current authenticated user's email
     const clearUserCart = async () => {
       if (user?.email) {
         try {
@@ -49,6 +57,9 @@ const PaymentSuccess = () => {
     );
   }
 
+  const courseItems = cartItems.filter((item: CartItem) => item.type === "course");
+  const eventItems = cartItems.filter((item: CartItem) => item.type === "event");
+
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <div className="max-w-4xl mx-auto px-4">
@@ -61,7 +72,12 @@ const PaymentSuccess = () => {
           </div>
 
           <h1 className="text-3xl font-bold text-green-600 mb-4">Payment Successful! 🎉</h1>
-          <p className="text-gray-600 mb-6">Your booking has been confirmed and payment processed successfully.</p>
+          
+          {enrolledCourses ? (
+            <p className="text-gray-600 mb-6">Your courses have been enrolled and payment processed successfully!</p>
+          ) : (
+            <p className="text-gray-600 mb-6">Your booking has been confirmed and payment processed successfully.</p>
+          )}
 
           {warning && (
             <div className="bg-yellow-50 border border-yellow-200 rounded p-4 mb-6">
@@ -69,11 +85,26 @@ const PaymentSuccess = () => {
             </div>
           )}
 
-          {/* Booking Summary */}
+          {/* Order Summary */}
           <div className="bg-gray-50 rounded-lg p-6 mb-6 text-left">
-            <h3 className="text-xl font-bold mb-4 text-yellow-500">Booking Summary :</h3>
-            {cartItems.map((item: any) => (
-              <div key={item.productId} className="sm:flex justify-between items-center py-2">
+            <h3 className="text-xl font-bold mb-4 text-yellow-500">Order Summary :</h3>
+            
+            {/* Course Items */}
+            {courseItems.map((item: any) => (
+              <div key={item.productId} className="sm:flex justify-between items-center py-2 border-b border-gray-200">
+                <div>
+                  <p className="font-medium">Course : {item.name}</p>
+                  <p className="text-sm text-gray-500">
+                    Instructor: {item.teacher} • Duration: {item.duration}
+                  </p>
+                </div>
+                <p>Price : <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span></p>
+              </div>
+            ))}
+            
+            {/* Event Items */}
+            {eventItems.map((item: any) => (
+              <div key={item.productId} className="sm:flex justify-between items-center py-2 border-b border-gray-200">
                 <div>
                   <p className="font-medium">Event : {item.name}</p>
                   <p className="text-sm text-gray-500">
@@ -83,6 +114,7 @@ const PaymentSuccess = () => {
                 <p>Price : <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span></p>
               </div>
             ))}
+            
             {paymentIntent && (
               <div className="mt-4 pt-4 border-t">
                 <p className="text-sm text-gray-600">
@@ -101,13 +133,13 @@ const PaymentSuccess = () => {
               onClick={() => navigate('/dashboard')}
               className="cursor-pointer bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600 transition-colors"
             >
-              My Dashboard
+              {enrolledCourses ? 'Go to My Courses' : 'My Dashboard'}
             </button>
             <button 
-              onClick={() => navigate('/events')}
+              onClick={() => navigate('/courses')}
               className="cursor-pointer bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600 transition-colors"
             >
-              Browse More Events
+              Browse More Courses
             </button>
           </div>
         </div>
