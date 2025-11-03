@@ -40,6 +40,9 @@ const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
             <p className="text-zinc-500 text-sm sm:text-lg truncate">
               {course.instructorName}
             </p>
+            <p className="text-zinc-400 text-xs">
+              {course.completedLessons?.length || 0} of {course.allLessons?.length || 0} lessons completed
+            </p>
           </div>
         </div>
         {/* progress bar */}
@@ -55,6 +58,7 @@ const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
         {/* buttons */}
         <Link
           to="/lesson"
+          state={{ enrollment: course }}
           className="py-1.5 px-4 bg-yellow-400 hover:bg-yellow-500 text-white shadow-[0_0_15px_rgba(255,221,51,0.3)]
  hover:shadow-[0_0_25px_rgba(255,221,51,0.5)] border border-yellow-400 transition-smooth rounded text-center "
         >
@@ -66,3 +70,4 @@ const CourseCardUser: FC<CourseCardUserProps> = ({ course }) => {
 };
 
 export default CourseCardUser;
+// {"id": "", "title":  "", "duration": "", "type": "video"},

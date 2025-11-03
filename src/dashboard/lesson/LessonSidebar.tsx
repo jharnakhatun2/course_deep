@@ -2,11 +2,19 @@ import { useState } from "react";
 import { IoPlayCircleOutline } from "react-icons/io5";
 import { HiMiniChevronUp } from "react-icons/hi2";
 import { BiChevronDown } from "react-icons/bi";
+import type { Enrollment } from "../../ult/types/types";
 
 interface LessonSidebarProps {
-  courseVideos: { id: string; title: string }[];
+  courseVideos: Array<{
+    id: string;
+    title: string;
+    duration?: string;
+    type?: string;
+    isCompleted?: boolean;
+  }>;
   currentVideoIndex: number;
   goToVideo: (index: number) => void;
+  enrollment?: Enrollment;
 }
 
 const ProgressBar = ({ progress }: { progress: number }) => (

@@ -4,7 +4,6 @@ import ApplyCoupon from "../components/checkout/ApplyCoupon";
 import { useLocation, useNavigate } from "react-router";
 import type { CartItem } from "../ult/types/types";
 import {
-  CardElement,
   PaymentElement,
   useElements,
   useStripe,
@@ -166,12 +165,6 @@ const CheckOut = () => {
       } catch (clearError) {
         console.error('Error clearing cart:', clearError);
         showErrorToast("Failed to clear cart"); // ✅ Error toast
-      }
-
-      // Clear Stripe CardElement
-      const cardElement = elements?.getElement(CardElement);
-      if (cardElement) {
-        cardElement.clear();
       }
 
       // Show overall success message

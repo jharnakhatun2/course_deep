@@ -1,44 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LessonSidebar } from "./lesson/LessonSidebar";
 import { LuNotebookPen } from "react-icons/lu";
 import YouTube from "react-youtube";
 import NotesSection from "./lesson/NotesSection";
 import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
-
-const courseVideos = [
-  { id: "ODKIxaSMgpU", title: "A complete roadmap to learn Reactjs" },
-  {
-    id: "N_Lfqk6oQ7o",
-    title: "React Fundamentals - Why React is a Declarative",
-  },
-  { id: "f3dfaXM33Pg", title: "How to do Development Setup for ReactJS" },
-  { id: "D_cUdRtPG-M", title: " Deep Understanding of JSX" },
-  {
-    id: "GgurJ_3y0Jg",
-    title: "Understanding React Components,State vs. Props",
-  },
-  {
-    id: "CvNvRaS3u60",
-    title: "An Introduction to React Hooks - Functional Components",
-  },
-  { id: "IQjB-U9X680", title: "How to Manage State with useState React Hook" },
-  { id: "M0yi7bdz-fA", title: "useEffect React Hook for Side Effects" },
-  { id: "nt-TB3f5kp4", title: "How to write Custom Hooks in React" },
-  { id: "LNwEpMLLFTw", title: "What is the useRef hook in React" },
-  { id: "dtwVjJMnOsw", title: "React Higher-Order Components with Example" },
-  { id: "rysTbzKOEO0", title: "ReactJS Virtual DOM" },
-  { id: "qGGu46ZoMqQ", title: "What is React memo?" },
-  { id: "QSLKhwYKBc4", title: "useCallback and useMemo React Hooks" },
-  { id: "rpc3zYrYbTc", title: "What is Prop Drilling in React?" },
-  { id: "yijn4ZIBxVA", title: "React Context API - What is Context" },
-  { id: "ey0SYV-OBo4", title: "What is Redux - When to use Redux?" },
-  { id: "PMyPyT8N4m8", title: "When to use useReducer?" },
-  {
-    id: "XKfep8AlOz8",
-    title:
-      "What is Code Splitting? How does Code Splitting Work Under the Hood?",
-  },
-];
+import { useLocation, useNavigate } from "react-router";
+import type { Enrollment, EnrollmentLesson } from "../ult/types/types";
+import { useCompleteLessonMutation, useGetCourseContentQuery } from "../features/enrollments/enrollmentsApi";
+import { showErrorToast, showSuccessToast } from "../ult/toast/toast";
+import Loader from "../ult/loader/Loader";
 
 //for breadcrumb
 const breadcrumbItems = [
@@ -47,26 +17,110 @@ const breadcrumbItems = [
 ];
 
 const LessonPage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const enrollment = (location.state as { enrollment: Enrollment })?.enrollment;
+
+  // Redirect if no enrollment data
+  useEffect(() => {
+    if (!enrollment) {
+      navigate("/dashboard");
+    }
+  }, [enrollment, navigate]);
+
+  // Get course content
+  const { data: courseContent, isLoading, error } = useGetCourseContentQuery(
+    enrollment?._id || "",
+    { skip: !enrollment?._id }
+  );
+
+  const [completeLesson] = useCompleteLessonMutation();
+  const [currentVideo, setCurrentVideo] = useState<string | null>(null);
+  const [currentLesson, setCurrentLesson] = useState<EnrollmentLesson | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const currentVideo = courseVideos[currentVideoIndex];
+
+  // Set current lesson when course content loads
+  useEffect(() => {
+    if (courseContent && enrollment?.currentLesson) {
+      // Find the current lesson from all lessons
+      const lesson = enrollment.allLessons?.find(
+        (lesson: EnrollmentLesson) => lesson.lessonId === enrollment.currentLesson
+      );
+      setCurrentLesson(lesson || enrollment.allLessons?.[0] || null);
+      
+      // Set video URL (placeholder - you can replace with actual video URLs from your course data)
+      setCurrentVideo(enrollment.courseImage);
+    }
+  }, [courseContent, enrollment]);
+
+  const handleLessonComplete = async (lessonId: string) => {
+    if (!enrollment?._id) return;
+
+    try {
+      // Find the next lesson
+      const currentIndex = enrollment.allLessons?.findIndex(
+        (lesson: EnrollmentLesson) => lesson.lessonId === lessonId
+      );
+      const nextLesson = enrollment.allLessons?.[currentIndex + 1];
+
+      await completeLesson({
+        enrollmentId: enrollment._id,
+        data: {
+          lessonId,
+          nextLessonId: nextLesson?.lessonId,
+          currentDay: currentLesson?.dayId
+        }
+      }).unwrap();
+
+      showSuccessToast("Lesson completed!");
+      
+      // Update current lesson to next one
+      if (nextLesson) {
+        setCurrentLesson(nextLesson);
+        // Update video index if needed
+        const nextIndex = enrollment.allLessons?.findIndex(
+          (l: EnrollmentLesson) => l.lessonId === nextLesson.lessonId
+        );
+        if (nextIndex !== undefined && nextIndex !== -1) {
+          setCurrentVideoIndex(nextIndex);
+        }
+      }
+    } catch (error) {
+      showErrorToast("Failed to mark lesson as completed");
+    }
+  };
+
+  const handleLessonSelect = (lesson: EnrollmentLesson, index: number) => {
+    setCurrentLesson(lesson);
+    setCurrentVideoIndex(index);
+    // Set video URL based on lesson (placeholder)
+    setCurrentVideo(enrollment?.courseImage);
+  };
 
   // Next Navigation Handlers
   const goToNextVideo = () => {
-    if (currentVideoIndex < courseVideos.length - 1) {
-      setCurrentVideoIndex(currentVideoIndex + 1);
+    if (enrollment?.allLessons && currentVideoIndex < enrollment.allLessons.length - 1) {
+      const nextIndex = currentVideoIndex + 1;
+      setCurrentVideoIndex(nextIndex);
+      setCurrentLesson(enrollment.allLessons[nextIndex]);
     }
   };
 
   // Prev Navigation Handlers
   const goToPrevVideo = () => {
-    if (currentVideoIndex > 0) {
-      setCurrentVideoIndex(currentVideoIndex - 1);
+    if (currentVideoIndex > 0 && enrollment?.allLessons) {
+      const prevIndex = currentVideoIndex - 1;
+      setCurrentVideoIndex(prevIndex);
+      setCurrentLesson(enrollment.allLessons[prevIndex]);
     }
   };
 
   // Direct Video Selection Handler
   const goToVideo = (index: number) => {
-    setCurrentVideoIndex(index);
+    if (enrollment?.allLessons && index >= 0 && index < enrollment.allLessons.length) {
+      setCurrentVideoIndex(index);
+      setCurrentLesson(enrollment.allLessons[index]);
+    }
   };
 
   // YouTube Player Options
@@ -80,15 +134,56 @@ const LessonPage: React.FC = () => {
     },
   };
 
+  // Prepare course videos data from enrollment lessons
+  const courseVideos = enrollment?.allLessons?.map((lesson: EnrollmentLesson, index: number) => ({
+    id: `video-${index}`, // Placeholder - replace with actual video IDs
+    title: lesson.title,
+    duration: lesson.duration,
+    type: lesson.type,
+    isCompleted: enrollment.completedLessons?.includes(lesson.lessonId)
+  })) || [];
+
+  if (!enrollment) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">No Course Selected</h2>
+          <p className="text-gray-600 mb-4">Please select a course from your dashboard.</p>
+          <button 
+            onClick={() => navigate("/dashboard")}
+            className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+          >
+            Go to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) return <Loader />;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center text-red-600">
+          Error loading course content!
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section className="bg-gray-100">
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col">
         {/* Title */}
         <div className="">
-           <Breadcrumb items={breadcrumbItems} />
+          <Breadcrumb items={breadcrumbItems} />
           <h1 className="font-garamond text-2xl font-semibold text-zinc-600">
-            {currentVideo.title}
+            {currentLesson?.title || enrollment.courseTitle}
           </h1>
+          <p className="text-zinc-500 text-sm mt-1">
+           {currentLesson?.dayTitle} • {currentLesson?.duration}
+          </p>
         </div>
         <div className="h-[1px] w-full bg-gray-500/20 my-3" />
 
@@ -99,40 +194,68 @@ const LessonPage: React.FC = () => {
             {/* Video */}
             <div className="bg-zinc-800 overflow-hidden mb-6 rounded">
               <div className="w-full rounded">
-                <YouTube
-                  videoId={currentVideo.id}
-                  opts={youtubeOpts}
-                  className="w-full rounded"
-                />
+                {currentVideo ? (
+                  <YouTube
+                    videoId={courseVideos[currentVideoIndex]?.id || "ODKIxaSMgpU"} // Fallback video ID
+                    opts={youtubeOpts}
+                    className="w-full rounded"
+                  />
+                ) : (
+                  <div className="w-full h-96 bg-gray-800 flex items-center justify-center rounded">
+                    <p className="text-white text-lg">Video content coming soon</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex mb-6 justify-end gap-4">
-              <button
-              type="button"
-                onClick={goToPrevVideo}
-                disabled={currentVideoIndex === 0}
-                className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
-                  currentVideoIndex === 0
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "border border-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
-                }`}
-              >
-                Previous
-              </button>
-              <button
-              type="button"
-                onClick={goToNextVideo}
-                disabled={currentVideoIndex === courseVideos.length - 1}
-                className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
-                  currentVideoIndex === courseVideos.length - 1
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
-                }`}
-              >
-                Next
-              </button>
+            {/* Lesson Actions */}
+            <div className="flex mb-6 justify-between items-center">
+              <div>
+                {currentLesson && !enrollment.completedLessons?.includes(currentLesson.lessonId) && (
+                  <button
+                    onClick={() => handleLessonComplete(currentLesson.lessonId)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    Mark as Complete
+                  </button>
+                )}
+                {currentLesson && enrollment.completedLessons?.includes(currentLesson.lessonId) && (
+                  <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg inline-flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    Completed
+                  </div>
+                )}
+              </div>
+
+              {/* Navigation Buttons */}
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={goToPrevVideo}
+                  disabled={currentVideoIndex === 0}
+                  className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
+                    currentVideoIndex === 0
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "border border-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
+                  }`}
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  onClick={goToNextVideo}
+                  disabled={currentVideoIndex === courseVideos.length - 1}
+                  className={`px-6 py-2 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth ${
+                    currentVideoIndex === courseVideos.length - 1
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-yellow-400 hover:bg-yellow-500 text-zinc-800 hover:text-white/70"
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
             </div>
 
             {/* Notes Section */}
@@ -150,6 +273,7 @@ const LessonPage: React.FC = () => {
               courseVideos={courseVideos}
               currentVideoIndex={currentVideoIndex}
               goToVideo={goToVideo}
+              enrollment={enrollment}
             />
           </aside>
         </main>

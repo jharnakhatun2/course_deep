@@ -31,6 +31,8 @@
     "react-youtube": "^10.1.0",
     "redux": "^5.0.1",
     "slick-carousel": "^1.8.1",
+    "stripe": "^19.2.0",
+    "stripe-cli": "^0.1.0",
     "swiper": "^11.2.10",
     "tailwindcss": "^4.1.12",
     "web-vitals": "^5.1.0"
