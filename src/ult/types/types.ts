@@ -252,7 +252,9 @@ export interface Enrollment {
 }
 
 export interface EnrollmentLesson {
+  id: string;
   lessonId: string;
+  videoId: string;
   dayId: number;
   dayTitle: string;
   title: string;

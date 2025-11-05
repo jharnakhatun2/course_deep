@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { LessonSidebar } from "./lesson/LessonSidebar";
 import { LuNotebookPen } from "react-icons/lu";
-import YouTube from "react-youtube";
+import YouTube, { type YouTubeProps } from "react-youtube";
 import NotesSection from "./lesson/NotesSection";
 import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
 import { useLocation, useNavigate } from "react-router";
@@ -33,35 +33,50 @@ const LessonPage: React.FC = () => {
     enrollment?._id || "",
     { skip: !enrollment?._id }
   );
-
+  
   const [completeLesson] = useCompleteLessonMutation();
-  const [currentVideo, setCurrentVideo] = useState<string | null>(null);
+  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [currentLesson, setCurrentLesson] = useState<EnrollmentLesson | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   // Set current lesson when course content loads
   useEffect(() => {
-    if (courseContent && enrollment?.currentLesson) {
+    if (enrollment?.allLessons && enrollment.currentLesson) {
       // Find the current lesson from all lessons
-      const lesson = enrollment.allLessons?.find(
+      const lesson = enrollment.allLessons.find(
         (lesson: EnrollmentLesson) => lesson.lessonId === enrollment.currentLesson
       );
-      setCurrentLesson(lesson || enrollment.allLessons?.[0] || null);
       
-      // Set video URL (placeholder - you can replace with actual video URLs from your course data)
-      setCurrentVideo(enrollment.courseImage);
+      if (lesson) {
+        setCurrentLesson(lesson);
+        setCurrentVideoId(lesson.videoId); // Use the actual videoId from enrollment
+        
+        // Find the index of the current lesson
+        const index = enrollment.allLessons.findIndex(
+          (l: EnrollmentLesson) => l.lessonId === enrollment.currentLesson
+        );
+        if (index !== -1) {
+          setCurrentVideoIndex(index);
+        }
+      } else if (enrollment.allLessons.length > 0) {
+        // Fallback to first lesson
+        const firstLesson = enrollment.allLessons[0];
+        setCurrentLesson(firstLesson);
+        setCurrentVideoId(firstLesson.videoId);
+        setCurrentVideoIndex(0);
+      }
     }
-  }, [courseContent, enrollment]);
+  }, [enrollment]);
 
   const handleLessonComplete = async (lessonId: string) => {
     if (!enrollment?._id) return;
 
     try {
-      // Find the next lesson
-      const currentIndex = enrollment.allLessons?.findIndex(
+      // Find the current lesson and next lesson
+      const currentIndex = enrollment.allLessons.findIndex(
         (lesson: EnrollmentLesson) => lesson.lessonId === lessonId
       );
-      const nextLesson = enrollment.allLessons?.[currentIndex + 1];
+      const nextLesson = enrollment.allLessons[currentIndex + 1];
 
       await completeLesson({
         enrollmentId: enrollment._id,
@@ -77,13 +92,8 @@ const LessonPage: React.FC = () => {
       // Update current lesson to next one
       if (nextLesson) {
         setCurrentLesson(nextLesson);
-        // Update video index if needed
-        const nextIndex = enrollment.allLessons?.findIndex(
-          (l: EnrollmentLesson) => l.lessonId === nextLesson.lessonId
-        );
-        if (nextIndex !== undefined && nextIndex !== -1) {
-          setCurrentVideoIndex(nextIndex);
-        }
+        setCurrentVideoId(nextLesson.videoId);
+        setCurrentVideoIndex(currentIndex + 1);
       }
     } catch (error) {
       showErrorToast("Failed to mark lesson as completed");
@@ -92,17 +102,18 @@ const LessonPage: React.FC = () => {
 
   const handleLessonSelect = (lesson: EnrollmentLesson, index: number) => {
     setCurrentLesson(lesson);
+    setCurrentVideoId(lesson.videoId);
     setCurrentVideoIndex(index);
-    // Set video URL based on lesson (placeholder)
-    setCurrentVideo(enrollment?.courseImage);
   };
 
   // Next Navigation Handlers
   const goToNextVideo = () => {
     if (enrollment?.allLessons && currentVideoIndex < enrollment.allLessons.length - 1) {
       const nextIndex = currentVideoIndex + 1;
+      const nextLesson = enrollment.allLessons[nextIndex];
       setCurrentVideoIndex(nextIndex);
-      setCurrentLesson(enrollment.allLessons[nextIndex]);
+      setCurrentLesson(nextLesson);
+      setCurrentVideoId(nextLesson.videoId);
     }
   };
 
@@ -110,22 +121,27 @@ const LessonPage: React.FC = () => {
   const goToPrevVideo = () => {
     if (currentVideoIndex > 0 && enrollment?.allLessons) {
       const prevIndex = currentVideoIndex - 1;
+      const prevLesson = enrollment.allLessons[prevIndex];
       setCurrentVideoIndex(prevIndex);
-      setCurrentLesson(enrollment.allLessons[prevIndex]);
+      setCurrentLesson(prevLesson);
+      setCurrentVideoId(prevLesson.videoId);
     }
   };
 
   // Direct Video Selection Handler
   const goToVideo = (index: number) => {
     if (enrollment?.allLessons && index >= 0 && index < enrollment.allLessons.length) {
+      const lesson = enrollment.allLessons[index];
       setCurrentVideoIndex(index);
-      setCurrentLesson(enrollment.allLessons[index]);
+      setCurrentLesson(lesson);
+      setCurrentVideoId(lesson.videoId);
     }
   };
 
+
   // YouTube Player Options
-  const youtubeOpts = {
-    height: "400",
+  const opts: YouTubeProps['opts'] = {
+    height: "450",
     width: "100%",
     playerVars: {
       autoplay: 0,
@@ -136,10 +152,13 @@ const LessonPage: React.FC = () => {
 
   // Prepare course videos data from enrollment lessons
   const courseVideos = enrollment?.allLessons?.map((lesson: EnrollmentLesson, index: number) => ({
-    id: `video-${index}`, // Placeholder - replace with actual video IDs
+    id: lesson.videoId, // Use actual videoId from enrollment
+    lessonId: lesson.lessonId,
     title: lesson.title,
     duration: lesson.duration,
     type: lesson.type,
+    dayId: lesson.dayId,
+    dayTitle: lesson.dayTitle,
     isCompleted: enrollment.completedLessons?.includes(lesson.lessonId)
   })) || [];
 
@@ -181,9 +200,6 @@ const LessonPage: React.FC = () => {
           <h1 className="font-garamond text-2xl font-semibold text-zinc-600">
             {currentLesson?.title || enrollment.courseTitle}
           </h1>
-          <p className="text-zinc-500 text-sm mt-1">
-           {currentLesson?.dayTitle} • {currentLesson?.duration}
-          </p>
         </div>
         <div className="h-[1px] w-full bg-gray-500/20 my-3" />
 
@@ -194,15 +210,19 @@ const LessonPage: React.FC = () => {
             {/* Video */}
             <div className="bg-zinc-800 overflow-hidden mb-6 rounded">
               <div className="w-full rounded">
-                {currentVideo ? (
+                {currentVideoId ? (
                   <YouTube
-                    videoId={courseVideos[currentVideoIndex]?.id || "ODKIxaSMgpU"} // Fallback video ID
-                    opts={youtubeOpts}
+                    videoId={currentVideoId || "ESnrn1kAD4E"}
+                    opts={opts}
                     className="w-full rounded"
+                    onError={(e) => {
+                      console.error("YouTube player error:", e);
+                      showErrorToast("Failed to load video. Please check the video ID.");
+                    }}
                   />
                 ) : (
                   <div className="w-full h-96 bg-gray-800 flex items-center justify-center rounded">
-                    <p className="text-white text-lg">Video content coming soon</p>
+                    <p className="text-white text-lg">Video not available</p>
                   </div>
                 )}
               </div>
@@ -214,7 +234,7 @@ const LessonPage: React.FC = () => {
                 {currentLesson && !enrollment.completedLessons?.includes(currentLesson.lessonId) && (
                   <button
                     onClick={() => handleLessonComplete(currentLesson.lessonId)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                    className="bg-yellow-400 hover:bg-green-600 text-white px-6 py-2 text-sm shadow transition-smooth cursor-pointer "
                   >
                     Mark as Complete
                   </button>
@@ -256,6 +276,17 @@ const LessonPage: React.FC = () => {
                   Next
                 </button>
               </div>
+            </div>
+
+            {/* Lesson Info */}
+            <div className="mb-6 p-4 bg-white rounded-lg shadow">
+              <h3 className="text-lg font-semibold text-zinc-700 mb-2">About this lesson</h3>
+              <p className="text-zinc-600">
+                {currentLesson ? 
+                  `This lesson is part of ${currentLesson.dayTitle} and covers ${currentLesson.title}.` 
+                  : "Lesson information not available."
+                }
+              </p>
             </div>
 
             {/* Notes Section */}

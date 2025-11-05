@@ -162,7 +162,7 @@ export const LessonSidebar = ({
 
                     return (
                       <div
-                        key={video.id}
+                        key={idx}
                         onClick={() => goToVideo(videoIndex)}
                         className={`p-2 rounded cursor-pointer transition-smooth hover:bg-white/10 ${
                           isCurrentVideo
