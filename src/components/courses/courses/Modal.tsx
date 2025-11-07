@@ -14,8 +14,8 @@ const Modal: FC<ModalProp> = ({ promoVideo, onClose }) => {
     : "";
 
   const handleClose = () => {
-    if (iframeRef.current) iframeRef.current.src = ""; // stop video
-    onClose(); // notify parent
+    if (iframeRef.current) iframeRef.current.src = ""; 
+    onClose(); 
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDialogElement>) => {
@@ -31,14 +31,14 @@ const Modal: FC<ModalProp> = ({ promoVideo, onClose }) => {
     >
       <div className="modal-box max-w-5xl p-0 overflow-hidden bg-black rounded-lg">
         {embedUrl ? (
-          <div className="aspect-video w-full">
+          <div className="h-[60vh] w-full">
             <iframe
               ref={iframeRef}
               src={`${embedUrl}?autoplay=1`}
               title="Promo Video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="w-full h-full rounded-t-lg"
+              className="w-full h-full rounded"
             ></iframe>
           </div>
         ) : (
