@@ -32,7 +32,7 @@ export const createCartItemFromEvent = (
 export const createCartItemFromCourse = (
   course: Course
 ): Omit<CartItem, "quantity" | "userEmail"> => {
-  
+
   const price = course.price as number;
   const ratings = course.ratings as number;
 
@@ -84,19 +84,19 @@ export const getCartItemCount = (cartItems: CartItem[]): number => {
 
 // Duplicate booking check function
 export const checkIfAlreadyBooked = async (
-  userEmail: string, 
-  productId: string, 
+  userEmail: string,
+  productId: string,
   type: "event" | "course"
 ): Promise<{ isDuplicate: boolean; existingBooking?: any }> => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/bookings/check-duplicate?userEmail=${userEmail}&productId=${productId}&type=${type}`
     );
-    
+
     if (!response.ok) {
       throw new Error('Failed to check duplicate booking');
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -111,16 +111,13 @@ export const checkIfEventInCart = async (
   eventId: string
 ): Promise<boolean> => {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/cart?userEmail=${userEmail}`
-    );
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch cart');
-    }
-    
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/cart?userEmail=${userEmail}`, {
+      credentials: "include",
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
     const cartItems = await response.json();
-    return cartItems.some((item: CartItem) => 
+    return cartItems.some((item: CartItem) =>
       item.productId === eventId && item.type === "event"
     );
   } catch (error) {
@@ -142,20 +139,20 @@ export const canAddEventToCart = async (
   // For paid events, check if already booked
   try {
     const duplicateCheck = await checkIfAlreadyBooked(userEmail, event._id, "event");
-    
+
     if (duplicateCheck.isDuplicate) {
-      return { 
-        canAdd: false, 
-        reason: "You have already booked this event. You cannot book the same event twice." 
+      return {
+        canAdd: false,
+        reason: "You have already booked this event. You cannot book the same event twice."
       };
     }
 
     return { canAdd: true };
   } catch (error) {
     console.error('Error checking if event can be added to cart:', error);
-    return { 
-      canAdd: false, 
-      reason: "Unable to verify booking status. Please try again." 
+    return {
+      canAdd: false,
+      reason: "Unable to verify booking status. Please try again."
     };
   }
 };
@@ -175,26 +172,26 @@ export const canAddCourseToCart = async (
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/enrollments/check-duplicate/${course._id}?userEmail=${userEmail}`
     );
-    
+
     if (!response.ok) {
       throw new Error('Failed to check duplicate enrollment');
     }
-    
+
     const duplicateCheck = await response.json();
-    
+
     if (duplicateCheck.isEnrolled) {
-      return { 
-        canAdd: false, 
-        reason: "You are already enrolled in this course." 
+      return {
+        canAdd: false,
+        reason: "You are already enrolled in this course."
       };
     }
 
     return { canAdd: true };
   } catch (error) {
     console.error('Error checking if course can be added to cart:', error);
-    return { 
-      canAdd: false, 
-      reason: "Unable to verify enrollment status. Please try again." 
+    return {
+      canAdd: false,
+      reason: "Unable to verify enrollment status. Please try again."
     };
   }
 };
@@ -210,11 +207,11 @@ export const validateCartItemsBeforeCheckout = async (
 
   // Check each event item for duplicates
   const eventItems = cartItems.filter(item => item.type === "event");
-  
+
   for (const item of eventItems) {
     try {
       const duplicateCheck = await checkIfAlreadyBooked(userEmail, item.productId, "event");
-      
+
       if (duplicateCheck.isDuplicate) {
         invalidItems.push(item);
         errors.push(`You have already booked: ${item.name}`);
@@ -274,7 +271,7 @@ export const validateCartForCheckout = async (
     try {
       // Check for duplicate bookings
       const duplicateCheck = await checkIfAlreadyBooked(userEmail, item.productId, item.type);
-      
+
       if (duplicateCheck.isDuplicate) {
         errors.push(`You have already booked: ${item.name}`);
         continue;
@@ -285,7 +282,7 @@ export const validateCartForCheckout = async (
         const eventResponse = await fetch(
           `${import.meta.env.VITE_API_URL}/events/${item.productId}`
         );
-        
+
         if (eventResponse.ok) {
           const event = await eventResponse.json();
           if (event.seats < item.quantity) {

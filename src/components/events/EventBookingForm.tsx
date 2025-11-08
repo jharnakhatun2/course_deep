@@ -162,7 +162,7 @@ const EventBookingForm: FC<EventBookingFormProps> = ({
       // All product information
       name: completeCartItem.name,
       price: completeCartItem.price,
-      originalPrice: completeCartItem.originalPrice,
+      originalPrice: completeCartItem.originalPrice?.toString(),
       image: completeCartItem.image,
       date: completeCartItem.date,
       time: completeCartItem.time,
