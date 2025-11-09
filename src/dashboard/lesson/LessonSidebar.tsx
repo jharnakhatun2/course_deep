@@ -76,8 +76,7 @@ export const LessonSidebar = ({
   const totalLessons = courseVideos.length;
   const progress = (completedLessons / totalLessons) * 100;
 
-  // Find which module contains the current video
-  const currentModule = Math.floor(currentVideoIndex / 4);
+
 
   return (
     <div className="p-4 text-white">
@@ -211,43 +210,3 @@ export const LessonSidebar = ({
     </div>
   );
 };
-
-// Example courseVideos data
-const courseVideos = [
-  { id: "ODKIxaSMgpU", title: "A complete roadmap to learn Reactjs" },
-  { id: "N_Lfqk6oQ7o", title: "React Fundamentals - Why React is a Declarative" },
-  { id: "f3dfaXM33Pg", title: "How to do Development Setup for ReactJS" },
-  { id: "D_cUdRtPG-M", title: "Deep Understanding of JSX" },
-  { id: "GgurJ_3y0Jg", title: "Understanding React Components,State vs. Props" },
-  { id: "CvNvRaS3u60", title: "An Introduction to React Hooks - Functional Components" },
-  { id: "IQjB-U9X680", title: "How to Manage State with useState React Hook" },
-  { id: "M0yi7bdz-fA", title: "useEffect React Hook for Side Effects" },
-  { id: "nt-TB3f5kp4", title: "How to write Custom Hooks in React" },
-  { id: "LNwEpMLLFTw", title: "What is the useRef hook in React" },
-  { id: "dtwVjJMnOsw", title: "React Higher-Order Components with Example" },
-  { id: "rysTbzKOEO0", title: "ReactJS Virtual DOM" },
-  { id: "qGGu46ZoMqQ", title: "What is React memo?" },
-  { id: "QSLKhwYKBc4", title: "useCallback and useMemo React Hooks" },
-  { id: "rpc3zYrYbTc", title: "What is Prop Drilling in React?" },
-  { id: "yijn4ZIBxVA", title: "React Context API - What is Context" },
-  { id: "ey0SYV-OBo4", title: "What is Redux - When to use Redux?" },
-  { id: "PMyPyT8N4m8", title: "When to use useReducer?" },
-  { id: "XKfep8AlOz8", title: "What is Code Splitting? How does Code Splitting Work Under the Hood?" },
-];
-
-// Demo Component
-// export default function App() {
-//   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-
-//   return (
-//     <div className="min-h-screen bg-gray-900 p-4">
-//       <div className="max-w-md mx-auto bg-[#151526] rounded shadow-xl">
-//         <LessonSidebar
-//           courseVideos={courseVideos}
-//           currentVideoIndex={currentVideoIndex}
-//           goToVideo={setCurrentVideoIndex}
-//         />
-//       </div>
-//     </div>
-//   );
-// }

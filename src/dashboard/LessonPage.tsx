@@ -6,7 +6,7 @@ import NotesSection from "./lesson/NotesSection";
 import Breadcrumb from "../ult/breadcrumb/Breadcrumb";
 import { useLocation, useNavigate } from "react-router";
 import type { Enrollment, EnrollmentLesson } from "../ult/types/types";
-import { useCompleteLessonMutation, useGetCourseContentQuery } from "../features/enrollments/enrollmentsApi";
+import { useCompleteLessonMutation } from "../features/enrollments/enrollmentsApi";
 import { showErrorToast, showSuccessToast } from "../ult/toast/toast";
 import Loader from "../ult/loader/Loader";
 
@@ -27,14 +27,8 @@ const LessonPage: React.FC = () => {
       navigate("/dashboard");
     }
   }, [enrollment, navigate]);
-
-  // Get course content
-  const { data: courseContent, isLoading, error } = useGetCourseContentQuery(
-    enrollment?._id || "",
-    { skip: !enrollment?._id }
-  );
   
-  const [completeLesson] = useCompleteLessonMutation();
+  const [completeLesson,{isLoading, error}] = useCompleteLessonMutation();
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [currentLesson, setCurrentLesson] = useState<EnrollmentLesson | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -100,12 +94,6 @@ const LessonPage: React.FC = () => {
     }
   };
 
-  const handleLessonSelect = (lesson: EnrollmentLesson, index: number) => {
-    setCurrentLesson(lesson);
-    setCurrentVideoId(lesson.videoId);
-    setCurrentVideoIndex(index);
-  };
-
   // Next Navigation Handlers
   const goToNextVideo = () => {
     if (enrollment?.allLessons && currentVideoIndex < enrollment.allLessons.length - 1) {
@@ -151,7 +139,7 @@ const LessonPage: React.FC = () => {
   };
 
   // Prepare course videos data from enrollment lessons
-  const courseVideos = enrollment?.allLessons?.map((lesson: EnrollmentLesson, index: number) => ({
+  const courseVideos = enrollment?.allLessons?.map((lesson: EnrollmentLesson) => ({
     id: lesson.videoId, // Use actual videoId from enrollment
     lessonId: lesson.lessonId,
     title: lesson.title,

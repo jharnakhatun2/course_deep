@@ -21,7 +21,9 @@ const Reviews: React.FC<ReviewFormProps> = ({ courseId }) => {
         {[...Array(5)].map((_, index) => (
           <AiFillStar
             key={index}
-            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            className={`w-4 h-4 ${
+            index < rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-300 text-gray-300"
+          }`}
           />
         ))}
       </div>
