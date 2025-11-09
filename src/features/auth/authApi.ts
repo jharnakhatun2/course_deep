@@ -54,7 +54,7 @@ export const authApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
       invalidatesTags: ["User"],
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
         } catch (error) {

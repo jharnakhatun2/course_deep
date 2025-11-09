@@ -7,5 +7,5 @@ export const apiSlice = createApi({
         credentials: "include", // 👈 important for sending/receiving cookies
     }),
     tagTypes: ["User","Course","Event","Bookings","Blogs","Cart","Enrollments"],
-    endpoints: (builder) => ({})
+    endpoints: (_builder) => ({})
 });
