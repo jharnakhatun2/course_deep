@@ -42,7 +42,7 @@ const BlogCard: React.FC<BlogPost> = ({
   flex items-center justify-center group-hover:h-full overflow-hidden transition-smooth"
         >
           <Link
-            to={`/blog/${_id}`}
+            to={`/blogs/${_id}`}
             className="px-4 py-2 bg-yellow-400 text-zinc-700 hover:text-white font-semibold rounded hover:bg-yellow-500 transition-colors duration-300 uppercase text-xs transition-smooth"
           >
             View More
@@ -55,7 +55,7 @@ const BlogCard: React.FC<BlogPost> = ({
         <span className="inline-block bg-yellow-500 text-white text-xs px-3 py-1">
           {category}
         </span>
-        <Link to={`/blog/${_id}`} className="block pt-2">
+        <Link to={`/blogs/${_id}`} className="block pt-2">
           <h3 className="text-sm  text-zinc-600 font-bold mb-2 hover:text-yellow-500 transition-colors duration-300 uppercase">
             {title.length > 38 ? title.slice(0, 33) + "..." : title}
           </h3>
