@@ -51,7 +51,7 @@ const Menu = () => {
 
   return (
     <nav className={`py-3 w-full z-50 transition-all duration-300 ${isSticky
-        ? "fixed top-0 left-0 bg-yellow-400 shadow-md"
+        ? "fixed top-0 left-0 bg-yellow-400/40 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
         : "bg-yellow-400/90 relative"
       }`}>
       <div className="lg:max-w-7xl mx-auto px-4 ">
