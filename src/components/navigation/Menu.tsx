@@ -63,9 +63,9 @@ const Menu = () => {
               className="mobile-menu-button cursor-pointer"
             >
               {isOpen ? (
-                <FiX className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700" />
+                <FiX className="w-8 h-8 border p-1 rounded text-white border-white/60 shadow-lg" />
               ) : (
-                <FiMenu className="w-8 h-8 border p-1 rounded text-zinc-700 border-zinc-700" />
+                <FiMenu className="w-8 h-8 border p-1 rounded text-white border-white/60 shadow-lg" />
               )}
             </button>
           </div>
