@@ -10,7 +10,7 @@ const TopNav = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between px-4 py-3 ">
         {/* Logo */}
 
-        <Link to="/" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2 border-none">
           <FaBookReader className="text-yellow-500 w-6 h-6" />
           <span className="font-lobster font-bold text-2xl text-zinc-800">
             Course Deep
