@@ -1,12 +1,12 @@
 
-import {  Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../app/hooks";
 import { authApi, useLogoutMutation } from "../../features/auth/authApi";
 import { logout } from "../../features/auth/authSlice";
 import { useAuth } from "../../hook/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const menuList = [
   { name: "Home", path: "/" },
@@ -17,6 +17,7 @@ const menuList = [
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isSticky, setIsSticky] = useState(false);
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
   const navigate = useNavigate();
@@ -24,21 +25,35 @@ const Menu = () => {
 
   // logout function
   const logOut = async () => {
-  try {
-    await logoutApi().unwrap();
-    dispatch(logout());
-    
-    // Clear the entire RTK Query cache
-    dispatch(authApi.util.resetApiState());
-    
-    navigate("/");
-  } catch (err) {
-    console.error("Logout failed:", err);
-  }
-};
+    try {
+      await logoutApi().unwrap();
+      dispatch(logout());
+      dispatch(authApi.util.resetApiState());
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
+  // Scroll event to make menu sticky
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-yellow-400 py-3">
+    <nav className={`py-3 w-full z-50 transition-all duration-300 ${isSticky
+        ? "fixed top-0 left-0 bg-yellow-400 shadow-md"
+        : "bg-yellow-400/90 relative"
+      }`}>
       <div className="lg:max-w-7xl mx-auto px-4 ">
         <div className="flex justify-between items-center">
           {/* <!-- mobile menu button --> */}
@@ -68,7 +83,7 @@ const Menu = () => {
                 </Link>
               ))}
             </div>
-            
+
           </div>
           {/* <!-- Login & Signup --> */}
           {user ? (
@@ -86,7 +101,7 @@ const Menu = () => {
               >
                 <FaUserCircle />
               </Link>
-              
+
             </div>
           ) : (
             <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8">
@@ -103,9 +118,8 @@ const Menu = () => {
 
       {/* <!-- Mobile menu --> */}
       <div
-        className={`md:hidden overflow-hidden transition-smooth ${
-          isOpen ? "max-h-60" : "max-h-0"
-        }`}
+        className={`md:hidden overflow-hidden transition-smooth ${isOpen ? "max-h-60" : "max-h-0"
+          }`}
       >
         <div className="space-y-3 pl-4 text-zinc-700 pt-5 pb-3">
           {menuList.map((item, index) => (
