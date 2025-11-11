@@ -59,8 +59,7 @@ const CheckOutWrapper = () => {
     ? { clientSecret, appearance: { theme: "stripe" as const } }
     : undefined;
 
-  // Loading state
-  if (isLoading) return <Loader />;
+  
 
   // Error state
   if (error) {
@@ -76,13 +75,7 @@ const CheckOutWrapper = () => {
   }
 
   // No client secret yet
-  if (!clientSecret) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-lg">Preparing checkout...</div>
-      </div>
-    );
-  }
+  if (!clientSecret || isLoading) return <Loader />
 
   // Ready to render Stripe checkout
   return (

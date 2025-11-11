@@ -11,7 +11,7 @@ import {
 import { useAuth } from "../hook/useAuth";
 import { useCreateBookingMutation } from "../features/bookings/bookingsApi";
 import { useClearCartMutation } from "../features/cart/cartApi";
-import { showErrorToast, showSuccessToast } from "../ult/toast/toast"; 
+import { showErrorToast, showSuccessToast } from "../ult/toast/toast";
 import { useCreateEnrollmentMutation } from "../features/enrollments/enrollmentsApi";
 import Loader from "../ult/loader/Loader";
 
@@ -24,6 +24,7 @@ const CheckOut = () => {
   const [shippingMethod, setShippingMethod] = useState<"flat" | "pickup">("flat");
   const [couponApplied, setCouponApplied] = useState<boolean>(false);
   const [couponCode, setCouponCode] = useState<string>("");
+  const [isPaymentElementReady, setIsPaymentElementReady] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -54,10 +55,10 @@ const CheckOut = () => {
     if (code.toLowerCase() === "save10") {
       setCouponApplied(true);
       setCouponCode(code);
-      showSuccessToast("Coupon applied successfully! 10% discount added."); 
+      showSuccessToast("Coupon applied successfully! 10% discount added.");
       return true;
     }
-    showErrorToast("Invalid coupon code. Please try 'SAVE10'."); 
+    showErrorToast("Invalid coupon code. Please try 'SAVE10'.");
     return false;
   };
 
@@ -65,17 +66,17 @@ const CheckOut = () => {
   const handleRemoveCoupon = (): void => {
     setCouponApplied(false);
     setCouponCode("");
-    showSuccessToast("Coupon removed successfully."); 
+    showSuccessToast("Coupon removed successfully.");
   };
 
   // Handle successful payment with booking creation AND course enrollment
   const handleSuccessfulPayment = async (paymentIntent: any) => {
     try {
-      const paidEventItems = cartItems.filter(item => 
+      const paidEventItems = cartItems.filter(item =>
         item.type === "event" && item.price > 0
       );
-      
-      const paidCourseItems = cartItems.filter(item => 
+
+      const paidCourseItems = cartItems.filter(item =>
         item.type === "course" && item.price > 0
       );
 
@@ -187,7 +188,7 @@ const CheckOut = () => {
     } catch (err) {
       console.error("Error processing payment:", err);
       showErrorToast("Payment succeeded but there was an issue with processing your order.");
-      
+
       // Still show success but with warning
       navigate("/payment-success", {
         state: {
@@ -201,17 +202,28 @@ const CheckOut = () => {
   // Handle payment submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
+    console.log("🔄 Submit clicked - Checking readiness:", {
+      stripe: !!stripe,
+      elements: !!elements,
+      isPaymentElementReady,
+      cartItems: cartItems.length
+    });
+
+    // Basic readiness check
     if (!stripe || !elements) {
-      setError("Payment system not ready. Please wait.");
-      showErrorToast("Payment system not ready. Please wait."); 
+      const errorMsg = "Payment system not ready. Please wait for initialization.";
+      console.error("❌", errorMsg);
+      setError(errorMsg);
+      showErrorToast(errorMsg);
       return;
     }
 
     // Validate cart items
     if (cartItems.length === 0) {
-      setError("Your cart is empty. Please add items before proceeding.");
-      showErrorToast("Your cart is empty. Please add items before proceeding.");
+      const errorMsg = "Your cart is empty. Please add items before proceeding.";
+      setError(errorMsg);
+      showErrorToast(errorMsg);
       return;
     }
 
@@ -219,28 +231,34 @@ const CheckOut = () => {
     setError("");
 
     try {
-      // Check if PaymentElement is mounted and ready
+      // DIRECT ELEMENT CHECK - This is the most reliable way
+      console.log("🔍 Checking for PaymentElement...");
       const paymentElement = elements.getElement(PaymentElement);
+
       if (!paymentElement) {
-        const errorMsg = "Payment form is not ready. Please wait.";
-        setError(errorMsg);
-        showErrorToast(errorMsg); 
-        setIsLoading(false);
-        return;
+        throw new Error("Payment element not found. The form may not be fully loaded.");
       }
+
+      console.log("✅ PaymentElement found, proceeding with validation...");
 
       // Trigger form validation
       const { error: submitError } = await elements.submit();
       if (submitError) {
         const errorMsg = submitError.message || "Please check your payment information";
+        console.error("❌ Form validation error:", submitError);
         setError(errorMsg);
-        showErrorToast(errorMsg); 
+        showErrorToast(errorMsg);
         setIsLoading(false);
         return;
       }
 
       // Show processing toast
-      showSuccessToast("Processing your payment..."); 
+      showSuccessToast("Processing your payment...");
+
+      // Add a small delay to ensure everything is settled
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      console.log("💰 Calling stripe.confirmPayment...");
 
       // Confirm the payment
       const { error: confirmationError, paymentIntent } = await stripe.confirmPayment({
@@ -252,27 +270,76 @@ const CheckOut = () => {
       });
 
       if (confirmationError) {
-        const errorMsg = confirmationError.message || "Payment failed";
-        setError(errorMsg);
-        showErrorToast(errorMsg); 
-        console.error("Payment confirmation error:", confirmationError);
-      } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        showSuccessToast("Payment successful! Processing your order..."); 
-        await handleSuccessfulPayment(paymentIntent);
+        console.error("❌ Payment confirmation error:", confirmationError);
+
+        // Handle specific Stripe errors
+        if (confirmationError.type === "validation_error") {
+          const errorMsg = "Please check your payment details and try again.";
+          setError(errorMsg);
+          showErrorToast(errorMsg);
+        } else if (confirmationError.code === "element_missing") {
+          const errorMsg = "Payment form not ready. Please refresh the page and try again.";
+          setError(errorMsg);
+          showErrorToast(errorMsg);
+        } else {
+          const errorMsg = confirmationError.message || "Payment failed. Please try again.";
+          setError(errorMsg);
+          showErrorToast(errorMsg);
+        }
+      } else if (paymentIntent) {
+        console.log("✅ Payment intent created with status:", paymentIntent.status);
+
+        switch (paymentIntent.status) {
+          case "succeeded":
+            showSuccessToast("Payment successful! Processing your order...");
+            await handleSuccessfulPayment(paymentIntent);
+            break;
+          case "processing":
+            showSuccessToast("Payment processing...");
+            navigate("/payment-success", {
+              state: {
+                success: true,
+                cartItems: cartItems,
+                paymentIntent: paymentIntent,
+                processing: true,
+              },
+            });
+            break;
+          case "requires_action":
+            showSuccessToast("Complete authentication to proceed with payment.");
+            break;
+          default:
+            const errorMsg = `Payment status: ${paymentIntent.status}. Please check your email for confirmation.`;
+            setError(errorMsg);
+            showErrorToast(errorMsg);
+        }
       } else {
-        const errorMsg = "Payment processing failed. Please try again.";
-        setError(errorMsg);
-        showErrorToast(errorMsg); 
+        throw new Error("No payment intent returned from confirmation");
       }
     } catch (err: any) {
-      console.error("Payment submission error:", err);
-      const errorMsg = err.message || "An unexpected error occurred. Please try again.";
+      console.error("💥 Payment submission error:", err);
+
+      let errorMsg = err.message || "An unexpected error occurred. Please try again.";
+
+      // Specific error handling
+      if (err.message.includes("mounted") || err.message.includes("element")) {
+        errorMsg = "Payment form not properly loaded. Please refresh the page and try again.";
+        // Auto-refresh suggestion
+        setTimeout(() => {
+          if (window.confirm("Payment form issue detected. Would you like to refresh the page?")) {
+            window.location.reload();
+          }
+        }, 2000);
+      }
+
       setError(errorMsg);
-      showErrorToast(errorMsg); 
+      showErrorToast(errorMsg);
     } finally {
       setIsLoading(false);
     }
   };
+
+
 
   // Show loader if processing
   if (isProcessing) {
@@ -289,27 +356,27 @@ const CheckOut = () => {
             <div className="border-b border-gray-300 pb-4 mb-4">
               <ProductList cartItems={cartItems} />
               <div className="flex justify-between pt-4">
-                <span>Subtotal</span> 
+                <span>Subtotal</span>
                 <span>${cartSubtotal.toFixed(2)}</span>
               </div>
             </div>
-            
+
             <ApplyCoupon
               onApplyCoupon={handleApplyCoupon}
               onRemoveCoupon={handleRemoveCoupon}
               couponApplied={couponApplied}
               couponCode={couponCode}
             />
-            
+
             {couponApplied && (
               <div className="flex justify-between text-green-600 mb-2">
                 <span>Discount (10%)</span>
                 <span>-${discount.toFixed(2)}</span>
               </div>
             )}
-            
+
             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
-            
+
             <div className="mb-4">
               <label className="block font-bold mb-2">Shipping</label>
               <label className="flex items-center mb-2">
@@ -333,11 +400,11 @@ const CheckOut = () => {
                 Local pickup
               </label>
             </div>
-            
+
             <div className="h-[1px] w-full bg-gray-500/20 my-3" />
-            
+
             <div className="flex justify-between font-bold mb-4">
-              <span>Total</span> 
+              <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
@@ -412,25 +479,52 @@ const CheckOut = () => {
           )}
 
           {/* Form */}
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-            <PaymentElement />
-            
-            <button
-              type="submit"
-              disabled={isLoading || !stripe || !elements || cartItems.length === 0}
-              className="cursor-pointer w-2/4 bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? "Processing..." : "Pay Now"}
-            </button>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+              <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
 
-            {/* Loading indicator for individual operations */}
-            {(isBookingLoading || isEnrollmentLoading || isClearCartLoading) && (
-              <div className="text-sm text-gray-600 mt-2">
-                Processing your order...
-              </div>
-            )}
-          </form>
+              <PaymentElement
+                onReady={() => {
+                  console.log("✅ PaymentElement fully ready and mounted");
+                  setIsPaymentElementReady(true);
+                }}
+                onLoadError={(error) => {
+                  console.error("❌ PaymentElement failed to load:", error);
+                  setError("Payment form failed to load. Please refresh the page.");
+                  setIsPaymentElementReady(false);
+                }}
+                options={{
+                  layout: {
+                    type: 'tabs',
+                    defaultCollapsed: false,
+                  }
+                }}
+              />
+
+              <button
+                type="submit"
+                disabled={
+                  isLoading ||
+                  !stripe ||
+                  !elements ||
+                  cartItems.length === 0 ||
+                  isProcessing
+                }
+                className="cursor-pointer w-2/4 bg-yellow-500 text-white py-3 rounded hover:bg-yellow-600 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {!stripe || !elements ? "Initializing Payment..." :
+                  isLoading ? "Processing..." :
+                    "Pay Now"}
+              </button>
+              
+
+              {/* Loading indicator for individual operations */}
+              {(isBookingLoading || isEnrollmentLoading || isClearCartLoading) && (
+                <div className="text-sm text-gray-600 mt-2">
+                  Processing your order...
+                </div>
+              )}
+            </form>
+
         </div>
       </div>
     </section>
