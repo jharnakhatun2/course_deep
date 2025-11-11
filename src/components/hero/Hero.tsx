@@ -18,7 +18,7 @@ const Hero = () => {
           Courses, <span className="text-teal-500 font-bold">1million</span>{" "}
           hours of Teaching
         </p>
-        <div className="flex gap-3 justify-center sm:py-5">
+        <div className="sm:flex gap-3 justify-center pt-5 sm:py-5 space-y-3 sm:space-y-0 space-x-2" >
           <Button
             url="/login"
             className="bg-yellow-500 hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,221,51,0.3)]
@@ -28,7 +28,7 @@ const Hero = () => {
           </Button>
           <Button
             url="/courses"
-            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
+            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800 border border-zinc-100"
           >
             Browse Courses
           </Button>
