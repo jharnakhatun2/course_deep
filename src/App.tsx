@@ -27,6 +27,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import InstructorProfilePage from "./pages/instructor/Instructor";
 import UserDashboard from "./dashboard/UserDashboard";
 import LessonPage from "./dashboard/LessonPage";
+import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
 
 
 
@@ -65,11 +66,7 @@ const App: FC = () => {
       {
         index: true, // default child (when only /dashboard)
         element: <div>Welcome to your Dashboard!</div>,
-      },
-      // {
-      //   path: "lesson/:id",
-      //   element: <LessonPage />,
-      // },
+      }
       
     ],
         },
@@ -84,6 +81,7 @@ const App: FC = () => {
     <>
       <RouterProvider router={router} />
       <ToastContainer />
+      <ScrollBtn/>
     </>
   );
 };

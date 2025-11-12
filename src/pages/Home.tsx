@@ -15,7 +15,7 @@ import { useGetBlogsQuery } from "../features/blog/blogApi";
 import { useGetCoursesQuery } from "../features/course/courseApi";
 import { useGetEventsQuery } from "../features/event/eventApi";
 import Loader from "../ult/loader/Loader";
-import ScrollBtn from "../ult/scrollBtn/ScrollBtn";
+
 
 const Home = () => {
   // Fetch all data in Home
@@ -58,7 +58,6 @@ const Home = () => {
       <Banner2 />
       <FAQ />
       <Banner1 />
-      <ScrollBtn/>
     </>
   );
 };
