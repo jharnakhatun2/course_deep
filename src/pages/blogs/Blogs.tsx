@@ -6,6 +6,7 @@ import Loader from "../../ult/loader/Loader";
 import Pagination from "../../ult/pegination/Pagination";
 import { usePagination } from "../../ult/pegination/usePagination";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+import SEO from "../../ult/seo/SEO";
 
 const breadcrumbItems = [
   { label: "Blogs" }
@@ -60,52 +61,60 @@ const Blogs = () => {
   }
 
   return (
-    <section className="py-10 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Left content */}
-        <div className="lg:col-span-3 order-2 lg:order-1">
-          {/* total blogs */}
-          <div className="flex items-center justify-between mb-6">
-            <Breadcrumb items={breadcrumbItems} />
-            <p className="hidden sm:flex text-zinc-600">
-              Showing{" "}
-              <span className="font-bold px-1">
-                {startIndex + 1}–
-                {Math.min(startIndex + itemsPerPage, totalItems)}
-              </span>{" "}
-              of <span className="px-2 font-bold">{totalItems}</span> results
-            </p>
+    <>
+      <SEO
+        title="Blog | Course Deep - Programming Tips, Tutorials & Web Development Insights"
+        description="Read the latest programming tutorials, tips, and web development insights on Course Deep Blog. Stay updated with React, JavaScript, MERN Stack, and full-stack development trends."
+        keywords="Course Deep, Blog, Programming Tutorials, React, JavaScript, MERN Stack, Web Development Tips, Full-Stack Development, Coding Blog"
+      />
+      <section className="py-10 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left content */}
+          <div className="lg:col-span-3 order-2 lg:order-1">
+            {/* total blogs */}
+            <div className="flex items-center justify-between mb-6">
+              <Breadcrumb items={breadcrumbItems} />
+              <p className="hidden sm:flex text-zinc-600">
+                Showing{" "}
+                <span className="font-bold px-1">
+                  {startIndex + 1}–
+                  {Math.min(startIndex + itemsPerPage, totalItems)}
+                </span>{" "}
+                of <span className="px-2 font-bold">{totalItems}</span> results
+              </p>
+            </div>
+            <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
+
+            {/* Blogs List */}
+            {filteredBlogs.length === 0 ? (
+              <p className="text-center text-red-500 py-10 text-2xl">
+                Not Found!
+              </p>
+            ) : (
+              <BlogsCard blogs={currentBlogs} />
+            )}
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
-          <div className="h-[1px] w-full bg-gray-500/20 -mt-3"></div>
 
-          {/* Blogs List */}
-          {filteredBlogs.length === 0 ? (
-            <p className="text-center text-red-500 py-10 text-2xl">
-              Not Found!
-            </p>
-          ) : (
-            <BlogsCard blogs={currentBlogs} />
-          )}
-
-          {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {/* Sidebar */}
+          <div className="order-1 lg:order-2">
+            <BlogSidebar
+              setSearchQuery={setSearchQuery}
+              blogs={blogs ?? []}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          </div>
         </div>
+      </section>
+    </>
 
-        {/* Sidebar */}
-        <div className="order-1 lg:order-2">
-          <BlogSidebar
-            setSearchQuery={setSearchQuery}
-            blogs={blogs ?? []}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        </div>
-      </div>
-    </section>
   );
 };
 

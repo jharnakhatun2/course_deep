@@ -4,6 +4,7 @@ import ECard from "../../ult/cards/eventCard/ECard";
 import Loader from "../../ult/loader/Loader";
 import Pagination from "../../ult/pegination/Pagination";
 import { usePagination } from "../../ult/pegination/usePagination";
+import SEO from "../../ult/seo/SEO";
 
 const breadcrumbItems = [
   { label: "Events" }
@@ -38,36 +39,44 @@ const Events = () => {
   }
 
   return (
-    <section className="py-10 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 gap-8">
-        {/* Breadcrumb */}
-        
-        <div className="flex items-center justify-between mb-6">
-          <Breadcrumb items={breadcrumbItems} />
-          <p className="flex text-zinc-600">
-            Showing{" "}
-            <span className="font-bold px-1">
-              {startIndex + 1}–{" "}
-              {Math.min(startIndex + itemsPerPage, totalItems)}
-            </span>{" "}
-            of <span className="px-2 font-bold">{totalItems}</span> results
-          </p>
+    <>
+      <SEO
+        title="Events | Course Deep - Web Development Workshops & Live Sessions"
+        description="Stay updated with the latest events, workshops, and live sessions on Course Deep. Join webinars and hands-on coding sessions to enhance your React, JavaScript, and full-stack web development skills."
+        keywords="Course Deep, Events, Workshops, Webinars, Live Coding Sessions, React, JavaScript, MERN Stack, Web Development, Online Learning"
+      />
+      <section className="py-10 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 gap-8">
+          {/* Breadcrumb */}
+
+          <div className="flex items-center justify-between mb-6">
+            <Breadcrumb items={breadcrumbItems} />
+            <p className="flex text-zinc-600">
+              Showing{" "}
+              <span className="font-bold px-1">
+                {startIndex + 1}–{" "}
+                {Math.min(startIndex + itemsPerPage, totalItems)}
+              </span>{" "}
+              of <span className="px-2 font-bold">{totalItems}</span> results
+            </p>
+          </div>
+          <div className="h-[1px] w-full bg-gray-500/20 -mt-4 mb-4"></div>
+
+          {/* Paginated events */}
+          {currentEvents.map((event) => (
+            <ECard key={event._id} event={event} />
+          ))}
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
-        <div className="h-[1px] w-full bg-gray-500/20 -mt-4 mb-4"></div>
+      </section>
+    </>
 
-        {/* Paginated events */}
-        {currentEvents.map((event) => (
-          <ECard key={event._id} event={event} />
-        ))}
-
-        {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
-    </section>
   );
 };
 

@@ -8,6 +8,7 @@ import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
 import { useState } from "react";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
+import SEO from "../../ult/seo/SEO";
 
 const breadcrumbItems = [{ label: "Courses" }];
 
@@ -35,7 +36,7 @@ const Courses = () => {
         const query = searchQuery.toLowerCase();
         return (
           course.name?.toLowerCase().includes(query) ||
-          course.shortDes?.toLowerCase().includes(query)   
+          course.shortDes?.toLowerCase().includes(query)
         );
       }) ?? [];
 
@@ -56,63 +57,70 @@ const Courses = () => {
     return (
       <p className="text-center py-10 text-red-500">Failed to load courses!</p>
     );
-    
+
   return (
-    <section className="py-12 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
-        {/* Left content */}
-        <div className="lg:col-span-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex gap-5">
-              <Breadcrumb items={breadcrumbItems} />
-              {/* Title */}
-              <h2 className="text-zinc-700 font-bold">
-                {category ? (
-                  <>
-                    <span className="font-light">Courses in</span> {category}
-                  </>
-                ) : (
-                  "All Courses"
-                )}
-              </h2>
+    <>
+      <SEO
+        title="Courses | Course Deep - Explore Programming & Web Development Courses"
+        description="Browse all programming and web development courses on Course Deep. Learn React, JavaScript, Node.js, and MERN Stack with interactive lessons and real-world projects."
+        keywords="Course Deep, Courses, React, JavaScript, MERN Stack, Node.js, Web Development, Frontend, Backend, Online Learning, Programming"
+      />
+      <section className="py-12 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
+          {/* Left content */}
+          <div className="lg:col-span-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex gap-5">
+                <Breadcrumb items={breadcrumbItems} />
+                {/* Title */}
+                <h2 className="text-zinc-700 font-bold">
+                  {category ? (
+                    <>
+                      <span className="font-light">Courses in</span> {category}
+                    </>
+                  ) : (
+                    "All Courses"
+                  )}
+                </h2>
+              </div>
+
+              {/* total course */}
+              <p className="hidden sm:flex text-zinc-600">
+                Showing{" "}
+                <span className="font-bold px-1">
+                  {startIndex + 1}–
+                  {Math.min(startIndex + itemsPerPage, totalItems)}
+                </span>{" "}
+                of <span className="px-2 font-bold">{totalItems}</span> results
+              </p>
             </div>
+            <div className="h-[1px] w-full bg-gray-500/20 -mt-1 my-4"></div>
 
-            {/* total course */}
-            <p className="hidden sm:flex text-zinc-600">
-              Showing{" "}
-              <span className="font-bold px-1">
-                {startIndex + 1}–
-                {Math.min(startIndex + itemsPerPage, totalItems)}
-              </span>{" "}
-              of <span className="px-2 font-bold">{totalItems}</span> results
-            </p>
+            {/* Course List */}
+            {filteredCourses.length === 0 ? (
+              <p className="text-center text-red-500 py-10 text-2xl">
+                Not Found!
+              </p>
+            ) : (
+              <CourseList courses={currentCourses} />
+            )}
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
-          <div className="h-[1px] w-full bg-gray-500/20 -mt-1 my-4"></div>
 
-          {/* Course List */}
-          {filteredCourses.length === 0 ? (
-            <p className="text-center text-red-500 py-10 text-2xl">
-              Not Found!
-            </p>
-          ) : (
-            <CourseList courses={currentCourses} />
-          )}
-
-          {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+          {/* Sidebar */}
+          <CourseSidebar
+            setSearchQuery={setSearchQuery}
+            courses={courses ?? []}
           />
         </div>
-
-        {/* Sidebar */}
-        <CourseSidebar
-          setSearchQuery={setSearchQuery}
-          courses={courses ?? []}
-        />
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
