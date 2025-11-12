@@ -311,3 +311,9 @@ export interface DuplicateCheckResponse {
   isEnrolled: boolean;
   enrollment?: Enrollment;
 }
+
+export interface SEOProps {
+  title: string;
+  description: string;
+  keywords?: string;
+}

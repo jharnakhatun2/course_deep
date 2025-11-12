@@ -15,6 +15,7 @@ import { useGetBlogsQuery } from "../features/blog/blogApi";
 import { useGetCoursesQuery } from "../features/course/courseApi";
 import { useGetEventsQuery } from "../features/event/eventApi";
 import Loader from "../ult/loader/Loader";
+import SEO from "../ult/seo/SEO";
 
 
 const Home = () => {
@@ -45,12 +46,17 @@ const Home = () => {
     );
   return (
     <>
+      <SEO
+        title="Course Deep | Learn React, JavaScript, and Web Development Online"
+        description="Course Deep is an interactive LMS platform that helps learners master React, JavaScript, and full-stack web development through real-world projects and hands-on lessons."
+        keywords="Course Deep, LMS, Online Courses, React, JavaScript, MERN Stack, Web Development, Learn Programming, Frontend Development"
+      />
       <Hero />
       <BannerStats />
       <Category courses={courses || []} />
       <CourseCards courses={courses || []} />
       <EventList events={events || []} />
-      <Instructor courses={courses || []}/>
+      <Instructor courses={courses || []} />
       <BannerEvent />
       <Testimonials />
       <LatestBlog blogs={blogs} />

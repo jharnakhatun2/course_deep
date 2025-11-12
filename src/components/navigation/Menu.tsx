@@ -9,10 +9,10 @@ import { useAuth } from "../../hook/useAuth";
 import { useEffect, useState } from "react";
 
 const menuList = [
-  { name: "Home", path: "/" },
-  { name: "Courses", path: "/courses" },
-  { name: "Events", path: "/events" },
-  { name: "Blog", path: "/blogs" }
+  {  path: "/", label: "Home" },
+  {  path: "/courses", label: "Courses" },
+  {  path: "/events", label: "Events" },
+  {  path: "/blogs", label: "Blog" }
 ];
 
 const Menu = () => {
@@ -73,13 +73,13 @@ const Menu = () => {
           <div className="flex space-x-10">
             {/* <!-- primary nav --> */}
             <div className="hidden md:flex items-center space-x-10 text-white">
-              {menuList.map((item, index) => (
+              {menuList.map(({ path, label }) => (
                 <Link
-                  key={index}
-                  to={item.path}
+                  key={path}
+                  to={path}
                   className="hover:text-zinc-600 transition-smooth uppercase text-sm cursor-pointer"
                 >
-                  {item.name}
+                  {label}
                 </Link>
               ))}
             </div>
@@ -122,14 +122,14 @@ const Menu = () => {
           }`}
       >
         <div className="space-y-3 pl-4 text-zinc-700 pt-5 pb-3">
-          {menuList.map((item, index) => (
+          {menuList.map(({ path, label }) => (
             <Link
-              key={index}
-              to={item.path}
+              key={path}
+              to={path}
               className="flex hover:font-bold transition-smooth uppercase text-[12px] cursor-pointer"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {item.name}
+              {label}
             </Link>
           ))}
         </div>
