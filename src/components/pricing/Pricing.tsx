@@ -139,7 +139,7 @@ const Pricing: React.FC = () => {
                   className={`cursor-pointer inline-block w-full px-5 py-3 font-semibold text-center transition-smooth uppercase ${
                     plan.highlighted
                       ? "bg-white text-zinc-600 hover:bg-gray-100"
-                      : "bg-yellow-500 text-white hover:bg-yellow-600"
+                      : "bg-yellow-400 text-white hover:bg-yellow-500"
                   }`}
                 >
                   Get Started
