@@ -118,7 +118,7 @@ const Faq: React.FC = () => {
                     }}
                     className="max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-white text-gray-600"
                   >
-                    <div className="p-4 text-zinc-500">{faq.answer}</div>
+                    <div className="p-4 text-zinc-500 text-sm">{faq.answer}</div>
                   </div>
                 </div>
               ))}
