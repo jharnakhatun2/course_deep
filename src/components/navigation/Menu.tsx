@@ -72,12 +72,12 @@ const Menu = () => {
 
           <div className="flex space-x-10">
             {/* <!-- primary nav --> */}
-            <div className="hidden md:flex items-center space-x-10 text-white">
+            <div className="hidden md:flex items-center space-x-10 ">
               {menuList.map(({ path, label }) => (
                 <Link
                   key={path}
                   to={path}
-                  className="hover:text-zinc-600 transition-smooth uppercase text-sm cursor-pointer"
+                  className={`hover:text-white hover:font-bold transition-smooth uppercase text-sm cursor-pointer ${isSticky ? 'text-white':"text-zinc-600"}`}
                 >
                   {label}
                 </Link>
@@ -87,9 +87,10 @@ const Menu = () => {
           </div>
           {/* <!-- Login & Signup --> */}
           {user ? (
-            <div className="flex items-center space-x-2 text-white bg-gray-500/30 px-3 h-8 ">
+            <div className="flex items-center space-x-1 text-white bg-gray-500/50 px-3 h-8 
+           shadow-lg hover:shadow-[inset_0_4px_10px_rgba(0,0,0,0.2)]">
               <button
-                className="cursor-pointer hover:text-black transition-smooth"
+                className="cursor-pointer hover:text-black/70 transition-smooth"
                 onClick={logOut}
               >
                 Logout
@@ -104,10 +105,12 @@ const Menu = () => {
 
             </div>
           ) : (
-            <div className="flex items-center space-x-1 text-white bg-gray-500/30 px-3 h-8">
+            <div className="flex items-center space-x-1 text-white hover:text-black/70 bg-gray-500/50 px-3 h-8 
+           shadow-lg hover:shadow-[inset_0_4px_10px_rgba(0,0,0,0.2)] transition-smooth
+           ">
               <Link
                 to="/login"
-                className="cursor-pointer hover:text-black transition-smooth"
+                className="cursor-pointer"
               >
                 Login | Signup
               </Link>

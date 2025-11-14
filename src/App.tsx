@@ -28,6 +28,7 @@ import InstructorProfilePage from "./pages/instructor/Instructor";
 import UserDashboard from "./dashboard/UserDashboard";
 import LessonPage from "./dashboard/LessonPage";
 import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
+import InstructorDashboard from "./dashboard/InstructorDashboard";
 
 
 
@@ -55,6 +56,7 @@ const App: FC = () => {
         { path: "/payment-success", element: <PaymentSuccess/>},
         { path: "/login", element: <Login /> },
         { path: "/lesson", element: <LessonPage /> },
+        { path: "/instructor-dashboard", element: <InstructorDashboard/> },
         {
           path: "/dashboard",
           element: (

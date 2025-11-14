@@ -16,17 +16,16 @@ export interface Video {
 }
 
 export interface Lesson {
+  id: string;
   title: string;
   duration: string;
   type: "video" | "exercise" | "quiz" | "assignment";
 }
 
-export interface CurriculumItem {
-  id: number;
-  title: string;
-  lectures: string;
-  duration: string;
-  lessons: Lesson[];
+export interface Contact {
+  phone: string;
+  mobile: string;
+  email: string;
 }
 
 export interface TopicsHandle {
@@ -36,6 +35,13 @@ export interface TopicsHandle {
   length: string;
 }
 
+export interface SocialLinks {
+  facebook: string;
+  twitter: string;
+  googlePlus: string;
+  linkedin: string;
+}
+
 export interface Teacher {
   name: string;
   role: string;
@@ -43,20 +49,19 @@ export interface Teacher {
   experience?: string; 
   specialistIn?: string; 
   currentWork?: string; 
-  contact?: {
-    phone?: string;
-    mobile?: string;
-    email?: string;
-  };
-  socialLinks: {
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    googlePlus: string;
-  };
+  contact: Contact;
+  socialLinks: SocialLinks;
   biography?: string; 
   image?: string; 
   topicsHandling: TopicsHandle[];
+}
+
+export interface CurriculumItem {
+  id: number;
+  title: string;
+  lectures: string;
+  duration: string;
+  lessons: Lesson[];
 }
 
 export interface Review {
@@ -69,37 +74,69 @@ export interface Review {
   image: string;
 }
 
+// export interface Course {
+//   _id: string;
+//   name: string;
+//   price: number;
+//   ratings: number;
+//   lessons: string;
+//   time: string;
+//   teacher: Teacher;
+//   teacherProfession: string;
+//   shortDes: string;
+//   description: string[];
+//   learnSummery: string;
+//   whatYouWillLearn: string[];
+//   closingNote: string;
+//   image: string;
+//   category: string;
+//   level: string;
+//   language: string;
+//   studentsEnrolled: number;
+//   certificate: boolean;
+//   lastUpdated: string;
+//   courseURL: string;
+//   prerequisites: string[];
+//   promoVideo: string;
+//   videos: Video[];
+//   curriculum: CurriculumItem[];
+//   totalDays: string;
+//   totalDurationLength: string;
+//   totalLectures: number | string;
+//   totalSection: number | string;
+//   progress: number;
+// }
 export interface Course {
-  _id: string;
+  _id?: string;
   name: string;
   price: number;
   ratings: number;
-  lessons: string;
-  time: string;
+  lessons?: string;
+  time?: string;
   teacher: Teacher;
-  teacherProfession: string;
-  shortDes: string;
-  description: string[];
-  learnSummery: string;
-  whatYouWillLearn: string[];
-  closingNote: string;
-  image: string;
-  category: string;
-  level: string;
-  language: string;
-  studentsEnrolled: number;
-  certificate: boolean;
-  lastUpdated: string;
-  courseURL: string;
-  prerequisites: string[];
-  promoVideo: string;
-  videos: Video[];
-  curriculum: CurriculumItem[];
-  totalDays: string;
-  totalDurationLength: string;
-  totalLectures: number;
-  totalSection: number;
-  progress: number;
+  teacherProfession?: string;
+  shortDes?: string;
+  description?: string[];
+  learnSummery?: string;
+  whatYouWillLearn?: string[];
+  closingNote?: string;
+  image?: string;
+  category?: string;
+  level?: string;
+  language?: string;
+  studentsEnrolled?: number;
+  certificate?: boolean;
+  lastUpdated?: string;
+  courseURL?: string;
+  prerequisites?: string[];
+  promoVideo?: string;
+  videos?: Video[];
+  curriculum?: CurriculumItem[];
+  totalDays?: string;
+  totalDurationLength?: string;
+  totalLectures?: number | string;
+  totalSection?: number | string;
+  progress?: number;
 }
 
 export interface Event {
@@ -123,7 +160,7 @@ export interface Event {
   status:  "upcoming" | "ongoing" | "completed";
 }
 
-// ✅ UPDATED: Booking interface
+// UPDATED: Booking interface
 export interface Booking {
   _id: string;
   // User information
