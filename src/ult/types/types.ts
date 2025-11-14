@@ -107,24 +107,24 @@ export interface Review {
 //   progress: number;
 // }
 export interface Course {
-  _id?: string;
+  _id: string;
   name: string;
   price: number;
   ratings: number;
-  lessons?: string;
-  time?: string;
+  lessons: string;
+  time: string;
   teacher: Teacher;
   teacherProfession?: string;
-  shortDes?: string;
+  shortDes: string;
   description?: string[];
   learnSummery?: string;
   whatYouWillLearn?: string[];
   closingNote?: string;
-  image?: string;
+  image: string;
   category?: string;
   level?: string;
   language?: string;
-  studentsEnrolled?: number;
+  studentsEnrolled: number;
   certificate?: boolean;
   lastUpdated?: string;
   courseURL?: string;

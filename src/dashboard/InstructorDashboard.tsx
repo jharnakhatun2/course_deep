@@ -11,6 +11,7 @@ const InstructorDashboard: React.FC = () => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const [courseData, setCourseData] = useState<Course>({
+    _id:'',
     name: '',
     price: 0.00,
     ratings: 4.8,
