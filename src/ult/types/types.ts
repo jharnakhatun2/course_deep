@@ -121,7 +121,7 @@ export interface Course {
   whatYouWillLearn?: string[];
   closingNote?: string;
   image: string;
-  category?: string;
+  category: string;
   level?: string;
   language?: string;
   studentsEnrolled: number;
@@ -131,7 +131,7 @@ export interface Course {
   prerequisites?: string[];
   promoVideo?: string;
   videos?: Video[];
-  curriculum?: CurriculumItem[];
+  curriculum: CurriculumItem[];
   totalDays?: string;
   totalDurationLength?: string;
   totalLectures?: number | string;
