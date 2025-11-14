@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight} from "react-icons/pi";
+import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
 import { LiaSave, LiaCheckCircleSolid } from "react-icons/lia";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import type { Contact, Course, CurriculumItem, Lesson, SocialLinks } from '../ult/types/types';
@@ -9,7 +9,7 @@ const InstructorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  
+
   const [courseData, setCourseData] = useState<Course>({
     name: '',
     price: 0.00,
@@ -50,14 +50,14 @@ const InstructorDashboard: React.FC = () => {
     totalSection: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> ) => {
-  const { name, value, type } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
 
-  setCourseData(prev => ({
-    ...prev,
-    [name]: type === "number" ? Number(value) : value,
-  }));
-};
+    setCourseData(prev => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value,
+    }));
+  };
 
   const handleTeacherChange = (field: string, value: any) => {
     setCourseData(prev => ({
@@ -179,6 +179,10 @@ const InstructorDashboard: React.FC = () => {
     { id: 'curriculum', label: 'Curriculum' }
   ];
 
+  const inputStyle = "w-full px-4 py-3 border border-gray-200 rounded focus:ring-1 focus:ring-yellow-400 focus:border-transparent outline-none text-sm";
+  const lebelStyle = "block text-sm font-medium text-zinc-600 mb-2";
+  const addButton = "inline-flex items-center px-4 py-2 text-sm text-teal-600 hover:bg-yellow-100 transition-smooth cursor-pointer hover:shadow-lg";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
@@ -213,9 +217,8 @@ const InstructorDashboard: React.FC = () => {
       {/* Alert Messages */}
       {message && (
         <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 mt-4">
-          <div className={`flex items-center p-4 rounded-lg ${
-            message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-          }`}>
+          <div className={`flex items-center p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`}>
             {message.type === 'success' ? (
               <LiaCheckCircleSolid className="w-5 h-5 mr-3" />
             ) : (
@@ -238,11 +241,10 @@ const InstructorDashboard: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-b-2 border-indigo-600 text-indigo-600'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === tab.id
+                    ? 'border-b-2 border-yellow-500 text-yellow-500'
+                    : 'text-zinc-600 hover:text-zinc-800'
+                  }`}
               >
                 {tab.label}
               </button>
@@ -254,64 +256,64 @@ const InstructorDashboard: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8">
           {activeTab === 'basic' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Basic Information</h2>
-              
+              <h2 className="text-xl font-semibold text-zinc-900 mb-6">Basic Information</h2>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Course Name *</label>
+                  <label className={lebelStyle}>Course Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={courseData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., React.js Frontend Development"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                  <label className={lebelStyle}>Price</label>
                   <input
                     type="text"
                     name="price"
                     value={courseData.price}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="0.00"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Course Duration</label>
+                  <label className={lebelStyle}>Course Duration</label>
                   <input
                     type="text"
                     name="time"
                     value={courseData.time}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 5 hours"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className={lebelStyle}>Category</label>
                   <input
                     type="text"
                     name="category"
                     value={courseData.category}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., Frontend"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <label className={lebelStyle}>Level</label>
                   <select
                     value={courseData.level}
                     name="level"
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   >
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
@@ -320,49 +322,49 @@ const InstructorDashboard: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                  <label className={lebelStyle}>Language</label>
                   <input
                     type="text"
                     name="language"
                     value={courseData.language}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="English"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Course Image URL</label>
+                  <label className={lebelStyle}>Course Image URL</label>
                   <input
                     type="text"
                     name="image"
                     value={courseData.image}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="https://..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Promo Video URL</label>
+                  <label className={lebelStyle}>Promo Video URL</label>
                   <input
                     type="text"
                     name="promoVideo"
                     value={courseData.promoVideo}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="https://youtu.be/..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Course URL</label>
+                  <label className={lebelStyle}>Course URL</label>
                   <input
                     type="text"
                     name="courseURL"
                     value={courseData.courseURL}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="/courses/..."
                   />
                 </div>
@@ -373,38 +375,38 @@ const InstructorDashboard: React.FC = () => {
                     name="certificate"
                     checked={courseData.certificate}
                     onChange={handleInputChange}
-                    className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
                   />
                   <label className="ml-2 text-sm font-medium text-gray-700">Certificate Available</label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
+                <label className={lebelStyle}>Short Description</label>
                 <textarea
                   value={courseData.shortDes}
                   name="shortDes"
                   onChange={handleInputChange}
                   rows={2}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className={inputStyle}
                   placeholder="Brief course description..."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Prerequisites</label>
+                <label className={lebelStyle}>Prerequisites</label>
                 {courseData.prerequisites?.map((prereq, index) => (
                   <div key={index} className="flex gap-2 mb-2">
                     <input
                       type="text"
                       value={prereq}
                       onChange={(e) => updateArrayItem('prerequisites', index, e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="flex-1 px-4 py-2 border border-gray-200 rounded focus:ring-1 focus:ring-yellow-400 focus:border-transparent outline-none"
                       placeholder="e.g., HTML"
                     />
                     <button
                       onClick={() => removeArrayItem('prerequisites', index)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded transition-smooth cursor-pointer"
                     >
                       <PiTrashSimpleLight className="w-5 h-5" />
                     </button>
@@ -412,7 +414,7 @@ const InstructorDashboard: React.FC = () => {
                 ))}
                 <button
                   onClick={() => addArrayItem('prerequisites', '')}
-                  className="mt-2 inline-flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  className={addButton}
                 >
                   <PiPlus className="w-4 h-4 mr-1" />
                   Add Prerequisite
@@ -423,148 +425,148 @@ const InstructorDashboard: React.FC = () => {
 
           {activeTab === 'teacher' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Teacher Information</h2>
-              
+              <h2 className="text-xl font-semibold text-zinc-900 mb-6">Teacher Information</h2>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                  <label className={lebelStyle}>Name *</label>
                   <input
                     type="text"
                     value={courseData.teacher.name}
                     onChange={(e) => handleTeacherChange('name', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                  <label className={lebelStyle}>Role</label>
                   <input
                     type="text"
                     value={courseData.teacher.role}
                     onChange={(e) => handleTeacherChange('role', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Experience</label>
+                  <label className={lebelStyle}>Experience</label>
                   <input
                     type="text"
                     value={courseData.teacher.experience}
                     onChange={(e) => handleTeacherChange('experience', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 17+ years"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Profession</label>
+                  <label className={lebelStyle}>Profession</label>
                   <input
                     type="text"
                     value={courseData.teacher.profession}
                     onChange={(e) => handleTeacherChange('profession', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Specialist In</label>
+                  <label className={lebelStyle}>Specialist In</label>
                   <input
                     type="text"
                     value={courseData.teacher.specialistIn}
                     onChange={(e) => handleTeacherChange('specialistIn', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                  <label className={lebelStyle}>Image URL</label>
                   <input
                     type="text"
                     value={courseData.teacher.image}
                     onChange={(e) => handleTeacherChange('image', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                   />
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+              <div className="pt-9 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-zinc-900 mb-4">Contact Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <label className={lebelStyle}>Phone</label>
                     <input
                       type="text"
                       value={courseData.teacher.contact.phone}
                       onChange={(e) => handleContactChange('phone', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Mobile</label>
+                    <label className={lebelStyle}>Mobile</label>
                     <input
                       type="text"
                       value={courseData.teacher.contact.mobile}
                       onChange={(e) => handleContactChange('mobile', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className={lebelStyle}>Email</label>
                     <input
                       type="email"
                       value={courseData.teacher.contact.email}
                       onChange={(e) => handleContactChange('email', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Social Links</h3>
+              <div className="pt-9 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-zinc-900 mb-4">Social Links</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
+                    <label className={lebelStyle}>Facebook</label>
                     <input
                       type="text"
                       value={courseData.teacher.socialLinks.facebook}
                       onChange={(e) => handleSocialChange('facebook', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Twitter</label>
+                    <label className={lebelStyle}>Twitter</label>
                     <input
                       type="text"
                       value={courseData.teacher.socialLinks.twitter}
                       onChange={(e) => handleSocialChange('twitter', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
+                    <label className={lebelStyle}>LinkedIn</label>
                     <input
                       type="text"
                       value={courseData.teacher.socialLinks.linkedin}
                       onChange={(e) => handleSocialChange('linkedin', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Biography</label>
+                <label className={lebelStyle}>Biography</label>
                 <textarea
                   value={courseData.teacher.biography}
                   onChange={(e) => handleTeacherChange('biography', e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className={inputStyle}
                 />
               </div>
             </div>
@@ -572,24 +574,24 @@ const InstructorDashboard: React.FC = () => {
 
           {activeTab === 'content' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Course Content</h2>
-              
+              <h2 className="text-xl font-semibold text-zinc-900 mb-6">Course Content</h2>
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description Paragraphs</label>
+                <label className={lebelStyle}>Description Paragraphs</label>
                 {courseData.description?.map((para, index) => (
                   <div key={index} className="mb-4">
                     <textarea
                       value={para}
                       onChange={(e) => updateArrayItem('description', index, e.target.value)}
                       rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className={inputStyle}
                       placeholder={`Paragraph ${index + 1}...`}
                     />
                   </div>
                 ))}
                 <button
                   onClick={() => addArrayItem('description', '')}
-                  className="inline-flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  className={addButton}
                 >
                   <PiPlus className="w-4 h-4 mr-1" />
                   Add Paragraph
@@ -597,7 +599,7 @@ const InstructorDashboard: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">What You Will Learn</label>
+                <label className={lebelStyle}>What You Will Learn</label>
                 {courseData.whatYouWillLearn?.map((item, index) => (
                   <div key={index} className="flex gap-2 mb-2">
                     <input
@@ -617,7 +619,7 @@ const InstructorDashboard: React.FC = () => {
                 ))}
                 <button
                   onClick={() => addArrayItem('whatYouWillLearn', '')}
-                  className="mt-2 inline-flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  className={addButton}
                 >
                   <PiPlus className="w-4 h-4 mr-1" />
                   Add Learning Outcome
@@ -626,49 +628,49 @@ const InstructorDashboard: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Total Days</label>
+                  <label className={lebelStyle}>Total Days</label>
                   <input
                     type="text"
                     name="totalDays"
                     value={courseData.totalDays}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 5 days"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Total Duration</label>
+                  <label className={lebelStyle}>Total Duration</label>
                   <input
                     type="text"
                     name="totalDurationLength"
                     value={courseData.totalDurationLength}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 28 hours"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Total Lectures</label>
+                  <label className={lebelStyle}>Total Lectures</label>
                   <input
                     type="number"
                     name="totalLectures"
                     value={courseData.totalLectures}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 95"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Total Sections</label>
+                  <label className={lebelStyle}>Total Sections</label>
                   <input
                     type="number"
                     name="totalSection"
                     value={courseData.totalSection}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className={inputStyle}
                     placeholder="e.g., 12"
                   />
                 </div>
@@ -679,10 +681,10 @@ const InstructorDashboard: React.FC = () => {
           {activeTab === 'curriculum' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Course Curriculum</h2>
+                <h2 className="text-xl font-semibold text-zinc-900">Course Curriculum</h2>
                 <button
                   onClick={addCurriculumSection}
-                  className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-400 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white font-medium hover:bg-yellow-400 transition-smooth cursor-pointer shadow-lg"
                 >
                   <PiPlus className="w-4 h-4 mr-2" />
                   Add Section
@@ -692,10 +694,10 @@ const InstructorDashboard: React.FC = () => {
               {courseData.curriculum?.map((section, sectionIndex) => (
                 <div key={section.id} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Section {section.id}</h3>
+                    <h3 className="text-lg font-semibold text-zinc-900">Section {section.id}</h3>
                     <button
                       onClick={() => removeArrayItem('curriculum', sectionIndex)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-smooth cursor-pointer"
                     >
                       <PiTrashSimpleLight className="w-5 h-5" />
                     </button>
@@ -703,34 +705,34 @@ const InstructorDashboard: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="md:col-span-3">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                      <label className={lebelStyle}>Section Title</label>
                       <input
                         type="text"
                         value={section.title}
                         onChange={(e) => updateCurriculumSection(sectionIndex, 'title', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+                        className={inputStyle}
                         placeholder="e.g., Day 1 - Introduction to React"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Lectures</label>
+                      <label className={lebelStyle}>Lectures</label>
                       <input
                         type="text"
                         value={section.lectures}
                         onChange={(e) => updateCurriculumSection(sectionIndex, 'lectures', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+                        className={inputStyle}
                         placeholder="e.g., 5 lectures"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                      <label className={lebelStyle}>Duration</label>
                       <input
                         type="text"
                         value={section.duration}
                         onChange={(e) => updateCurriculumSection(sectionIndex, 'duration', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+                        className={inputStyle}
                         placeholder="e.g., 1hr 20min"
                       />
                     </div>
@@ -741,7 +743,7 @@ const InstructorDashboard: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700">Lessons</label>
                       <button
                         onClick={() => addLesson(sectionIndex)}
-                        className="inline-flex items-center px-3 py-1 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                        className={addButton}
                       >
                         <PiPlus className="w-4 h-4 mr-1" />
                         Add Lesson
@@ -754,7 +756,7 @@ const InstructorDashboard: React.FC = () => {
                           <span className="text-sm font-medium text-gray-700">Lesson {lessonIndex + 1}</span>
                           <button
                             onClick={() => removeLesson(sectionIndex, lessonIndex)}
-                            className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                            className="py-1 px-2 text-red-600 hover:bg-red-50 rounded transition-smooth cursor-pointer"
                           >
                             X
                           </button>
@@ -762,45 +764,45 @@ const InstructorDashboard: React.FC = () => {
 
                         <div className="grid grid-cols-1 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Video ID</label>
+                            <label className="block text-xs font-medium text-zinc-500 mb-1">Video ID</label>
                             <input
                               type="text"
                               value={lesson.id}
                               onChange={(e) => updateLesson(sectionIndex, lessonIndex, 'id', e.target.value)}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                              className={inputStyle}
                               placeholder="e.g., OpHbSHp8PcI"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Lesson Title</label>
+                            <label className="block text-xs font-medium text-zinc-500 mb-1">Lesson Title</label>
                             <input
                               type="text"
                               value={lesson.title}
                               onChange={(e) => updateLesson(sectionIndex, lessonIndex, 'title', e.target.value)}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                              className={inputStyle}
                               placeholder="e.g., React Data Fetching Patterns"
                             />
                           </div>
 
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-xs font-medium text-gray-600 mb-1">Duration</label>
+                              <label className="block text-xs font-medium text-zinc-500 mb-1">Duration</label>
                               <input
                                 type="text"
                                 value={lesson.duration}
                                 onChange={(e) => updateLesson(sectionIndex, lessonIndex, 'duration', e.target.value)}
-                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                className={inputStyle}
                                 placeholder="e.g., 34.31"
                               />
                             </div>
 
                             <div>
-                              <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
+                              <label className="block text-xs font-medium text-zinc-500 mb-1">Type</label>
                               <select
                                 value={lesson.type}
                                 onChange={(e) => updateLesson(sectionIndex, lessonIndex, 'type', e.target.value)}
-                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                className={inputStyle}
                               >
                                 <option value="video">Video</option>
                                 <option value="document">Document</option>
