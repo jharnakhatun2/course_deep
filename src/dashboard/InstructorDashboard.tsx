@@ -183,16 +183,16 @@ const InstructorDashboard: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="lg:max-w-7xl mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Create New Course</h1>
-              <p className="mt-1 text-sm text-gray-600">Fill in the details to upload your course</p>
+              <h1 className="text-2xl sm:text-3xl text-zinc-700">Create New Course</h1>
+              <p className=" text-sm text-teal-500">Fill in the details to upload your course</p>
             </div>
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center px-6 py-3 bg-yellow-400 text-white font-semibold hover:bg-yellow-500 transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-smooth cursor-pointer"
             >
               {loading ? (
                 <>
@@ -212,7 +212,7 @@ const InstructorDashboard: React.FC = () => {
 
       {/* Alert Messages */}
       {message && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 mt-4">
           <div className={`flex items-center p-4 rounded-lg ${
             message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
           }`}>
@@ -230,7 +230,7 @@ const InstructorDashboard: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
         {/* Tabs */}
         <div className="bg-white rounded-lg shadow-sm mb-6 overflow-x-auto">
           <div className="flex border-b border-gray-200 min-w-max">
@@ -682,7 +682,7 @@ const InstructorDashboard: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-900">Course Curriculum</h2>
                 <button
                   onClick={addCurriculumSection}
-                  className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-400 transition-colors"
                 >
                   <PiPlus className="w-4 h-4 mr-2" />
                   Add Section
