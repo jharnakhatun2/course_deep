@@ -18,7 +18,7 @@ const Banner2 = () => {
         </p>
         <div className="flex justify-center">
           <Button
-            url="/courses"
+            url="/login"
             className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
           >
             Get Started Now

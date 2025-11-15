@@ -10,6 +10,7 @@ export interface RegisterResponse {
 export interface LoginResponse {
   message: string;
   user: User;
+  token: string;
 }
 
 export interface LogoutResponse {
@@ -22,7 +23,7 @@ export const authApi = apiSlice.injectEndpoints({
     // Register new user
     register: builder.mutation<
       RegisterResponse,
-      Partial<User> & { password: string }
+      Partial<User> & { password : string }
     >({
       query: (body) => ({
         url: "/auth/register",
@@ -34,13 +35,13 @@ export const authApi = apiSlice.injectEndpoints({
     }),
 
     // Login user
-    login: builder.mutation<LoginResponse, { email: string; password: string }>(
+    login: builder.mutation<LoginResponse, { email: string; password: string; role: string }>(
       {
         query: (body) => ({
           url: "/auth/login",
           method: "POST",
           body,
-          credentials: "include", // send/receive cookies
+          credentials: "include",
         }),
         invalidatesTags: ["User"],
       }
@@ -87,6 +88,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
 
     // Get single user
@@ -96,6 +98,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: (_result, _error, id) => [{ type: "User", id }],
     }),
 
     // Update logged-in user info
@@ -120,6 +123,7 @@ export const authApi = apiSlice.injectEndpoints({
           method: "DELETE",
           credentials: "include",
         }),
+        invalidatesTags: ["User"],
       }
     ),
   }),

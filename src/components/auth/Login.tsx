@@ -14,6 +14,7 @@ interface FormData {
   name?: string;
   email: string;
   password: string;
+  role: string;
 }
 
 const Login: FC = () => {
@@ -21,6 +22,7 @@ const Login: FC = () => {
     name: "",
     email: "",
     password: "",
+    role: ""
   });
   const [newAccount, setNewAccount] = useState(false);
   const [registerUser, { isLoading: isRegistering }] = useRegisterMutation();
@@ -36,8 +38,8 @@ const Login: FC = () => {
   useEffect(() => {
     setFormData(
       newAccount
-        ? { name: "", email: "", password: "" }
-        : { email: "", password: "" }
+        ? { name: "", email: "", password: "", role: "" }
+        : { email: "", password: "", role: "" }
     );
   }, [newAccount]);
 
@@ -47,7 +49,7 @@ const Login: FC = () => {
   };
 
   // handle input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -77,10 +79,10 @@ const Login: FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password } = formData;
+    const { name, email, password, role } = formData;
 
     // Basic validation
-    if (!email || !password || (newAccount && !name)) {
+    if (!email || !password || (newAccount && !name) || !role) {
       showErrorToast("Please fill in all required fields!");
       return;
     }
@@ -88,11 +90,11 @@ const Login: FC = () => {
     try {
       if (newAccount) {
         // Register
-        const res = await registerUser({ name, email, password }).unwrap();
+        const res = await registerUser({ name, email, password, role }).unwrap();
         showSuccessToast(res.message || "Account created successfully!");
 
         // After registration, automatically log them in
-        const loginRes = await loginUser({ email, password }).unwrap();
+        const loginRes = await loginUser({ email, password, role }).unwrap();
         if (loginRes.user) {
           dispatch(setUser({ user: loginRes.user }));
           handleNavigation();
@@ -100,13 +102,13 @@ const Login: FC = () => {
         }
       } else {
         // Login
-        const res = await loginUser({ email, password }).unwrap();
+        const res = await loginUser({ email, password, role }).unwrap();
 
         // Save user + token in Redux
         dispatch(setUser({ user: res.user }));
 
         showSuccessToast("Logged in successfully!");
-        setFormData({ email: "", password: "" });
+        setFormData({ email: "", password: "", role: ""});
         handleNavigation();
       }
     } catch (error: any) {
@@ -121,6 +123,9 @@ const Login: FC = () => {
       navigate(from, { replace: true });
     }
   }, [user, navigate, location.state]);
+
+  //class style
+  const inputStyle = "input input-bordered w-full bg-white border border-zinc-200 outline-none focus:border-transparent focus:outline-none focus:ring-1 focus:ring-yellow-500"
 
   // Loading state
   if (isRegistering || isLoggingIn) return <Loader />;
@@ -147,7 +152,7 @@ const Login: FC = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="input input-bordered w-full bg-white border border-zinc-200"
+                    className={inputStyle}
                     placeholder="Enter Name"
                     required={newAccount}
                   />
@@ -164,7 +169,7 @@ const Login: FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="input input-bordered w-full bg-white border border-zinc-200"
+                  className={inputStyle}
                   placeholder="email@example.com"
                   required
                 />
@@ -180,10 +185,31 @@ const Login: FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="input input-bordered w-full bg-white border border-zinc-200"
+                  className={inputStyle}
                   placeholder="Enter password"
                   required
                 />
+              </div>
+
+              {/* role field */}
+              <div className="form-control mt-4">
+                <label className="label">
+                  <span className="label-text">Role</span>
+                </label>
+
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="select select-bordered w-full bg-white border border-zinc-200 outline-none focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                  required
+                >
+                  <option value="" disabled>
+                    Select role
+                  </option>
+                  <option value="student">Student</option>
+                  <option value="instructor">Instructor</option>
+                </select>
               </div>
 
               {/* Submit button */}
@@ -196,8 +222,8 @@ const Login: FC = () => {
                   {isRegistering || isLoggingIn
                     ? "Processing..."
                     : newAccount
-                    ? "Register"
-                    : "Login"}
+                      ? "Register"
+                      : "Login"}
                 </button>
               </div>
             </form>
