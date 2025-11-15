@@ -51,6 +51,7 @@ const InstructorDashboard: React.FC = () => {
     totalSection: ''
   });
 
+  //input handler
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
 
@@ -147,6 +148,7 @@ const InstructorDashboard: React.FC = () => {
     setCourseData(prev => ({ ...prev, curriculum: updatedCurriculum }));
   };
 
+  //form submit handler
   const handleSubmit = async () => {
     setLoading(true);
     setMessage(null);
@@ -180,6 +182,7 @@ const InstructorDashboard: React.FC = () => {
     { id: 'curriculum', label: 'Curriculum' }
   ];
 
+  //variable for class
   const inputStyle = "w-full px-4 py-3 border border-gray-200 rounded focus:ring-1 focus:ring-yellow-400 focus:border-transparent outline-none text-sm";
   const lebelStyle = "block text-sm font-medium text-zinc-600 mb-2";
   const addButton = "inline-flex items-center px-4 py-2 text-sm text-teal-600 hover:bg-yellow-100 transition-smooth cursor-pointer hover:shadow-lg";
@@ -255,6 +258,8 @@ const InstructorDashboard: React.FC = () => {
 
         {/* Tab Content */}
         <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8">
+          
+          {/* Basic Information */}
           {activeTab === 'basic' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-zinc-900 mb-6">Basic Information</h2>
@@ -424,6 +429,7 @@ const InstructorDashboard: React.FC = () => {
             </div>
           )}
 
+          {/* Teacher Information */}
           {activeTab === 'teacher' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-zinc-900 mb-6">Teacher Information</h2>
@@ -573,6 +579,7 @@ const InstructorDashboard: React.FC = () => {
             </div>
           )}
 
+          {/* Course Content */}
           {activeTab === 'content' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-zinc-900 mb-6">Course Content</h2>
@@ -679,6 +686,7 @@ const InstructorDashboard: React.FC = () => {
             </div>
           )}
 
+          {/* Course Curriculum */}
           {activeTab === 'curriculum' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between mb-6">
@@ -833,6 +841,7 @@ const InstructorDashboard: React.FC = () => {
               )}
             </div>
           )}
+          
         </div>
       </div>
     </div>

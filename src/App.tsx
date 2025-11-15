@@ -51,12 +51,10 @@ const App: FC = () => {
         { path: "/events/:id", element:  <Event />},
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
-        { path: "/cart", element: <Cart /> },
-        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
-        { path: "/payment-success", element: <PaymentSuccess/>},
         { path: "/login", element: <Login /> },
-        { path: "/lesson", element: <LessonPage /> },
-        { path: "/instructor-dashboard", element: <InstructorDashboard/> },
+        { path: "/cart", element: <PrivateRoute><Cart /></PrivateRoute> },
+        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
+        { path: "/payment-success", element: <PrivateRoute><PaymentSuccess/></PrivateRoute>},
         {
           path: "/dashboard",
           element: (
@@ -72,6 +70,8 @@ const App: FC = () => {
       
     ],
         },
+        { path: "/lesson", element: <LessonPage /> },
+        { path: "/instructor-dashboard", element: <InstructorDashboard/> },
         { path: "/terms", element: <Terms /> },
         { path: "/privacy", element: <Privacy /> },
         { path: "*", element: <Error /> },
