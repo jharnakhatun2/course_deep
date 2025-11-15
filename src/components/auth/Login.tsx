@@ -33,15 +33,16 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as { from?: string })?.from || "/";
+  const rolePreference = (location.state as { rolePreference?: string })?.rolePreference || "";
 
   // Sync input fields when toggling between login/register
   useEffect(() => {
     setFormData(
       newAccount
-        ? { name: "", email: "", password: "", role: "" }
-        : { email: "", password: "", role: "" }
+        ? { name: "", email: "", password: "", role: rolePreference || "" }
+        : { email: "", password: "", role: rolePreference || "" }
     );
-  }, [newAccount]);
+  }, [newAccount, rolePreference]);
 
   // toggle between login/register
   const handleToggleForm = () => {
@@ -71,7 +72,13 @@ const Login: FC = () => {
       sessionStorage.removeItem("pendingComment");
       navigate(`/blogs/${blogId}`, { replace: true });
     } else {
-      navigate(from, { replace: true });
+      // Navigate based on user role after login
+      if (user) {
+        const dashboardPath = user.role === "instructor" ? "/instructor-dashboard" : "/dashboard";
+        navigate(dashboardPath, { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     }
   };
 
@@ -95,11 +102,12 @@ const Login: FC = () => {
 
         // After registration, automatically log them in
         const loginRes = await loginUser({ email, password, role }).unwrap();
+
         if (loginRes.user) {
           dispatch(setUser({ user: loginRes.user }));
-          handleNavigation();
           setTimeout(() => setNewAccount(false), 0);
         }
+
       } else {
         // Login
         const res = await loginUser({ email, password, role }).unwrap();
@@ -108,7 +116,7 @@ const Login: FC = () => {
         dispatch(setUser({ user: res.user }));
 
         showSuccessToast("Logged in successfully!");
-        setFormData({ email: "", password: "", role: ""});
+        setFormData({ email: "", password: "", role: "" });
         handleNavigation();
       }
     } catch (error: any) {
@@ -119,10 +127,10 @@ const Login: FC = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      const from = (location.state as { from?: string })?.from || "/";
-      navigate(from, { replace: true });
+      const dashboardPath = user.role === "instructor" ? "/instructor-dashboard" : "/dashboard";
+      navigate(dashboardPath, { replace: true });
     }
-  }, [user, navigate, location.state]);
+  }, [user, navigate]);
 
   //class style
   const inputStyle = "input input-bordered w-full bg-white border border-zinc-200 outline-none focus:border-transparent focus:outline-none focus:ring-1 focus:ring-yellow-500"
@@ -139,6 +147,16 @@ const Login: FC = () => {
             <h2 className="text-sm lg:text-lg font-bold text-center uppercase">
               {newAccount ? "Create an account" : "User Login"}
             </h2>
+
+            {rolePreference && (
+              <div className="mb-4 p-2 bg-teal-50 rounded text-center">
+                <p className="text-teal-700 text-sm">
+                  {rolePreference === "instructor"
+                    ? "🎯 Creating instructor account"
+                    : "👨‍🎓 Creating student account"}
+                </p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               {/* Name field (only for register) */}

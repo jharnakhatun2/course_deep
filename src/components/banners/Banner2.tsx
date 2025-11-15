@@ -1,7 +1,35 @@
 import imageIns from "../../assets/img/instructorBc.webp";
 import Button from "../../ult/button/Button";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../hook/useAuth";
 
 const Banner2 = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth(); // Use 'loading' here too
+
+  const handleGetStarted = () => {
+    if (user) {
+      // If user is already logged in, redirect based on role
+      if (user.role === "instructor") {
+        navigate("/instructor-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    } else {
+      // If not logged in, go to login page with role preference
+      navigate("/login", { 
+        state: { 
+          rolePreference: "instructor",
+          from: "/instructor-dashboard"
+        } 
+      });
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Or your Loader component
+  }
+
   return (
     <div
       className="w-full bg-center bg-cover relative"
@@ -18,12 +46,19 @@ const Banner2 = () => {
         </p>
         <div className="flex justify-center">
           <Button
-            url="/login"
-            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800"
+            onClick={handleGetStarted}
+            className="bg-zinc-100 hover:bg-zinc-300 text-zinc-800 cursor-pointer"
           >
-            Get Started Now
+            {user ? "Go to Dashboard" : "Get Started Now"}
           </Button>
         </div>
+        {user && (
+          <p className="text-center text-gray-300 mt-2 text-sm">
+            {user.role === "instructor" 
+              ? "Welcome back, Instructor!" 
+              : "Switch to instructor account to access instructor features"}
+          </p>
+        )}
       </div>
     </div>
   );
