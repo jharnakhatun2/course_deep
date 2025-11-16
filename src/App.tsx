@@ -29,6 +29,7 @@ import UserDashboard from "./dashboard/UserDashboard";
 import LessonPage from "./dashboard/LessonPage";
 import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
 import InstructorDashboard from "./dashboard/InstructorDashboard";
+import AdminDashboard from "./dashboard/AdminDashboard";
 
 
 
@@ -71,6 +72,7 @@ const App: FC = () => {
     ],
         },
         { path: "/lesson", element: <LessonPage /> },
+        { path: "/admin", element: <AdminDashboard /> },
         { path: "/instructor-dashboard", element: <InstructorDashboard/> },
         { path: "/terms", element: <Terms /> },
         { path: "/privacy", element: <Privacy /> },
