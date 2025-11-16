@@ -9,10 +9,10 @@ import { useAuth } from "../../hook/useAuth";
 import { useEffect, useState } from "react";
 
 const menuList = [
-  {  path: "/", label: "Home" },
-  {  path: "/courses", label: "Courses" },
-  {  path: "/events", label: "Events" },
-  {  path: "/blogs", label: "Blog" }
+  { path: "/", label: "Home" },
+  { path: "/courses", label: "Courses" },
+  { path: "/events", label: "Events" },
+  { path: "/blogs", label: "Blog" }
 ];
 
 const Menu = () => {
@@ -49,10 +49,13 @@ const Menu = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  //variable with style
+  const dropdownStyle = "hover:text-yellow-600 hover:bg-gray-800/20 py-2 pl-2 transition-smooth rounded";
+
   return (
     <nav className={`py-3 w-full z-50 transition-all duration-300 ${isSticky
-        ? "fixed top-0 left-0 bg-yellow-400/40 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
-        : "bg-yellow-400/90 relative"
+      ? "fixed top-0 left-0 bg-yellow-400/40 backdrop-blur-lg shadow-[0_0_5px_#ffffff]"
+      : "bg-yellow-400/90 relative"
       }`}>
       <div className="lg:max-w-7xl mx-auto px-4 ">
         <div className="flex justify-between items-center">
@@ -77,7 +80,7 @@ const Menu = () => {
                 <Link
                   key={path}
                   to={path}
-                  className={`hover:text-white hover:font-bold transition-smooth uppercase text-sm cursor-pointer ${isSticky ? 'text-white':"text-zinc-600"}`}
+                  className={`hover:text-white hover:font-bold transition-smooth uppercase text-sm cursor-pointer ${isSticky ? 'text-white' : "text-zinc-600"}`}
                 >
                   {label}
                 </Link>
@@ -96,12 +99,15 @@ const Menu = () => {
                 Logout
               </button>
               <span>|</span>
-              <Link
-                to="/dashboard"
-                className="cursor-pointer hover:text-black transition-smooth"
-              >
-                <FaUserCircle />
-              </Link>
+              
+              <div className="dropdown dropdown-end z-80">
+                <div tabIndex={0} role="button"><FaUserCircle  className="cursor-pointer hover:text-black/70 transition-smooth" /></div>
+                <ul tabIndex={-1} className="dropdown-content menu bg-base-100/90 text-zinc-600 z-1 w-52 p-2 shadow-lg backdrop-blur-lg rounded-box">
+                <Link to="/dashboard" className={dropdownStyle}>My Dashboard</Link>
+                <Link to="/admin" className={dropdownStyle}>Admin Dashboard</Link>
+                <Link to="/instructor-dashboard" className={dropdownStyle}>Instructor Dashboard</Link>
+                </ul>
+              </div>
 
             </div>
           ) : (
