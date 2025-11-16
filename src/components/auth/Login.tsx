@@ -10,20 +10,20 @@ import { useAppDispatch } from "../../app/hooks";
 import Loader from "../../ult/loader/Loader";
 import { useAuth } from "../../hook/useAuth";
 
-interface FormData {
-  name?: string;
-  email: string;
-  password: string;
-  role: string;
-}
-
 const Login: FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  // Separate states for login and register
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+  
+  const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
     password: "",
-    role: ""
+    role: "",
   });
+
   const [newAccount, setNewAccount] = useState(false);
   const [registerUser, { isLoading: isRegistering }] = useRegisterMutation();
   const [loginUser, { isLoading: isLoggingIn }] = useLoginMutation();
@@ -37,11 +37,14 @@ const Login: FC = () => {
 
   // Sync input fields when toggling between login/register
   useEffect(() => {
-    setFormData(
-      newAccount
-        ? { name: "", email: "", password: "", role: rolePreference || "" }
-        : { email: "", password: "", role: rolePreference || "" }
-    );
+    if (newAccount) {
+      setRegisterData(prev => ({ 
+        ...prev, 
+        role: rolePreference || prev.role 
+      }));
+    } else {
+      setLoginData({ email: "", password: "" });
+    }
   }, [newAccount, rolePreference]);
 
   // toggle between login/register
@@ -52,10 +55,15 @@ const Login: FC = () => {
   // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    if (newAccount) {
+      setRegisterData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setLoginData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  // Handle navigation logic (common for both login and register)
+  // Handle navigation logic
   const handleNavigation = () => {
     const pendingReply = sessionStorage.getItem("pendingReply");
     const pendingComment = sessionStorage.getItem("pendingComment");
@@ -86,41 +94,45 @@ const Login: FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password, role } = formData;
+    if (newAccount) {
+      // Register validation
+      const { name, email, password, role } = registerData;
+      if (!name || !email || !password || !role) {
+        showErrorToast("Please fill in all required fields!");
+        return;
+      }
 
-    // Basic validation
-    if (!email || !password || (newAccount && !name) || !role) {
-      showErrorToast("Please fill in all required fields!");
-      return;
-    }
-
-    try {
-      if (newAccount) {
-        // Register
+      try {
         const res = await registerUser({ name, email, password, role }).unwrap();
         showSuccessToast(res.message || "Account created successfully!");
 
         // After registration, automatically log them in
-        const loginRes = await loginUser({ email, password, role }).unwrap();
+        const loginRes = await loginUser({ email, password }).unwrap();
 
         if (loginRes.user) {
           dispatch(setUser({ user: loginRes.user }));
           setTimeout(() => setNewAccount(false), 0);
         }
-
-      } else {
-        // Login
-        const res = await loginUser({ email, password, role }).unwrap();
-
-        // Save user + token in Redux
-        dispatch(setUser({ user: res.user }));
-
-        showSuccessToast("Logged in successfully!");
-        setFormData({ email: "", password: "", role: "" });
-        handleNavigation();
+      } catch (error: any) {
+        showErrorToast(error?.data?.message || "Something went wrong!");
       }
-    } catch (error: any) {
-      showErrorToast(error?.data?.message || "Something went wrong!");
+    } else {
+      // Login validation
+      const { email, password } = loginData;
+      if (!email || !password) {
+        showErrorToast("Please fill in all required fields!");
+        return;
+      }
+
+      try {
+        const res = await loginUser({ email, password }).unwrap();
+        dispatch(setUser({ user: res.user }));
+        showSuccessToast("Logged in successfully!");
+        setLoginData({ email: "", password: "" });
+        handleNavigation();
+      } catch (error: any) {
+        showErrorToast(error?.data?.message || "Something went wrong!");
+      }
     }
   };
 
@@ -132,11 +144,13 @@ const Login: FC = () => {
     }
   }, [user, navigate]);
 
-  //class style
-  const inputStyle = "input input-bordered w-full bg-white border border-zinc-200 outline-none focus:border-transparent focus:outline-none focus:ring-1 focus:ring-yellow-500"
+  // class style
+  const inputStyle = "input input-bordered w-full bg-white border border-zinc-200 outline-none focus:border-transparent focus:outline-none focus:ring-1 focus:ring-yellow-500";
 
   // Loading state
   if (isRegistering || isLoggingIn) return <Loader />;
+
+  const currentData = newAccount ? registerData : loginData;
 
   return (
     <div className="relative py-3 sm:max-w-xl sm:mx-auto my-4 sm:my-20">
@@ -148,7 +162,7 @@ const Login: FC = () => {
               {newAccount ? "Create an account" : "User Login"}
             </h2>
 
-            {rolePreference && (
+            {rolePreference && newAccount && (
               <div className="mb-4 p-2 bg-teal-50 rounded text-center">
                 <p className="text-teal-700 text-sm">
                   {rolePreference === "instructor"
@@ -168,11 +182,11 @@ const Login: FC = () => {
                   <input
                     type="text"
                     name="name"
-                    value={formData.name}
+                    value={registerData.name}
                     onChange={handleChange}
                     className={inputStyle}
                     placeholder="Enter Name"
-                    required={newAccount}
+                    required
                   />
                 </div>
               )}
@@ -185,7 +199,7 @@ const Login: FC = () => {
                 <input
                   type="email"
                   name="email"
-                  value={formData.email}
+                  value={currentData.email}
                   onChange={handleChange}
                   className={inputStyle}
                   placeholder="email@example.com"
@@ -201,7 +215,7 @@ const Login: FC = () => {
                 <input
                   type="password"
                   name="password"
-                  value={formData.password}
+                  value={currentData.password}
                   onChange={handleChange}
                   className={inputStyle}
                   placeholder="Enter password"
@@ -209,26 +223,27 @@ const Login: FC = () => {
                 />
               </div>
 
-              {/* role field */}
-              <div className="form-control mt-4">
-                <label className="label">
-                  <span className="label-text">Role</span>
-                </label>
-
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="select select-bordered w-full bg-white border border-zinc-200 outline-none focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                  required
-                >
-                  <option value="" disabled>
-                    Select role
-                  </option>
-                  <option value="student">Student</option>
-                  <option value="instructor">Instructor</option>
-                </select>
-              </div>
+              {/* Role field (only for register) */}
+              {newAccount && (
+                <div className="form-control mt-4">
+                  <label className="label">
+                    <span className="label-text">Role</span>
+                  </label>
+                  <select
+                    name="role"
+                    value={registerData.role}
+                    onChange={handleChange}
+                    className="select select-bordered w-full bg-white border border-zinc-200 outline-none focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                    required
+                  >
+                    <option value="" disabled>
+                      Select role
+                    </option>
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                  </select>
+                </div>
+              )}
 
               {/* Submit button */}
               <div className="form-control mt-6">
