@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
@@ -49,8 +48,43 @@ const Menu = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  //variable with style
-  const dropdownStyle = "hover:text-yellow-600 hover:bg-gray-800/20 py-2 pl-2 transition-smooth rounded";
+  // Render dropdown menu items based on user role
+  const renderDropdownItems = () => {
+    const dropdownStyle = "hover:text-yellow-600 hover:bg-gray-800/20 py-2 pl-2 transition-smooth rounded";
+
+    if (!user) return null;
+
+    const items = [];
+
+    // Student can see My Dashboard
+    if (user.role === 'student' || user.role === 'admin') {
+      items.push(
+        <Link key="dashboard" to="/dashboard" className={dropdownStyle}>
+          My Dashboard
+        </Link>
+      );
+    }
+
+    // Instructor can see Instructor Dashboard
+    if (user.role === 'instructor' || user.role === 'admin') {
+      items.push(
+        <Link key="instructor-dashboard" to="/instructor-dashboard" className={dropdownStyle}>
+          Instructor Dashboard
+        </Link>
+      );
+    }
+
+    // Admin can see Admin Dashboard
+    if (user.role === 'admin') {
+      items.push(
+        <Link key="admin-dashboard" to="/admin" className={dropdownStyle}>
+          Admin Dashboard
+        </Link>
+      );
+    }
+
+    return items;
+  };
 
   return (
     <nav className={`py-3 w-full z-50 transition-all duration-300 ${isSticky
@@ -101,18 +135,18 @@ const Menu = () => {
               <span>|</span>
               
               <div className="dropdown dropdown-end z-80">
-                <div tabIndex={0} role="button"><FaUserCircle  className="cursor-pointer hover:text-black/70 transition-smooth" /></div>
+                <div tabIndex={0} role="button">
+                  <FaUserCircle className="cursor-pointer hover:text-black/70 transition-smooth" />
+                </div>
                 <ul tabIndex={-1} className="dropdown-content menu bg-base-100/90 text-zinc-600 z-1 w-52 p-2 shadow-lg backdrop-blur-lg rounded-box">
-                <Link to="/dashboard" className={dropdownStyle}>My Dashboard</Link>
-                <Link to="/admin" className={dropdownStyle}>Admin Dashboard</Link>
-                <Link to="/instructor-dashboard" className={dropdownStyle}>Instructor Dashboard</Link>
+                  {renderDropdownItems()}
                 </ul>
               </div>
 
             </div>
           ) : (
             <div className="flex items-center space-x-1 text-white hover:text-black/70 bg-gray-500/50 px-3 h-8 
-           shadow-lg hover:shadow-[inset_0_4px_10px_rgba(0,0,0,0.2)] transition-smooth
+           shadow-lg hover:shadow-[inset_0_4px_10px_rgba(0,4px_10px_rgba(0,0,0,0.2)] transition-smooth
            ">
               <Link
                 to="/login"
