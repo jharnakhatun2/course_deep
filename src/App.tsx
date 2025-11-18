@@ -36,7 +36,7 @@ import AdminDashboard from "./dashboard/AdminDashboard";
 
 const App: FC = () => {
   // Custom hook to fetch current user on app load
-  useCurrentUser(); 
+  useCurrentUser();
 
   const router = createBrowserRouter([
     {
@@ -49,13 +49,13 @@ const App: FC = () => {
         { path: "/course/:id", element: <Course /> },
         { path: "/instructor/:name", element: <InstructorProfilePage /> },
         { path: "/events", element: <Events /> },
-        { path: "/events/:id", element:  <Event />},
+        { path: "/events/:id", element: <Event /> },
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
         { path: "/login", element: <Login /> },
         { path: "/cart", element: <PrivateRoute><Cart /></PrivateRoute> },
-        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper/></PrivateRoute>},
-        { path: "/payment-success", element: <PrivateRoute><PaymentSuccess/></PrivateRoute>},
+        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper /></PrivateRoute> },
+        { path: "/payment-success", element: <PrivateRoute><PaymentSuccess /></PrivateRoute> },
         {
           path: "/dashboard",
           element: (
@@ -64,16 +64,24 @@ const App: FC = () => {
             </PrivateRoute>
           ),
           children: [
-      {
-        index: true, // default child (when only /dashboard)
-        element: <div>Welcome to your Dashboard!</div>,
-      }
-      
-    ],
+            {
+              index: true, // default child (when only /dashboard)
+              element: <div>Welcome to your Dashboard!</div>,
+            }
+
+          ],
         },
         { path: "/lesson", element: <LessonPage /> },
-        { path: "/admin", element: <AdminDashboard /> },
-        { path: "/instructor-dashboard", element: <InstructorDashboard/> },
+        {
+          path: "/admin",
+          element: <AdminDashboard />,
+          children: [
+            { index: true, element: <div>Admin Home</div> },
+            { path: "users", element: <div>Manage Users</div> },
+            { path: "settings", element: <div>Settings</div> },
+          ],
+        },
+        { path: "/instructor-dashboard", element: <InstructorDashboard /> },
         { path: "/terms", element: <Terms /> },
         { path: "/privacy", element: <Privacy /> },
         { path: "*", element: <Error /> },
@@ -85,7 +93,7 @@ const App: FC = () => {
     <>
       <RouterProvider router={router} />
       <ToastContainer />
-      <ScrollBtn/>
+      <ScrollBtn />
     </>
   );
 };
