@@ -1,24 +1,36 @@
-import React from 'react';
-import { FiHome, FiUsers, FiSettings } from 'react-icons/fi';
+import { type FC } from "react";
+import { NavLink } from "react-router";
+import { FiHome, FiUsers, FiSettings } from "react-icons/fi";
 
-const Sidebar: React.FC = () => {
+const Sidebar: FC = () => {
+  const linkClasses = ({ isActive }: { isActive: boolean }) =>
+    `px-4 py-2 flex items-center gap-2 cursor-pointer ${
+      isActive ? "bg-gray-700 font-bold" : "hover:bg-gray-700"
+    }`;
+
   return (
     <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
       <div className="text-2xl font-bold p-4">Admin Dashboard</div>
       <nav className="flex-1">
         <ul>
-          <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex items-center gap-2">
-            <FiHome /> Dashboard
+          <li>
+            <NavLink to="/admin" end className={linkClasses}>
+              <FiHome /> Dashboard
+            </NavLink>
           </li>
-          <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex items-center gap-2">
-            <FiUsers /> Users
+          <li>
+            <NavLink to="/admin/users" className={linkClasses}>
+              <FiUsers /> Users
+            </NavLink>
           </li>
-          <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer flex items-center gap-2">
-            <FiSettings /> Settings
+          <li>
+            <NavLink to="/admin/settings" className={linkClasses}>
+              <FiSettings /> Settings
+            </NavLink>
           </li>
         </ul>
       </nav>
-      <div className="p-4 border-t border-gray-700">© 2025 MyApp</div>
+      <div className="p-4 border-t border-gray-700">© 2025 CourseDeep</div>
     </div>
   );
 };
