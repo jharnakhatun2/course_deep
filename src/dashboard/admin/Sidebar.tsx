@@ -3,6 +3,9 @@ import { NavLink } from "react-router";
 import { FiHome, FiUsers, FiSettings } from "react-icons/fi";
 
 const Sidebar: FC = () => {
+
+   const currentYear = new Date().getFullYear();
+
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     `px-4 py-2 flex items-center gap-2 cursor-pointer transition-smooth ${
       isActive ? "text-yellow-500 font-bold" : "hover:bg-gray-700/10"
@@ -10,19 +13,21 @@ const Sidebar: FC = () => {
 
   return (
     <div className="h-screen w-64 bg-white shadow-sm text-zinc-600 flex flex-col">
-      <div className="text-2xl font-bold p-4 border-b border-gray-100">Admin Dashboard</div>
-      <nav className="flex-1">
+      <div className="text-lg uppercase p-4 shadow font-semibold">Admin Dashboard</div>
+      <nav className="flex-1 text-sm">
         <ul>
           <li>
             <NavLink to="/admin" end className={linkClasses}>
               <FiHome /> Dashboard
             </NavLink>
           </li>
+          <li className="h-[1px] w-full bg-gray-500/20" />
           <li>
             <NavLink to="/admin/users" className={linkClasses}>
               <FiUsers /> Users
             </NavLink>
           </li>
+          <li className="h-[1px] w-full bg-gray-500/20" />
           <li>
             <NavLink to="/admin/settings" className={linkClasses}>
               <FiSettings /> Settings
@@ -30,7 +35,7 @@ const Sidebar: FC = () => {
           </li>
         </ul>
       </nav>
-      <div className="p-4 border-t border-gray-100">© 2025 CourseDeep</div>
+      <div className="p-4 border-t border-gray-100 text-zinc-400 text-sm">© {currentYear} CourseDeep</div>
     </div>
   );
 };
