@@ -77,6 +77,7 @@ const App: FC = () => {
           element: <AdminDashboard />,
           children: [
             { index: true, element: <div>Admin Home</div> },
+            { path: "instructor-course", element: <div>Courses</div> },
             { path: "users", element: <div>Manage Users</div> },
             { path: "settings", element: <div>Settings</div> },
           ],
