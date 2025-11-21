@@ -23,7 +23,7 @@ export const authApi = apiSlice.injectEndpoints({
     // Register new user
     register: builder.mutation<
       RegisterResponse,
-      Partial<User> & { password : string }
+      Partial<User> & { password: string }
     >({
       query: (body) => ({
         url: "/auth/register",
@@ -46,6 +46,20 @@ export const authApi = apiSlice.injectEndpoints({
         invalidatesTags: ["User"],
       }
     ),
+
+    //role update
+    updateUserRole: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; role: string }
+    >({
+      query: ({ id, role }) => ({
+        url: `/users/role/${id}`,
+        method: "PATCH",
+        body: { role },
+        credentials: "include",
+      }),
+      invalidatesTags: ["User"],
+    }),
 
     // Logout user
     logout: builder.mutation<LogoutResponse, void>({
@@ -138,4 +152,5 @@ export const {
   useGetUserByIdQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useUpdateUserRoleMutation
 } = authApi;
