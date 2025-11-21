@@ -44,7 +44,7 @@ const AllUsers = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">All Users</h2>
+            <h2 className="text-lg mb-4 uppercase font-semibold text-zinc-700">All Users</h2>
 
             <table className="w-full border">
                 <thead>
@@ -59,10 +59,10 @@ const AllUsers = () => {
                 <tbody>
                     {users?.map((user: any) => (
                         <tr key={user._id}>
-                            <td className="border p-2">{user.name}</td>
-                            <td className="border p-2">{user.email}</td>
+                            <td className="border p-2 text-sm">{user.name}</td>
+                            <td className="border p-2 text-sm">{user.email}</td>
 
-                            <td className="border p-2">
+                            <td className="border p-2 text-sm">
                                 {editId === user._id ? (
                                     <select
                                         value={newRole}
@@ -74,7 +74,7 @@ const AllUsers = () => {
                                         <option value="admin">Admin</option>
                                     </select>
                                 ) : (
-                                    <span className="font-medium">{user.role}</span>
+                                    <span className="font-medium flex justify-center text-sm capitalize">{user.role}</span>
                                 )}
                             </td>
 
