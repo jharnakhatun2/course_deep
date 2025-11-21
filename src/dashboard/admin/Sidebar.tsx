@@ -24,7 +24,7 @@ const Sidebar: FC = () => {
           </li>
           <li className="h-[1px] w-full bg-gray-500/20" />
           <li>
-            <NavLink to="/instructor-course" end className={linkClasses}>
+            <NavLink to="/admin/instructor-course" end className={linkClasses}>
               <FaBookOpen /> Course
             </NavLink>
           </li>

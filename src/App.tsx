@@ -30,6 +30,9 @@ import LessonPage from "./dashboard/LessonPage";
 import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
 import InstructorDashboard from "./dashboard/InstructorDashboard";
 import AdminDashboard from "./dashboard/AdminDashboard";
+import InstructorCourse from "./dashboard/admin/InstructorCourse";
+import AllUsers from "./dashboard/admin/AllUsers";
+import Settings from "./dashboard/admin/Settings";
 
 
 
@@ -77,9 +80,9 @@ const App: FC = () => {
           element: <AdminDashboard />,
           children: [
             { index: true, element: <div>Admin Home</div> },
-            { path: "instructor-course", element: <div>Courses</div> },
-            { path: "users", element: <div>Manage Users</div> },
-            { path: "settings", element: <div>Settings</div> },
+            { path: "instructor-course", element: <InstructorCourse/> },
+            { path: "users", element: <AllUsers/> },
+            { path: "settings", element: <Settings/> },
           ],
         },
         { path: "/instructor-dashboard", element: <InstructorDashboard /> },
