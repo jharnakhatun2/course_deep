@@ -53,13 +53,18 @@ const InstructorDashboard: React.FC = () => {
 
   //input handler
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const { name, value, type } = e.target;
 
-    setCourseData(prev => ({
-      ...prev,
-      [name]: type === "number" ? Number(value) : value,
-    }));
-  };
+  setCourseData(prev => ({
+    ...prev,
+    [name]: type === "number"
+      ? Number(value)
+      : type === "checkbox"
+      ? (e.target as HTMLInputElement).checked
+      : value,
+  }));
+};
+
 
   const handleTeacherChange = (field: string, value: any) => {
     setCourseData(prev => ({
