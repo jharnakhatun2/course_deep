@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
-import { LiaSave, LiaCheckCircleSolid } from "react-icons/lia";
-import { IoAlertCircleOutline } from "react-icons/io5";
+import { LiaSave } from "react-icons/lia";
 import type { Contact, Course, CurriculumItem, Lesson, SocialLinks } from '../ult/types/types';
 import { Section } from '../ult/instructorInput/Section';
 import { DynamicInputList } from '../ult/instructorInput/DynamicInputList';
+import { useAddInstructorCourseMutation } from '../features/instructor-course/instructorCourseApi';
+import { showErrorToast, showSuccessToast } from '../ult/toast/toast';
 
 
 const InstructorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
+  const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
   const [courseData, setCourseData] = useState<Course>({
     _id: '',
     name: '',
@@ -66,7 +65,6 @@ const InstructorDashboard: React.FC = () => {
           : value,
     }));
   };
-
 
   const handleTeacherChange = (field: string, value: any) => {
     setCourseData(prev => ({
@@ -168,28 +166,13 @@ const InstructorDashboard: React.FC = () => {
 
   //form submit handler
   const handleSubmit = async () => {
-    setLoading(true);
-    setMessage(null);
 
     try {
-      const response = await fetch('http://localhost:5000/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(courseData)
-      });
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Course uploaded successfully!' });
-        setTimeout(() => setMessage(null), 5000);
-      } else {
-        throw new Error('Failed to upload course');
-      }
+      await addInstructorCourse(courseData).unwrap();
+      showSuccessToast('Course uploaded successfully!');
     } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to upload course. Please try again.' });
-    } finally {
-      setLoading(false);
+      console.error('Failed to upload course:', error);
+      showErrorToast('Failed to upload course. Please try again.');
     }
   };
 
@@ -215,12 +198,13 @@ const InstructorDashboard: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl text-zinc-700">Create New Course</h1>
               <p className=" text-sm text-teal-500">Fill in the details to upload your course</p>
             </div>
+            {/* Submit Button using isLoading */}
             <button
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={isLoading} // Disable button when loading
               className="inline-flex items-center justify-center px-6 py-3 bg-yellow-400 text-white font-semibold hover:bg-yellow-500 transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-smooth cursor-pointer"
             >
-              {loading ? (
+              {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                   Uploading...
@@ -235,24 +219,6 @@ const InstructorDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Alert Messages */}
-      {message && (
-        <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12 mt-4">
-          <div className={`flex items-center p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-            }`}>
-            {message.type === 'success' ? (
-              <LiaCheckCircleSolid className="w-5 h-5 mr-3" />
-            ) : (
-              <IoAlertCircleOutline className="w-5 h-5 mr-3" />
-            )}
-            <span className="font-medium">{message.text}</span>
-            <button onClick={() => setMessage(null)} className="ml-auto">
-              X
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Main Content */}
       <div className="lg:max-w-7xl mx-auto px-4 py-8 sm:py-12">
@@ -417,33 +383,19 @@ const InstructorDashboard: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className={lebelStyle}>Prerequisites</label>
-                {courseData.prerequisites?.map((prereq, index) => (
-                  <div key={index} className="flex gap-2 mb-2">
-                    <input
-                      type="text"
-                      value={prereq}
-                      onChange={(e) => updateArrayItem('prerequisites', index, e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-200 rounded focus:ring-1 focus:ring-yellow-400 focus:border-transparent outline-none"
-                      placeholder="e.g., HTML"
-                    />
-                    <button
-                      onClick={() => removeArrayItem('prerequisites', index)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded transition-smooth cursor-pointer"
-                    >
-                      <PiTrashSimpleLight className="w-5 h-5" />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  onClick={() => addArrayItem('prerequisites', '')}
-                  className={addButton}
-                >
-                  <PiPlus className="w-4 h-4 mr-1" />
-                  Add Prerequisite
-                </button>
-              </div>
+              {/* Prerequisites */}
+              <Section title="Prerequisites">
+                <DynamicInputList
+                  items={courseData.prerequisites ?? []}
+                  field="prerequisites"
+                  placeholder="Enter prerequisite"
+                  addItem={addArrayItem}
+                  updateItem={updateArrayItem}
+                  removeItem={removeArrayItem}
+                  inputStyle={inputStyle}
+                  addButton={addButton}
+                />
+              </Section>
             </div>
           )}
 
@@ -602,27 +554,19 @@ const InstructorDashboard: React.FC = () => {
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-zinc-900 mb-6">Course Content</h2>
 
-              <div>
-                <label className={lebelStyle}>Description Paragraphs</label>
-                {courseData.description?.map((para, index) => (
-                  <div key={index} className="mb-4">
-                    <textarea
-                      value={para}
-                      onChange={(e) => updateArrayItem('description', index, e.target.value)}
-                      rows={4}
-                      className={inputStyle}
-                      placeholder={`Paragraph ${index + 1}...`}
-                    />
-                  </div>
-                ))}
-                <button
-                  onClick={() => addArrayItem('description', '')}
-                  className={addButton}
-                >
-                  <PiPlus className="w-4 h-4 mr-1" />
-                  Add Paragraph
-                </button>
-              </div>
+              {/* Description */}
+              <Section title="Description">
+                <DynamicInputList
+                  items={courseData.description ?? []}
+                  field="description"
+                  placeholder="Write description"
+                  addItem={addArrayItem}
+                  updateItem={updateArrayItem}
+                  removeItem={removeArrayItem}
+                  inputStyle={inputStyle}
+                  addButton={addButton}
+                />
+              </Section>
 
               {/* What You Will Learn */}
               <Section title="What You Will Learn">
@@ -639,6 +583,7 @@ const InstructorDashboard: React.FC = () => {
               </Section>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Total days */}
                 <div>
                   <label className={lebelStyle}>Total Days</label>
                   <input
@@ -651,6 +596,7 @@ const InstructorDashboard: React.FC = () => {
                   />
                 </div>
 
+                {/* course duration length */}
                 <div>
                   <label className={lebelStyle}>Total Duration</label>
                   <input
@@ -663,6 +609,7 @@ const InstructorDashboard: React.FC = () => {
                   />
                 </div>
 
+                {/* Total Lectures */}
                 <div>
                   <label className={lebelStyle}>Total Lectures</label>
                   <input
@@ -675,6 +622,7 @@ const InstructorDashboard: React.FC = () => {
                   />
                 </div>
 
+                {/* Total Sections */}
                 <div>
                   <label className={lebelStyle}>Total Sections</label>
                   <input

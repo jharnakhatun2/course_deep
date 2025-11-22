@@ -146,10 +146,8 @@ const Login: FC = () => {
 
   // class style
   const inputStyle = "input input-bordered w-full bg-white border border-zinc-200 outline-none focus:border-transparent focus:outline-none focus:ring-1 focus:ring-yellow-500";
-
   // Loading state
   if (isRegistering || isLoggingIn) return <Loader />;
-
   const currentData = newAccount ? registerData : loginData;
 
   return (
