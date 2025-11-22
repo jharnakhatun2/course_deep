@@ -107,7 +107,7 @@ export interface Review {
 //   progress: number;
 // }
 export interface Course {
-  _id: string;
+  id: string;
   name: string;
   price: number;
   ratings: number;

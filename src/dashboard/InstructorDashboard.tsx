@@ -12,7 +12,7 @@ const InstructorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
   const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
   const [courseData, setCourseData] = useState<Course>({
-    _id: '',
+    id: '',
     name: '',
     price: 0.00,
     ratings: 4.8,
