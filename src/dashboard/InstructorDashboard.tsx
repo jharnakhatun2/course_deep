@@ -3,6 +3,8 @@ import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
 import { LiaSave, LiaCheckCircleSolid } from "react-icons/lia";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import type { Contact, Course, CurriculumItem, Lesson, SocialLinks } from '../ult/types/types';
+import { Section } from '../ult/instructorInput/Section';
+import { DynamicInputList } from '../ult/instructorInput/DynamicInputList';
 
 
 const InstructorDashboard: React.FC = () => {
@@ -11,7 +13,7 @@ const InstructorDashboard: React.FC = () => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const [courseData, setCourseData] = useState<Course>({
-    _id:'',
+    _id: '',
     name: '',
     price: 0.00,
     ratings: 4.8,
@@ -53,17 +55,17 @@ const InstructorDashboard: React.FC = () => {
 
   //input handler
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-  const { name, value, type } = e.target;
+    const { name, value, type } = e.target;
 
-  setCourseData(prev => ({
-    ...prev,
-    [name]: type === "number"
-      ? Number(value)
-      : type === "checkbox"
-      ? (e.target as HTMLInputElement).checked
-      : value,
-  }));
-};
+    setCourseData(prev => ({
+      ...prev,
+      [name]: type === "number"
+        ? Number(value)
+        : type === "checkbox"
+          ? (e.target as HTMLInputElement).checked
+          : value,
+    }));
+  };
 
 
   const handleTeacherChange = (field: string, value: any) => {
@@ -93,27 +95,37 @@ const InstructorDashboard: React.FC = () => {
     }));
   };
 
-  const addArrayItem = (field: keyof Course, item: any = '') => {
+  const addArrayItem = (field: keyof Course, item: string = '') => {
     setCourseData(prev => ({
       ...prev,
-      [field]: [...(prev[field] as any[]), item]
+      [field]: [...(prev[field] as string[]), item]
     }));
   };
 
-  const updateArrayItem = (field: keyof Course, index: number, value: any) => {
+  const updateArrayItem = (field: keyof Course, index: number, value: string) => {
     setCourseData(prev => ({
       ...prev,
-      [field]: (prev[field] as any[]).map((item, i) => i === index ? value : item)
+      [field]: (prev[field] as string[]).map((item, i) => i === index ? value : item)
     }));
   };
 
   const removeArrayItem = (field: keyof Course, index: number) => {
     setCourseData(prev => ({
       ...prev,
-      [field]: (prev[field] as any[]).filter((_, i) => i !== index)
+      [field]: (prev[field] as string[]).filter((_, i) => i !== index)
     }));
   };
 
+
+  // For curriculum arrays
+  const addCurriculumItem = (item: CurriculumItem) => {
+    setCourseData(prev => ({
+      ...prev,
+      curriculum: [...(prev.curriculum || []), item]
+    }));
+  };
+
+  // Update addCurriculumSection to use the new function
   const addCurriculumSection = () => {
     const newSection: CurriculumItem = {
       id: (courseData?.curriculum?.length ?? 0) + 1,
@@ -122,7 +134,7 @@ const InstructorDashboard: React.FC = () => {
       duration: '',
       lessons: []
     };
-    addArrayItem('curriculum', newSection);
+    addCurriculumItem(newSection);
   };
 
   const updateCurriculumSection = (index: number, field: keyof CurriculumItem, value: any) => {
@@ -152,6 +164,7 @@ const InstructorDashboard: React.FC = () => {
     updatedCurriculum[sectionIndex].lessons.splice(lessonIndex, 1);
     setCourseData(prev => ({ ...prev, curriculum: updatedCurriculum }));
   };
+
 
   //form submit handler
   const handleSubmit = async () => {
@@ -251,8 +264,8 @@ const InstructorDashboard: React.FC = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors cursor-pointer ${activeTab === tab.id
-                    ? 'border-b-2 border-yellow-500 text-yellow-500'
-                    : 'text-zinc-600 hover:text-zinc-800'
+                  ? 'border-b-2 border-yellow-500 text-yellow-500'
+                  : 'text-zinc-600 hover:text-zinc-800'
                   }`}
               >
                 {tab.label}
@@ -263,7 +276,7 @@ const InstructorDashboard: React.FC = () => {
 
         {/* Tab Content */}
         <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8">
-          
+
           {/* Basic Information */}
           {activeTab === 'basic' && (
             <div className="space-y-6">
@@ -611,33 +624,19 @@ const InstructorDashboard: React.FC = () => {
                 </button>
               </div>
 
-              <div>
-                <label className={lebelStyle}>What You Will Learn</label>
-                {courseData.whatYouWillLearn?.map((item, index) => (
-                  <div key={index} className="flex gap-2 mb-2">
-                    <input
-                      type="text"
-                      value={item}
-                      onChange={(e) => updateArrayItem('whatYouWillLearn', index, e.target.value)}
-                      className={inputStyle}
-                      placeholder="Learning outcome..."
-                    />
-                    <button
-                      onClick={() => removeArrayItem('whatYouWillLearn', index)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-smooth cursor-pointer"
-                    >
-                      <PiTrashSimpleLight className="w-5 h-5" />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  onClick={() => addArrayItem('whatYouWillLearn', '')}
-                  className={addButton}
-                >
-                  <PiPlus className="w-4 h-4 mr-1" />
-                  Add Learning Outcome
-                </button>
-              </div>
+              {/* What You Will Learn */}
+              <Section title="What You Will Learn">
+                <DynamicInputList
+                  items={courseData.whatYouWillLearn ?? []}
+                  field="whatYouWillLearn"
+                  placeholder="Enter point"
+                  addItem={addArrayItem}
+                  updateItem={updateArrayItem}
+                  removeItem={removeArrayItem}
+                  inputStyle={inputStyle}
+                  addButton={addButton}
+                />
+              </Section>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -846,7 +845,7 @@ const InstructorDashboard: React.FC = () => {
               )}
             </div>
           )}
-          
+
         </div>
       </div>
     </div>
