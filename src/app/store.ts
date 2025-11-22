@@ -9,6 +9,8 @@ import commentsSliceReducer from "../features/comments/commentsSlice";
 import bookingsSliceReducer from "../features/bookings/bookingsSlice";
 import paymentSliceReducer from "../features/payment/paymentSlice";
 import enrollmentsSliceReducer from "../features/enrollments/enrollmentsSlice";
+import instructorCourseSliceReducer from "../features/instructor-course/instructorCourseSlice";
+
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +18,7 @@ export const store = configureStore({
     auth: authSliceReducer,
     blog: blogSliceReducer,
     course: courseSliceReducer,
+    instructorcourse: instructorCourseSliceReducer,
     event: eventSliceReducer,
     bookings: bookingsSliceReducer,
     enrollments: enrollmentsSliceReducer,
