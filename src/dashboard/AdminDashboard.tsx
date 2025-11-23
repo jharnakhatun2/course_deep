@@ -5,10 +5,10 @@ import { Outlet } from "react-router";
 const AdminDashboard: FC = () => {
     return (
         <section className="min-h-screen py-5 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-            <div className="lg:max-w-7xl mx-auto px-2 sm:px-4">
-                <div className="flex flex-col lg:flex-row gap-4 lg:gap-0">
+            <div className="lg:max-w-7xl mx-auto px-4">
+                <div className="flex flex-col lg:flex-row gap-4 ">
                     <Sidebar />
-                    <main className="flex-1 p-3 sm:p-6 w-full lg:w-auto">
+                    <main className="flex-1 w-full lg:w-auto">
                         <Outlet />
                     </main>
                 </div>

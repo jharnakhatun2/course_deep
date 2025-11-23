@@ -47,39 +47,43 @@ const AllUsers = () => {
             <h2 className="text-md sm:text-lg mb-2 uppercase font-semibold text-zinc-700">All Users</h2>
 
             <div className="overflow-x-auto">
-                <table className="w-full border">
+                <table className="w-full border ">
                     <thead>
-                        <tr className=" text-sm bg-gray-100">
-                            <th className="border p-2">Name</th>
-                            <th className="border p-2">Email</th>
-                            <th className="border p-2">Role</th>
-                            <th className="border p-2">Actions</th>
+                        <tr className=" text-sm bg-gray-200">
+                            <th className="border border-gray-400 p-2">Name</th>
+                            <th className="border border-gray-400 p-2">Email</th>
+                            <th className="border border-gray-400 p-2">Role</th>
+                            <th className="border border-gray-400 p-2">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {users?.map((user: any) => (
                             <tr key={user._id}>
-                                <td className="border p-2 text-sm">{user.name}</td>
-                                <td className="border p-2 text-sm">{user.email}</td>
+                                <td className="border border-gray-300 p-2 text-sm">{user.name}</td>
+                                <td className="border border-gray-300 p-2 text-sm">{user.email}</td>
 
-                                <td className="border p-2 text-sm">
-                                    {editId === user._id ? (
-                                        <select
-                                            value={newRole}
-                                            onChange={(e) => setNewRole(e.target.value)}
-                                            className="border px-2 py-1"
-                                        >
-                                            <option value="student">Student</option>
-                                            <option value="instructor">Instructor</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    ) : (
-                                        <span className="font-medium flex justify-center text-sm capitalize">{user.role}</span>
-                                    )}
+                                <td className="border border-gray-300 p-2 text-sm">
+                                    <div className="flex justify-center w-full">
+                                        {editId === user._id ? (
+                                            <select
+                                                value={newRole}
+                                                onChange={(e) => setNewRole(e.target.value)}
+                                                className="border px-2 py-1 cursor-pointer outline-none"
+                                            >
+                                                <option value="student">Student</option>
+                                                <option value="instructor">Instructor</option>
+                                                <option value="admin">Admin</option>
+                                            </select>
+                                        ) : (
+                                            <span className="font-medium text-sm capitalize">
+                                                {user.role}
+                                            </span>
+                                        )}
+                                    </div>
                                 </td>
 
-                                <td className="border p-2 space-x-2">
+                                <td className="border border-gray-300 p-2 space-x-2">
                                     {editId === user._id ? (
                                         <>
                                             <div className="flex justify-center items-center space-x-3">

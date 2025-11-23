@@ -8,7 +8,7 @@ const Sidebar: FC = () => {
   const currentYear = new Date().getFullYear();
 
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
-    `px-4 py-3 flex items-center gap-2 cursor-pointer transition-smooth ${isActive ? "text-yellow-500 font-bold bg-gradient-to-br from-indigo-50 via-white to-purple-50" : "hover:bg-gray-700/10"
+    `px-4 py-3 flex items-center gap-2 cursor-pointer transition-smooth ${isActive ? "text-yellow-500 font-bold bg-gradient-to-br from-indigo-100 via-white to-purple-100" : "hover:bg-gray-700/10"
     }`;
 
   const toggleSidebar = () => setIsOpen(!isOpen);
