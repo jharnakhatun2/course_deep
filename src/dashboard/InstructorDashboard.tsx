@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import  { useState, type FC } from 'react';
 import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
 import { LiaSave } from "react-icons/lia";
-import type { Contact, Course, CurriculumItem, Lesson, SocialLinks } from '../ult/types/types';
+import type { Contact, CurriculumItem, InstrutorCourse, Lesson, SocialLinks } from '../ult/types/types';
 import { Section } from '../ult/instructorInput/Section';
 import { DynamicInputList } from '../ult/instructorInput/DynamicInputList';
 import { useAddInstructorCourseMutation } from '../features/instructor-course/instructorCourseApi';
 import { showErrorToast, showSuccessToast } from '../ult/toast/toast';
 
 
-const InstructorDashboard: React.FC = () => {
+const InstructorDashboard: FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
   const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
-  const [courseData, setCourseData] = useState<Course>({
-    id: '',
+  const [courseData, setCourseData] = useState<InstrutorCourse>({
     name: '',
     price: 0.00,
     ratings: 4.8,
@@ -93,21 +92,21 @@ const InstructorDashboard: React.FC = () => {
     }));
   };
 
-  const addArrayItem = (field: keyof Course, item: string = '') => {
+  const addArrayItem = (field: keyof InstrutorCourse, item: string = '') => {
     setCourseData(prev => ({
       ...prev,
       [field]: [...(prev[field] as string[]), item]
     }));
   };
 
-  const updateArrayItem = (field: keyof Course, index: number, value: string) => {
+  const updateArrayItem = (field: keyof InstrutorCourse, index: number, value: string) => {
     setCourseData(prev => ({
       ...prev,
       [field]: (prev[field] as string[]).map((item, i) => i === index ? value : item)
     }));
   };
 
-  const removeArrayItem = (field: keyof Course, index: number) => {
+  const removeArrayItem = (field: keyof InstrutorCourse, index: number) => {
     setCourseData(prev => ({
       ...prev,
       [field]: (prev[field] as string[]).filter((_, i) => i !== index)
@@ -126,7 +125,6 @@ const InstructorDashboard: React.FC = () => {
   // Update addCurriculumSection to use the new function
   const addCurriculumSection = () => {
     const newSection: CurriculumItem = {
-      id: (courseData?.curriculum?.length ?? 0) + 1,
       title: '',
       lectures: '',
       duration: '',
@@ -653,9 +651,9 @@ const InstructorDashboard: React.FC = () => {
               </div>
 
               {courseData.curriculum?.map((section, sectionIndex) => (
-                <div key={section.id} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                <div key={section._id} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-zinc-900">Section {section.id}</h3>
+                    <h3 className="text-lg font-semibold text-zinc-900">Section {section._id}</h3>
                     <button
                       onClick={() => removeArrayItem('curriculum', sectionIndex)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-smooth cursor-pointer"

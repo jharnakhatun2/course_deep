@@ -1,5 +1,5 @@
 export interface User {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   password?: string;
@@ -57,7 +57,7 @@ export interface Teacher {
 }
 
 export interface CurriculumItem {
-  id: number;
+  _id?: number | string;
   title: string;
   lectures: string;
   duration: string;
@@ -65,7 +65,7 @@ export interface CurriculumItem {
 }
 
 export interface Review {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   review: string;
@@ -74,40 +74,41 @@ export interface Review {
   image: string;
 }
 
-// export interface Course {
-//   _id: string;
-//   name: string;
-//   price: number;
-//   ratings: number;
-//   lessons: string;
-//   time: string;
-//   teacher: Teacher;
-//   teacherProfession: string;
-//   shortDes: string;
-//   description: string[];
-//   learnSummery: string;
-//   whatYouWillLearn: string[];
-//   closingNote: string;
-//   image: string;
-//   category: string;
-//   level: string;
-//   language: string;
-//   studentsEnrolled: number;
-//   certificate: boolean;
-//   lastUpdated: string;
-//   courseURL: string;
-//   prerequisites: string[];
-//   promoVideo: string;
-//   videos: Video[];
-//   curriculum: CurriculumItem[];
-//   totalDays: string;
-//   totalDurationLength: string;
-//   totalLectures: number | string;
-//   totalSection: number | string;
-//   progress: number;
-// }
+
 export interface Course {
-  id: string;
+  _id: string;
+  name: string;
+  price: number;
+  ratings: number;
+  lessons: string;
+  time: string;
+  teacher: Teacher;
+  teacherProfession?: string;
+  shortDes: string;
+  description?: string[];
+  learnSummery?: string;
+  whatYouWillLearn?: string[];
+  closingNote?: string;
+  image: string;
+  category: string;
+  level?: string;
+  language?: string;
+  studentsEnrolled: number;
+  certificate?: boolean;
+  lastUpdated?: string;
+  courseURL?: string;
+  prerequisites?: string[];
+  promoVideo?: string;
+  videos?: Video[];
+  curriculum: CurriculumItem[];
+  totalDays?: string;
+  totalDurationLength?: string;
+  totalLectures?: number | string;
+  totalSection?: number | string;
+  progress?: number;
+}
+
+export interface InstrutorCourse {
   name: string;
   price: number;
   ratings: number;
@@ -162,7 +163,7 @@ export interface Event {
 
 // UPDATED: Booking interface
 export interface Booking {
-  _id: string;
+  _id?: string;
   // User information
   userId: string;
   userEmail: string;
@@ -192,7 +193,7 @@ export interface Booking {
 }
 
 export interface Replay {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   comment: string;
@@ -201,7 +202,7 @@ export interface Replay {
 }
 
 export interface Comment {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   website?: string;
@@ -212,7 +213,7 @@ export interface Comment {
 }
 
 export interface BlogPost {
-  _id: string;
+  _id?: string;
   title: string;
   author: string;
   date: string;
@@ -233,7 +234,7 @@ export interface PaginationProps {
 }
 
 export interface CartItem {
-  _id: string;
+  _id?: string;
   productId: string;
   name: string;
   price: number;
@@ -252,7 +253,7 @@ export interface CartItem {
 
 //course enrollment
 export interface Enrollment {
-  _id: string;
+  _id?: string;
   // User information
   userId: string;
   userEmail: string;

@@ -14,7 +14,7 @@ export const createCartItemFromEvent = (
       : `$${parseFloat(event.price as string).toFixed(2)}`;
 
   return {
-    _id: event._id,
+    _id: undefined,
     productId: event._id,
     name: event.title || event.name,
     price: priceValue,
@@ -37,7 +37,7 @@ export const createCartItemFromCourse = (
   const ratings = course.ratings as number;
 
   return {
-    _id: course._id,
+    _id: undefined,
     productId: course._id,
     name: course.name,
     price: price,
@@ -138,7 +138,7 @@ export const canAddEventToCart = async (
 
   // For paid events, check if already booked
   try {
-    const duplicateCheck = await checkIfAlreadyBooked(userEmail, event._id, "event");
+    const duplicateCheck = await checkIfAlreadyBooked(userEmail, event._id , "event");
 
     if (duplicateCheck.isDuplicate) {
       return {
