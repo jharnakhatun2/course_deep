@@ -54,14 +54,14 @@ const InstructorCourse = () => {
     );
 
   return (
-    <div className="grid grid-cols-1 ">
+    <div className="grid grid-cols-1">
       {/* Left content */}
-      <div className="">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex gap-5">
+      <div className="w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-5">
             <Breadcrumb items={breadcrumbItems} />
             {/* Title */}
-            <h2 className="text-zinc-700 font-semibold">
+            <h2 className="text-zinc-700 font-semibold text-sm sm:text-base">
               {category ? (
                 <>
                   <span className="font-light">Courses in</span> {category}
@@ -73,20 +73,20 @@ const InstructorCourse = () => {
           </div>
 
           {/* total course */}
-          <p className="hidden sm:flex text-zinc-600">
+          <p className="text-xs sm:text-sm text-zinc-600">
             Showing{" "}
             <span className="font-bold px-1">
               {startIndex + 1}–
               {Math.min(startIndex + itemsPerPage, totalItems)}
             </span>{" "}
-            of <span className="px-2 font-bold">{totalItems}</span> results
+            of <span className="px-1 sm:px-2 font-bold">{totalItems}</span> results
           </p>
         </div>
         <div className="h-[1px] w-full bg-gray-500/20 -mt-1 my-4"></div>
 
         {/* Course List */}
         {filteredCourses.length === 0 ? (
-          <p className="text-center text-red-500 py-10 text-2xl">
+          <p className="text-center text-red-500 py-10 text-lg sm:text-2xl">
             Not Found!
           </p>
         ) : (
@@ -94,11 +94,13 @@ const InstructorCourse = () => {
         )}
 
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        <div className="mt-6">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );
