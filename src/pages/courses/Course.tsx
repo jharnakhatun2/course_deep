@@ -1,4 +1,3 @@
-// src/pages/course/CourseSinglePage.tsx
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useGetCourseByIdQuery } from "../../features/course/courseApi";
@@ -68,7 +67,7 @@ const CourseSinglePage = () => {
               >
                 <MdPlayArrow className="text-white hover:text-yellow-400 backdrop-blur-lg bg-yellow-500/70 hover:bg-white/50 shadow-[0_0_15px_#ffffff] rounded-full transition-smooth" />
               </button>
-              <InfoCard />
+              <InfoCard course={course}/>
             </div>
 
             {/* Course Tab */}
