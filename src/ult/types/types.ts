@@ -1,3 +1,4 @@
+// ---------------------- USER ----------------------
 export interface User {
   _id: string;
   name: string;
@@ -8,20 +9,21 @@ export interface User {
   lastSignInTime: string;
 }
 
+// ---------------------- VIDEO ----------------------
 export interface Video {
   id: string;
   title: string;
   url: string;
   free: boolean;
 }
-
+// ---------------------- LESSON ----------------------
 export interface Lesson {
   id: string;
   title: string;
   duration: string;
   type: "video" | "exercise" | "quiz" | "assignment";
 }
-
+// ---------------------- TEACHER ----------------------
 export interface Contact {
   phone: string;
   mobile: string;
@@ -55,7 +57,7 @@ export interface Teacher {
   image?: string; 
   topicsHandling: TopicsHandle[];
 }
-
+// ---------------------- CURRICULUM ----------------------
 export interface CurriculumItem {
   id: number | string;
   title: string;
@@ -63,7 +65,7 @@ export interface CurriculumItem {
   duration: string;
   lessons: Lesson[];
 }
-
+// ---------------------- REVIEW ----------------------
 export interface Review {
   _id: string;
   name: string;
@@ -74,7 +76,7 @@ export interface Review {
   image: string;
 }
 
-
+// ---------------------- COURSE ----------------------
 export interface Course {
   _id: string;
   name: string;
@@ -108,38 +110,16 @@ export interface Course {
   progress?: number;
 }
 
-export interface InstrutorCourse {
-  name: string;
-  price: number;
-  ratings: number;
-  lessons: string;
-  time: string;
-  teacher: Teacher;
-  teacherProfession?: string;
-  shortDes: string;
-  description?: string[];
-  learnSummery?: string;
-  whatYouWillLearn?: string[];
-  closingNote?: string;
-  image: string;
-  category: string;
-  level?: string;
-  language?: string;
-  studentsEnrolled: number;
-  certificate?: boolean;
-  lastUpdated?: string;
-  courseURL?: string;
-  prerequisites?: string[];
-  promoVideo?: string;
-  videos?: Video[];
-  curriculum: CurriculumItem[];
-  totalDays?: string;
-  totalDurationLength?: string;
-  totalLectures?: number | string;
-  totalSection?: number | string;
-  progress?: number;
+// ---------------------- INSTRUCTOR COURSE ----------------------
+export type InstructorCourseBase = Omit<Course, "_id">;
+
+export interface InstructorCourse extends InstructorCourseBase {
+  _id: string;
 }
 
+export type NewInstructorCourse = Partial<InstructorCourseBase>;
+
+// ---------------------- EVENT ----------------------
 export interface Event {
   _id: string;
   title: string;
@@ -233,7 +213,7 @@ export interface PaginationProps {
   totalPages: number;
   onPageChange: (page: number) => void;
 }
-
+// ---------------------- CART ----------------------
 export interface CartItem {
   productId: string;
   name: string;

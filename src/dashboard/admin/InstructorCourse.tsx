@@ -1,11 +1,11 @@
 import { useSearchParams } from "react-router";
 import type { Course } from "../../ult/types/types";
-import CourseList from "../../components/courses/courses/CourseList";
 import Pagination from "../../ult/pegination/Pagination";
 import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import { useGetInstructorCoursesQuery } from "../../features/instructor-course/instructorCourseApi";
+import CourseCard from "./CourseCard";
 
 const breadcrumbItems = [{ label: "Instructor's All Courses" }];
 
@@ -16,7 +16,7 @@ const InstructorCourse = () => {
     isError,
   } = useGetInstructorCoursesQuery();
   const [searchParams] = useSearchParams();
-  
+
   // Get search parameters
   const category = searchParams.get("category");
   const searchQuery = searchParams.get("search") || "";
@@ -90,7 +90,7 @@ const InstructorCourse = () => {
             Not Found!
           </p>
         ) : (
-          <CourseList courses={currentCourses} />
+          <CourseCard courses={currentCourses} />
         )}
 
         {/* Pagination */}
