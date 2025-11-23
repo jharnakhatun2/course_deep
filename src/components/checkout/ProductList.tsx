@@ -10,7 +10,7 @@ const ProductList: FC<ProductListProps> = ({ cartItems = [] }) => {
     <div className="overflow-x-auto">
       {cartItems.map((item) => (
         <div
-          key={item._id}
+          key={item.productId}
           className="flex justify-between items-center border-b border-gray-300 space-y-5 "
         >
           <div className="font-medium relative">

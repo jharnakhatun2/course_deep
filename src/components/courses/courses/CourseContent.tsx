@@ -6,16 +6,16 @@ interface CourseContentProp {
 }
 
 const CourseContent: FC<CourseContentProp> = ({ course }) => {
-  const [openItems, setOpenItems] = useState<number[]>([1]);
+  const [openItems, setOpenItems] = useState<(number | string)[]>([1]);
 
-  const toggleItem = (id: number) => {
+  const toggleItem = (id: number | string) => {
     setOpenItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
   const expandAll = () => {
-    setOpenItems(course.curriculum.map((item) => item.id));
+    setOpenItems(course.curriculum.map((item) => Number(item.id)));
   };
 
   const collapseAll = () => {
@@ -57,9 +57,8 @@ const CourseContent: FC<CourseContentProp> = ({ course }) => {
                   className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-start gap-2 sm:gap-3 text-left transition-colors duration-200 hover:bg-gray-50"
                 >
                   <svg
-                    className={`w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0 transition-transform duration-300 mt-1 ${
-                      isOpen ? "rotate-90" : ""
-                    }`}
+                    className={`w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0 transition-transform duration-300 mt-1 ${isOpen ? "rotate-90" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

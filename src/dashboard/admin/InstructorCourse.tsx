@@ -4,7 +4,6 @@ import CourseList from "../../components/courses/courses/CourseList";
 import Pagination from "../../ult/pegination/Pagination";
 import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
-import { useState } from "react";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import { useGetInstructorCoursesQuery } from "../../features/instructor-course/instructorCourseApi";
 
@@ -17,10 +16,10 @@ const InstructorCourse = () => {
     isError,
   } = useGetInstructorCoursesQuery();
   const [searchParams] = useSearchParams();
+  
+  // Get search parameters
   const category = searchParams.get("category");
-
-  //search query
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = searchParams.get("search") || "";
 
   // Filter by category + search
   const filteredCourses: Course[] =

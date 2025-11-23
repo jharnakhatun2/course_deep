@@ -14,7 +14,6 @@ export const createCartItemFromEvent = (
       : `$${parseFloat(event.price as string).toFixed(2)}`;
 
   return {
-    _id: undefined,
     productId: event._id,
     name: event.title || event.name,
     price: priceValue,
@@ -37,7 +36,6 @@ export const createCartItemFromCourse = (
   const ratings = course.ratings as number;
 
   return {
-    _id: undefined,
     productId: course._id,
     name: course.name,
     price: price,

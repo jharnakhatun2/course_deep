@@ -125,6 +125,7 @@ const InstructorDashboard: FC = () => {
   // Update addCurriculumSection to use the new function
   const addCurriculumSection = () => {
     const newSection: CurriculumItem = {
+      id: '',
       title: '',
       lectures: '',
       duration: '',
@@ -651,9 +652,9 @@ const InstructorDashboard: FC = () => {
               </div>
 
               {courseData.curriculum?.map((section, sectionIndex) => (
-                <div key={section._id} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                <div key={section.id} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-zinc-900">Section {section._id}</h3>
+                    <h3 className="text-lg font-semibold text-zinc-900">Section {section.id}</h3>
                     <button
                       onClick={() => removeArrayItem('curriculum', sectionIndex)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-smooth cursor-pointer"

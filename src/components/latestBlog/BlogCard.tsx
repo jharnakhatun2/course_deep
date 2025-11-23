@@ -1,23 +1,11 @@
-import React from "react";
+import { type FC } from "react";
 import { Link } from "react-router";
 import { FaReadme, FaUserEdit } from "react-icons/fa";
-import type { Comment } from "../../ult/types/types";
+import type { BlogPost } from "../../ult/types/types";
 
-interface BlogPost {
-  _id: string;
-  title: string;
-  author: string;
-  date: string;
-  shortDes: string;
-  content: string;
-  category: string;
-  image: string;
-  tags: string[];
-  readTime?: string;
-  comments?: Comment[];
-}
 
-const BlogCard: React.FC<BlogPost> = ({
+
+const BlogCard:FC<BlogPost> = ({
   _id,
   image,
   category,

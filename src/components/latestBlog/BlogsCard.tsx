@@ -51,7 +51,7 @@ const BlogsCard: FC<BlogsCardProps> = ({ blogs }) => {
                       </p>
                       <p className="flex items-center gap-1">
                         <FaComments className="text-yellow-500" />{" "}
-                        {blog.comments.length} Comments
+                        {blog.comments?.length} Comments
                       </p>
                     </div>
                   </div>

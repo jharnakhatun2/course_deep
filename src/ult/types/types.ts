@@ -1,5 +1,5 @@
 export interface User {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   password?: string;
@@ -57,7 +57,7 @@ export interface Teacher {
 }
 
 export interface CurriculumItem {
-  _id?: number | string;
+  id: number | string;
   title: string;
   lectures: string;
   duration: string;
@@ -65,7 +65,7 @@ export interface CurriculumItem {
 }
 
 export interface Review {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   review: string;
@@ -163,7 +163,7 @@ export interface Event {
 
 // UPDATED: Booking interface
 export interface Booking {
-  _id?: string;
+  _id: string;
   // User information
   userId: string;
   userEmail: string;
@@ -193,7 +193,7 @@ export interface Booking {
 }
 
 export interface Replay {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   comment: string;
@@ -202,7 +202,7 @@ export interface Replay {
 }
 
 export interface Comment {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   website?: string;
@@ -213,7 +213,7 @@ export interface Comment {
 }
 
 export interface BlogPost {
-  _id?: string;
+  _id: string;
   title: string;
   author: string;
   date: string;
@@ -223,9 +223,10 @@ export interface BlogPost {
   image: string;
   tags: string[];
   readTime?: string;
-  comments: Comment[];
-  authorBio: string;
+  comments?: Comment[];
+  authorBio?: string;
 }
+
 
 export interface PaginationProps {
   currentPage: number;
@@ -234,7 +235,6 @@ export interface PaginationProps {
 }
 
 export interface CartItem {
-  _id?: string;
   productId: string;
   name: string;
   price: number;
@@ -253,7 +253,7 @@ export interface CartItem {
 
 //course enrollment
 export interface Enrollment {
-  _id?: string;
+  _id: string;
   // User information
   userId: string;
   userEmail: string;

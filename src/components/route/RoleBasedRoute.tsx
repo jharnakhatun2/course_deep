@@ -1,35 +1,24 @@
-import { Navigate, useLocation } from "react-router";
-import { useAuth } from "../../hook/useAuth";
-import Loader from "../../ult/loader/Loader";
+import type { FC } from "react";
+import PrivateRoute from "./PrivateRoute";
 
 
-interface RoleBasedRouteProps {
-  children: React.ReactNode;
-  allowedRoles: string[];
-}
+// Admin only routes (only admin can access)
+export const AdminRoute: FC<{ children: React.ReactNode }> = ({ children }) => (
+  <PrivateRoute allowedRoles={["admin"]}>
+    {children}
+  </PrivateRoute>
+);
 
-const RoleBasedRoute: React.FC<RoleBasedRouteProps> = ({ 
-  children, 
-  allowedRoles 
-}) => {
-  const { user, loading } = useAuth();
-  const location = useLocation();
+// Instructor routes (admin and instructor can access)
+export const InstructorRoute: FC<{ children: React.ReactNode }> = ({ children }) => (
+  <PrivateRoute allowedRoles={["admin", "instructor"]}>
+    {children}
+  </PrivateRoute>
+);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  if (!allowedRoles.includes(user.role)) {
-    // Redirect to appropriate dashboard based on user role
-    const redirectPath = user.role === "instructor" ? "/instructor-dashboard" : "/dashboard";
-    return <Navigate to={redirectPath} replace />;
-  }
-
-  return <>{children}</>;
-};
-
-export default RoleBasedRoute;
+// Student routes (all authenticated users can access)
+export const StudentRoute: FC<{ children: React.ReactNode }> = ({ children }) => (
+  <PrivateRoute allowedRoles={["admin", "instructor", "student"]}>
+    {children}
+  </PrivateRoute>
+);

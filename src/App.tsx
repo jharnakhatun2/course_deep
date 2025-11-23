@@ -3,7 +3,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Error from "./pages/Error";
-import PrivateRoute from "./components/route/PrivateRoute";
 import Blogs from "./pages/blogs/Blogs";
 import Blog from "./pages/blogs/Blog";
 import Courses from "./pages/courses/Courses";
@@ -33,6 +32,7 @@ import AdminDashboard from "./dashboard/AdminDashboard";
 import InstructorCourse from "./dashboard/admin/InstructorCourse";
 import AllUsers from "./dashboard/admin/AllUsers";
 import Settings from "./dashboard/admin/Settings";
+import { AdminRoute, InstructorRoute, StudentRoute } from "./components/route/RoleBasedRoute";
 
 
 
@@ -46,6 +46,7 @@ const App: FC = () => {
       path: "/",
       element: <Layout />,
       children: [
+        // Public routes (accessible to everyone)
         { path: "/", element: <Home /> },
         { path: "/about", element: <About /> },
         { path: "/courses", element: <Courses /> },
@@ -56,28 +57,48 @@ const App: FC = () => {
         { path: "/blogs", element: <Blogs /> },
         { path: "/blogs/:id", element: <Blog /> },
         { path: "/login", element: <Login /> },
-        { path: "/cart", element: <PrivateRoute><Cart /></PrivateRoute> },
-        { path: "/checkout", element: <PrivateRoute><CheckOutWrapper /></PrivateRoute> },
-        { path: "/payment-success", element: <PrivateRoute><PaymentSuccess /></PrivateRoute> },
+        { path: "/terms", element: <Terms /> },
+        { path: "/privacy", element: <Privacy /> },
+
+
+         // Student routes (accessible by admin, instructor, student)
+        { 
+          path: "/cart", 
+          element: <StudentRoute><Cart /></StudentRoute> 
+        },
+        { 
+          path: "/checkout", 
+          element: <StudentRoute><CheckOutWrapper /></StudentRoute> 
+        },
+        { 
+          path: "/payment-success", 
+          element: <StudentRoute><PaymentSuccess /></StudentRoute> 
+        },
         {
           path: "/dashboard",
-          element: (
-            <PrivateRoute>
-              <UserDashboard />
-            </PrivateRoute>
-          ),
+          element: <StudentRoute><UserDashboard /></StudentRoute>,
           children: [
             {
-              index: true, // default child (when only /dashboard)
+              index: true,
               element: <div>Welcome to your Dashboard!</div>,
             }
-
           ],
         },
-        { path: "/lesson", element: <LessonPage /> },
+        { 
+          path: "/lesson", 
+          element: <StudentRoute><LessonPage /></StudentRoute> 
+        },
+
+        // Instructor routes (accessible by admin, instructor)
+        { 
+          path: "/instructor-dashboard", 
+          element: <InstructorRoute><InstructorDashboard /></InstructorRoute> 
+        },
+
+        // Admin routes (accessible only by admin)
         {
           path: "/admin",
-          element: <AdminDashboard />,
+          element: <AdminRoute><AdminDashboard /></AdminRoute>,
           children: [
             { index: true, element: <div>Admin Home</div> },
             { path: "instructor-course", element: <InstructorCourse/> },
@@ -85,10 +106,8 @@ const App: FC = () => {
             { path: "settings", element: <Settings/> },
           ],
         },
-        { path: "/instructor-dashboard", element: <InstructorDashboard /> },
-        { path: "/terms", element: <Terms /> },
-        { path: "/privacy", element: <Privacy /> },
-        { path: "*", element: <Error /> },
+
+        { path: "*", element: <Error /> }
       ],
     },
   ]);
