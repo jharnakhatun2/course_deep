@@ -8,48 +8,57 @@ import { useAddInstructorCourseMutation } from '../features/instructor-course/in
 import { showErrorToast, showSuccessToast } from '../ult/toast/toast';
 
 
+// Initial course data (moved outside component for reusability)
+const initialCourseData: InstrutorCourse = {
+  name: '',
+  price: 0.00,
+  ratings: 4.8,
+  time: '',
+  teacher: {
+    name: '',
+    role: '',
+    experience: '',
+    specialistIn: '',
+    currentWork: '',
+    profession: '',
+    image: '',
+    contact: { phone: '', mobile: '', email: '' },
+    socialLinks: { facebook: '', twitter: '', googlePlus: '#', linkedin: '' },
+    biography: '',
+    topicsHandling: []
+  },
+  shortDes: '',
+  description: ['', ''],
+  image: '',
+  category: '',
+  level: 'Intermediate',
+  language: 'English',
+  studentsEnrolled: 0,
+  certificate: true,
+  lastUpdated: new Date().toISOString().split('T')[0],
+  courseURL: '',
+  prerequisites: [],
+  promoVideo: '',
+  teacherProfession: '',
+  lessons: '',
+  whatYouWillLearn: [],
+  curriculum: [],
+  totalDays: '',
+  totalDurationLength: '',
+  totalLectures: '',
+  totalSection: ''
+};
+
 const InstructorDashboard: FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
   const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
-  const [courseData, setCourseData] = useState<InstrutorCourse>({
-    name: '',
-    price: 0.00,
-    ratings: 4.8,
-    time: '',
-    teacher: {
-      name: '',
-      role: '',
-      experience: '',
-      specialistIn: '',
-      currentWork: '',
-      profession: '',
-      image: '',
-      contact: { phone: '', mobile: '', email: '' },
-      socialLinks: { facebook: '', twitter: '', googlePlus: '#', linkedin: '' },
-      biography: '',
-      topicsHandling: []
-    },
-    shortDes: '',
-    description: ['', ''],
-    image: '',
-    category: '',
-    level: 'Intermediate',
-    language: 'English',
-    studentsEnrolled: 0,
-    certificate: true,
-    lastUpdated: new Date().toISOString().split('T')[0],
-    courseURL: '',
-    prerequisites: [],
-    promoVideo: '',
-    teacherProfession: '',
-    lessons: '',
-    whatYouWillLearn: [],
-    curriculum: [],
-    totalDays: '',
-    totalDurationLength: '',
-    totalLectures: '',
-    totalSection: ''
-  });
+  const [courseData, setCourseData] = useState<InstrutorCourse>(initialCourseData);
+
+   // Reset form function
+  const resetForm = () => {
+    setCourseData(initialCourseData);
+    setActiveTab('basic'); // Reset to first tab
+  };
 
   //input handler
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -113,7 +122,6 @@ const InstructorDashboard: FC = () => {
     }));
   };
 
-
   // For curriculum arrays
   const addCurriculumItem = (item: CurriculumItem) => {
     setCourseData(prev => ({
@@ -169,6 +177,7 @@ const InstructorDashboard: FC = () => {
     try {
       await addInstructorCourse(courseData).unwrap();
       showSuccessToast('Course uploaded successfully!');
+      resetForm(); 
     } catch (error) {
       console.error('Failed to upload course:', error);
       showErrorToast('Failed to upload course. Please try again.');
