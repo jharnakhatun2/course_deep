@@ -1,4 +1,4 @@
-import type { InstructorCourse, NewInstructorCourse, } from "../../ult/types/types";
+import type { InstructorCourse, NewInstructorCourse } from "../../ult/types/types";
 import { apiSlice } from "../api/apiSlice";
 
 

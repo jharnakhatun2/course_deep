@@ -47,14 +47,14 @@ export interface SocialLinks {
 export interface Teacher {
   name: string;
   role: string;
-  profession: string; 
-  experience?: string; 
-  specialistIn?: string; 
-  currentWork?: string; 
+  profession: string;
+  experience?: string;
+  specialistIn?: string;
+  currentWork?: string;
   contact: Contact;
   socialLinks: SocialLinks;
-  biography?: string; 
-  image?: string; 
+  biography?: string;
+  image?: string;
   topicsHandling: TopicsHandle[];
 }
 // ---------------------- CURRICULUM ----------------------
@@ -111,13 +111,54 @@ export interface Course {
 }
 
 // ---------------------- INSTRUCTOR COURSE ----------------------
-export type InstructorCourseBase = Omit<Course, "_id">;
+// Base type without _id (for creating new courses)
+export type InstructorCourseBase = {
+  name: string;
+  price: number;
+  ratings: number;
+  time: string;
+  teacher: {
+    name: string;
+    role: string;
+    experience: string;
+    specialistIn: string;
+    currentWork: string;
+    profession: string;
+    image: string;
+    contact: { phone: string; mobile: string; email: string };
+    socialLinks: { facebook: string; twitter: string; googlePlus: string; linkedin: string };
+    biography: string;
+    topicsHandling: string[];
+  };
+  shortDes: string;
+  description: string[];
+  image: string;
+  category: string;
+  level: string;
+  language: string;
+  studentsEnrolled: number;
+  certificate: boolean;
+  lastUpdated: string;
+  courseURL: string;
+  prerequisites: string[];
+  promoVideo: string;
+  teacherProfession: string;
+  lessons: string;
+  whatYouWillLearn: string[];
+  curriculum: CurriculumItem[];
+  totalDays: string;
+  totalDurationLength: string;
+  totalLectures: string;
+  totalSection: string;
+};
 
-export interface InstructorCourse extends InstructorCourseBase {
+// Type with _id (for API responses)
+export type InstructorCourse = InstructorCourseBase & {
   _id: string;
-}
+};
 
-export type NewInstructorCourse = Partial<InstructorCourseBase>;
+// For form state, use the base type without _id
+export type NewInstructorCourse = InstructorCourseBase;
 
 // ---------------------- EVENT ----------------------
 export interface Event {
@@ -138,7 +179,7 @@ export interface Event {
   country: string;
   seats: number;
   discussItems: string[];
-  status:  "upcoming" | "ongoing" | "completed";
+  status: "upcoming" | "ongoing" | "completed";
 }
 
 // UPDATED: Booking interface

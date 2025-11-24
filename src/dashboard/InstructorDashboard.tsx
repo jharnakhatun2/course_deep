@@ -1,7 +1,7 @@
 import  { useState, type FC } from 'react';
 import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
 import { LiaSave } from "react-icons/lia";
-import type { Contact, CurriculumItem, InstrutorCourse, Lesson, SocialLinks } from '../ult/types/types';
+import type { Contact, CurriculumItem, Lesson, NewInstructorCourse, SocialLinks } from '../ult/types/types';
 import { Section } from '../ult/instructorInput/Section';
 import { DynamicInputList } from '../ult/instructorInput/DynamicInputList';
 import { useAddInstructorCourseMutation } from '../features/instructor-course/instructorCourseApi';
@@ -9,7 +9,7 @@ import { showErrorToast, showSuccessToast } from '../ult/toast/toast';
 
 
 // Initial course data (moved outside component for reusability)
-const initialCourseData: InstrutorCourse = {
+const initialCourseData: NewInstructorCourse = {
   name: '',
   price: 0.00,
   ratings: 4.8,
@@ -52,7 +52,7 @@ const initialCourseData: InstrutorCourse = {
 const InstructorDashboard: FC = () => {
   const [activeTab, setActiveTab] = useState<string>('basic');
   const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
-  const [courseData, setCourseData] = useState<InstrutorCourse>(initialCourseData);
+  const [courseData, setCourseData] = useState<NewInstructorCourse>(initialCourseData);
 
    // Reset form function
   const resetForm = () => {
@@ -101,21 +101,21 @@ const InstructorDashboard: FC = () => {
     }));
   };
 
-  const addArrayItem = (field: keyof InstrutorCourse, item: string = '') => {
+  const addArrayItem = (field: keyof NewInstructorCourse, item: string = '') => {
     setCourseData(prev => ({
       ...prev,
       [field]: [...(prev[field] as string[]), item]
     }));
   };
 
-  const updateArrayItem = (field: keyof InstrutorCourse, index: number, value: string) => {
+  const updateArrayItem = (field: keyof NewInstructorCourse, index: number, value: string) => {
     setCourseData(prev => ({
       ...prev,
       [field]: (prev[field] as string[]).map((item, i) => i === index ? value : item)
     }));
   };
 
-  const removeArrayItem = (field: keyof InstrutorCourse, index: number) => {
+  const removeArrayItem = (field: keyof NewInstructorCourse, index: number) => {
     setCourseData(prev => ({
       ...prev,
       [field]: (prev[field] as string[]).filter((_, i) => i !== index)
