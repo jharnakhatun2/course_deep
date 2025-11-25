@@ -6,9 +6,9 @@ import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import CourseInfo from "../../components/courses/courses/CourseInfo";
 import { MdPlayArrow } from "react-icons/md";
 import CourseTab from "../../components/courses/courses/CourseTab";
-import SingleCourseSidebar from "../../components/courses/courses/SingleCourseSidebar";
 import Modal from "../../components/courses/courses/Modal";
 import InstructorInfoCard from "./InstructorInfoCard";
+import InstructorSingleSidebar from "./InstructorSingleSidebar";
 
 
 //for breadcrumb
@@ -75,7 +75,7 @@ const InstructorSingleCourse= () => {
 
         {/* Sidebar */}
         <aside className="lg:col-span-1">
-          <SingleCourseSidebar course={instructorCourse} />
+          <InstructorSingleSidebar course={instructorCourse} />
         </aside>
       </div>
 
