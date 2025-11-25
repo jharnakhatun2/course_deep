@@ -4,6 +4,9 @@ import type { Teacher } from "../../ult/types/types";
 import TeacherCard from "../../ult/cards/courseCard/TeacherCard";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
+import { useAddCourseMutation } from "../../features/course/courseApi";
+import { useDeleteInstructorCourseMutation } from "../../features/instructor-course/instructorCourseApi";
 
 type CourseCardProps = {
     _id: string;
@@ -30,6 +33,75 @@ const InstructorCard: FC<CourseCardProps> = ({
     ratings,
     teacher,
 }) => {
+    
+    // Mutations with loading states
+    const [addCourse, { isLoading: isAddingCourse }] = useAddCourseMutation();
+    const [deleteInstructorCourse, { isLoading: isDeletingInstructorCourse }] = useDeleteInstructorCourseMutation();
+
+    // Calculate combined loading states
+    const isApproving = isAddingCourse || isDeletingInstructorCourse;
+    const isDeleting = isDeletingInstructorCourse;
+
+
+    // Approve and move course
+    const handleApproveCourse = async () => {
+        try {
+            // Prepare course data for the main courses collection
+            const courseData = {
+                name: title,
+                price: price,
+                ratings: ratings,
+                time: time,
+                teacher: teacher,
+                shortDes: shortDes,
+                description: [shortDes],
+                image: imageUrl,
+                category: "General",
+                level: "Intermediate",
+                language: "English",
+                studentsEnrolled: students,
+                certificate: true,
+                lastUpdated: new Date().toISOString().split('T')[0],
+                courseURL: `/courses/${_id}`,
+                prerequisites: [],
+                promoVideo: "",
+                teacherProfession: teacher.profession,
+                lessons: lessons,
+                whatYouWillLearn: [],
+                curriculum: [],
+                totalDays: "30",
+                totalDurationLength: time,
+                totalLectures: lessons,
+                totalSection: "1"
+            };
+
+            // Step 1: Add to main courses collection
+            await addCourse(courseData).unwrap();
+
+            // Step 2: Delete from instructor courses collection
+            await deleteInstructorCourse(_id).unwrap();
+
+            showSuccessToast("Course approved and published successfully!");
+
+        } catch (error) {
+            console.error("Error approving course:", error);
+            showErrorToast("Failed to approve course. Please try again.");
+        }
+    };
+
+    // Remove from instructor courses
+    const handleDeleteCourse = async () => {
+        if (window.confirm("Are you sure you want to delete this course?")) {
+            try {
+                await deleteInstructorCourse(_id).unwrap();
+                showSuccessToast("Course deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting course:", error);
+                showErrorToast("Failed to delete course. Please try again.");
+            }
+        }
+    };
+
     return (
         <div className="backdrop-blur-lg bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition w-full max-w-sm mx-auto group">
 
@@ -60,8 +132,31 @@ const InstructorCard: FC<CourseCardProps> = ({
                         )}
                     </h3>
                     <div className="flex items-center gap-2 bg-white shadow-lg px-3">
-                        <IoMdCheckmarkCircle className="cursor-pointer text-green-500 hover:text-green-300 transition-smooth" size={23} />
-                        <RiDeleteBin2Line className="cursor-pointer text-red-500 hover:text-red-300 transition-smooth" size={20} />
+                        <button
+                            disabled={isApproving}
+                            onClick={handleApproveCourse}
+                            className={`cursor-pointer ${isApproving ? 'text-gray-400' : 'text-green-500 hover:text-green-300'} transition-smooth`}
+                            title="Approve and publish course"
+                        >
+                            {isApproving ? (
+                                <div className="w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                                <IoMdCheckmarkCircle size={23} />
+                            )}
+                        </button>
+
+                        <button
+                            disabled={isDeleting}
+                            onClick={handleDeleteCourse}
+                            className={`cursor-pointer ${isDeleting ? 'text-gray-400' : 'text-red-500 hover:text-red-300'} transition-smooth`}
+                            title="Delete course"
+                        >
+                            {isDeleting ? (
+                                <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                                <RiDeleteBin2Line size={20} />
+                            )}
+                        </button>
                     </div>
                 </div>
 
