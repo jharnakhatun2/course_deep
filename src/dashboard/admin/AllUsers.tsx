@@ -8,6 +8,7 @@ import Loader from "../../ult/loader/Loader";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { LiaEditSolid } from "react-icons/lia";
 import { showSuccessToast } from "../../ult/toast/toast";
+import { FaUserFriends } from "react-icons/fa";
 
 const AllUsers = () => {
     const { data: users, isLoading } = useGetUsersQuery();
@@ -44,7 +45,14 @@ const AllUsers = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-md sm:text-lg mb-2 uppercase font-semibold text-zinc-700">All Users</h2>
+            {/* Header */}
+            <div className="mb-8">
+                <h1 className="text-xl lg:text-2xl font-bold text-zinc-700 flex items-center gap-3">
+                    <FaUserFriends className="w-6 h-6" />
+                    All Users
+                </h1>
+                <p className="text-zinc-500 mt-1 font-light">Manage all users and their account roles.</p>
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full border ">
