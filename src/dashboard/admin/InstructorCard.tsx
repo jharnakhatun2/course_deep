@@ -60,12 +60,12 @@ const InstructorCard: FC<CourseCardProps> = ({
                         )}
                     </h3>
                     <div className="flex items-center gap-2 bg-white shadow-lg px-3">
-                        <IoMdCheckmarkCircle className="cursor-pointer text-green-500 hover:text-green-400 transition-smooth" size={23} />
-                        <RiDeleteBin2Line className="cursor-pointer text-red-500 hover:text-red-400 transition-smooth" size={20} />
+                        <IoMdCheckmarkCircle className="cursor-pointer text-green-500 hover:text-green-300 transition-smooth" size={23} />
+                        <RiDeleteBin2Line className="cursor-pointer text-red-500 hover:text-red-300 transition-smooth" size={20} />
                     </div>
                 </div>
 
-                <Link to={`/course/${_id}`}>
+                <Link to={`/admin/instructor-course/${_id}`}>
                     <h3 className="hover:text-yellow-500 transition font-bold mb-2 text-zinc-700 uppercase">
                         {title.slice(0, 23)}...
                     </h3>

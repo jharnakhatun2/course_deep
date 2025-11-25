@@ -22,8 +22,8 @@ export const instructorCourseSlice = createSlice({
   },
 });
 
-// ✅ Export actions
+// Export actions
 export const { setSelectedInstructorCourse, clearSelectedInstructorCourse } = instructorCourseSlice.actions;
 
-// ✅ Export reducer
+// Export reducer
 export default instructorCourseSlice.reducer;
