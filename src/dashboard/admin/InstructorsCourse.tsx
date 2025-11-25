@@ -1,15 +1,15 @@
 import { useSearchParams } from "react-router";
-import type { Course } from "../../ult/types/types";
 import Pagination from "../../ult/pegination/Pagination";
 import Loader from "../../ult/loader/Loader";
 import { usePagination } from "../../ult/pegination/usePagination";
 import Breadcrumb from "../../ult/breadcrumb/Breadcrumb";
 import { useGetInstructorCoursesQuery } from "../../features/instructor-course/instructorCourseApi";
 import CourseCard from "./CourseCard";
+import type { InstructorCourse } from "../../ult/types/types";
 
 const breadcrumbItems = [{ label: "Instructor's All Courses" }];
 
-const InstructorCourse = () => {
+const InstructorsCourse = () => {
   const {
     data: courses,
     isLoading,
@@ -22,12 +22,12 @@ const InstructorCourse = () => {
   const searchQuery = searchParams.get("search") || "";
 
   // Filter by category + search
-  const filteredCourses: Course[] =
+  const filteredCourses: InstructorCourse[] =
     courses
-      ?.filter((course: Course) =>
+      ?.filter((course: InstructorCourse) =>
         category ? course.category === category : true
       )
-      .filter((course: Course) => {
+      .filter((course: InstructorCourse) => {
         const query = searchQuery.toLowerCase();
         return (
           course.name?.toLowerCase().includes(query) ||
@@ -106,4 +106,4 @@ const InstructorCourse = () => {
   );
 };
 
-export default InstructorCourse;
+export default InstructorsCourse;

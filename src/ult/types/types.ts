@@ -111,25 +111,12 @@ export interface Course {
 }
 
 // ---------------------- INSTRUCTOR COURSE ----------------------
-// Base type without _id (for creating new courses)
 export type InstructorCourseBase = {
   name: string;
   price: number;
   ratings: number;
   time: string;
-  teacher: {
-    name: string;
-    role: string;
-    experience: string;
-    specialistIn: string;
-    currentWork: string;
-    profession: string;
-    image: string;
-    contact: { phone: string; mobile: string; email: string };
-    socialLinks: { facebook: string; twitter: string; googlePlus: string; linkedin: string };
-    biography: string;
-    topicsHandling: string[];
-  };
+  teacher: Teacher;
   shortDes: string;
   description: string[];
   image: string;

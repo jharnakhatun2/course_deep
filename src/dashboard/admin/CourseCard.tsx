@@ -3,6 +3,7 @@ import InstructorCard from "./InstructorCard";
 import type { InstructorCourse } from "../../ult/types/types";
 
 
+
 interface CourseListProps {
     courses: InstructorCourse[];
 }

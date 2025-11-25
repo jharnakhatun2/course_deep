@@ -29,11 +29,11 @@ import LessonPage from "./dashboard/LessonPage";
 import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
 import InstructorDashboard from "./dashboard/InstructorDashboard";
 import AdminDashboard from "./dashboard/AdminDashboard";
-import InstructorCourse from "./dashboard/admin/InstructorCourse";
 import AllUsers from "./dashboard/admin/AllUsers";
 import Settings from "./dashboard/admin/Settings";
 import { AdminRoute, InstructorRoute, StudentRoute } from "./components/route/RoleBasedRoute";
 import InstructorSingleCourse from "./dashboard/admin/InstructorSingleCourse";
+import InstructorsCourse from "./dashboard/admin/InstructorsCourse";
 
 
 
@@ -102,7 +102,7 @@ const App: FC = () => {
           element: <AdminRoute><AdminDashboard /></AdminRoute>,
           children: [
             { index: true, element: <div>Admin Home</div> },
-            { path: "instructor-course", element: <InstructorCourse/> },
+            { path: "instructor-course", element: <InstructorsCourse/> },
             { path: "instructor-course/:id", element: <InstructorSingleCourse /> },
             { path: "users", element: <AllUsers/> },
             { path: "settings", element: <Settings/> },
