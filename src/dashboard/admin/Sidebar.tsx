@@ -1,6 +1,6 @@
 import { type FC, useState } from "react";
 import { NavLink } from "react-router";
-import { FiHome, FiUsers, FiSettings } from "react-icons/fi";
+import { FiHome, FiSettings } from "react-icons/fi";
 import { FaBookOpen } from "react-icons/fa";
 
 const Sidebar: FC = () => {
@@ -44,7 +44,7 @@ const Sidebar: FC = () => {
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
 
           /* Collapsed width mobile & tablet, expanded on desktop */
-          w-16 lg:w-64
+          w-16 lg:w-56
         `}
       >
         {/* Header */}
@@ -110,29 +110,6 @@ const Sidebar: FC = () => {
             </li>
 
             <li className="h-[1px] w-full bg-gray-500/20 hidden lg:block" />
-
-            {/* Users */}
-            <li className="relative group/item">
-              <NavLink
-                to="/admin/users"
-                className={linkClasses}
-                onClick={() => setIsOpen(false)}
-              >
-                <FiUsers size={18} />
-                <span className="hidden lg:inline-block">
-                  Users
-                </span>
-              </NavLink>
-
-              <span className="
-                lg:hidden
-                pointer-events-none absolute left-16 top-1/2 -translate-y-1/2
-                opacity-0 group-hover/item:opacity-100
-                bg-zinc-900 text-white text-xs px-2 py-1 rounded shadow
-              ">
-                Users
-              </span>
-            </li>
 
             <li className="h-[1px] w-full bg-gray-500/20 hidden lg:block" />
 

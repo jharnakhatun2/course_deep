@@ -6,44 +6,70 @@ import {
   FaSearch,
   FaFilter,
 } from "react-icons/fa";
-import { FiMoreVertical } from "react-icons/fi";
 import { useGetUsersQuery } from '../../features/auth/authApi';
+import { useGetEnrollmentsQuery } from '../../features/enrollments/enrollmentsApi';
 import AllUsers from './AllUsers';
-
-interface Course {
-  id: number;
-  title: string;
-  instructor: string;
-  students: number;
-  revenue: number;
-  status: 'active' | 'draft';
-}
+import Loader from '../../ult/loader/Loader';
 
 const Admin = () => {
-  const { data: users} = useGetUsersQuery();
+  const { data: users, isLoading: usersLoading } = useGetUsersQuery();
+  const { data: enrollments, isLoading: enrollmentsLoading } = useGetEnrollmentsQuery();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'courses' | 'users'>('courses');
 
-  // Mock data
+  if (usersLoading || enrollmentsLoading) {
+    return (
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  // Pre-calculate values
+  const totalUsers = users?.length || 0;
+  const activeEnrollments = enrollments?.filter(e => e.status === 'active').length || 0;
+  
+  // Fixed total revenue calculation
+  const totalRevenue = enrollments?.reduce((total: number, e: any) => {
+    const price = typeof e.coursePrice === 'string' 
+      ? parseFloat(e.coursePrice) 
+      : e.coursePrice;
+    return total + (price || 0);
+  }, 0) || 0;
+
+  //stats data
   const stats = [
-    { label: 'Total Users', value: '2,847', icon: FaUsers, change: '+12.5%', color: 'bg-blue-500' },
-    { label: 'Active Courses', value: '156', icon: FaBookOpen, change: '+8.2%', color: 'bg-green-500' },
-    { label: 'Total Revenue', value: '$48,392', icon: FaDollarSign, change: '+23.1%', color: 'bg-purple-500' },
+    { 
+      label: 'Total Users', 
+      value: totalUsers.toString(), 
+      icon: FaUsers, 
+      change: '+12.5%', 
+      color: 'bg-blue-500' 
+    },
+    { 
+      label: 'Active Enrollments', 
+      value: activeEnrollments.toString(), 
+      icon: FaBookOpen, 
+      change: '+8.2%', 
+      color: 'bg-green-500' 
+    },
+    { 
+      label: 'Total Revenue', 
+      value: `$${totalRevenue.toLocaleString()}`, 
+      icon: FaDollarSign, 
+      change: '+23.1%', 
+      color: 'bg-purple-500' 
+    },
   ];
 
-  const courses: Course[] = [
-    { id: 1, title: 'Advanced React Patterns', instructor: 'Sarah Johnson', students: 234, revenue: 9360, status: 'active' },
-    { id: 2, title: 'TypeScript Masterclass', instructor: 'Mike Chen', students: 189, revenue: 7560, status: 'active' },
-    { id: 3, title: 'UI/UX Design Fundamentals', instructor: 'Emma Wilson', students: 312, revenue: 12480, status: 'active' },
-    { id: 4, title: 'Node.js Backend Development', instructor: 'David Lee', students: 156, revenue: 6240, status: 'draft' },
-    { id: 5, title: 'Python for Data Science', instructor: 'Lisa Anderson', students: 278, revenue: 11120, status: 'active' },
-  ];
+  // Enrollment
+  const filteredEnrollments = enrollments?.filter(enrollment =>
+    enrollment.courseTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    enrollment.instructorName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    enrollment.userName?.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
 
-  const filteredCourses = courses.filter(course =>
-    course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    course.instructor.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  // Users
   const filteredUsers = users?.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -52,26 +78,26 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-zinc-50">
       {/* Header */}
-      <header className="bg-white border-b border-zinc-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white border-b border-zinc-100">
+        <div className=" px-4 sm:px-6 lg:px-8 py-4">
           <div className="sm:flex items-center justify-between">
             <div>
               <h1 className="text-xl text-zinc-800">Dashboard</h1>
-              <p className="text-zinc-400">Manage your courses and users</p>
+              <p className="text-zinc-400">Manage your enrollments and users</p>
             </div>
             <div className="flex items-center gap-3 mt-2">
               <button className="px-4 py-2 text-xs sm:text-sm font-medium text-zinc-700 bg-white border border-zinc-100 hover:border-zinc-50 hover:bg-zinc-50 cursor-pointer shadow-lg hover:shadow transition-smooth">
                 Export Data
               </button>
               <button className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-400 border border-yellow-500 hover:border-yellow-400 cursor-pointer shadow-lg hover:shadow transition-smooth">
-                Add New Course
+                View All Courses
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => (
@@ -104,7 +130,7 @@ const Admin = () => {
                       : 'text-zinc-600 hover:bg-zinc-50'
                   }`}
                 >
-                  Courses
+                  Enrollments
                 </button>
                 <button
                   onClick={() => setActiveTab('users')}
@@ -122,7 +148,7 @@ const Admin = () => {
                   <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Search enrollments..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full sm:w-64 pl-10 pr-4 py-2 text-sm border border-zinc-200 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
@@ -135,53 +161,82 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* Courses Table */}
+          {/* Enrollments Table */}
           {activeTab === 'courses' && (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-zinc-50 border-b border-zinc-200">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Course</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Student</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Instructor</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Students</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Revenue</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Progress</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Enrolled Date</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-zinc-200">
-                  {filteredCourses.map((course) => (
-                    <tr key={course.id} className="hover:bg-zinc-50">
+                  {filteredEnrollments.map((enrollment) => (
+                    <tr key={enrollment._id} className="hover:bg-zinc-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-zinc-900">{course.title}</div>
+                        <div className="text-sm font-medium text-zinc-900">{enrollment.courseTitle}</div>
+                        <div className="text-sm text-zinc-500 truncate max-w-xs">
+                          {enrollment.courseDescription.slice(0,30)+ "..."}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-zinc-600">{course.instructor}</div>
+                        <div>
+                          <div className="text-sm font-medium text-zinc-900">{enrollment.userName}</div>
+                          <div className="text-sm text-zinc-500">{enrollment.userEmail}</div>
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-zinc-900">{course.students}</div>
+                        <div className="text-sm text-zinc-600">{enrollment.instructorName}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-zinc-900">${course.revenue.toLocaleString()}</div>
+                        <div className="flex items-center">
+                          <div className="w-full bg-zinc-200 rounded-full h-2">
+                            <div 
+                              className="bg-green-600 h-2 rounded-full" 
+                              style={{ width: `${enrollment.progress}%` }}
+                            ></div>
+                          </div>
+                          <span className="ml-2 text-sm text-zinc-600">{enrollment.progress}%</span>
+                        </div>
+                        <div className="text-xs text-zinc-500 mt-1">
+                          {enrollment.completedLessons.length}/{enrollment.allLessons.length} lessons
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          course.status === 'active'
+                          enrollment.status === 'active'
                             ? 'bg-green-100 text-green-800'
+                            : enrollment.status === 'completed'
+                            ? 'bg-blue-100 text-blue-800'
                             : 'bg-zinc-100 text-zinc-800'
                         }`}>
-                          {course.status}
+                          {enrollment.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <button className="p-1 hover:bg-zinc-100 rounded">
-                          <FiMoreVertical className="w-4 h-4 text-zinc-600" />
-                        </button>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-zinc-600">
+                          {new Date(enrollment.enrolledAt).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                          })}
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              
+              {filteredEnrollments.length === 0 && (
+                <div className="text-center py-8">
+                  <div className="text-zinc-400 text-sm">No enrollments found</div>
+                </div>
+              )}
             </div>
           )}
 
