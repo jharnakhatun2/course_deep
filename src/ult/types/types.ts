@@ -7,6 +7,7 @@ export interface User {
   role: string;
   createdAt: string;
   lastSignInTime: string;
+  enrolledCourses: number;
 }
 
 // ---------------------- VIDEO ----------------------

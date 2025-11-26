@@ -34,6 +34,7 @@ import Settings from "./dashboard/admin/Settings";
 import { AdminRoute, InstructorRoute, StudentRoute } from "./components/route/RoleBasedRoute";
 import InstructorSingleCourse from "./dashboard/admin/InstructorSingleCourse";
 import InstructorsCourse from "./dashboard/admin/InstructorsCourse";
+import Admin from "./dashboard/admin/Admin";
 
 
 
@@ -101,7 +102,7 @@ const App: FC = () => {
           path: "/admin",
           element: <AdminRoute><AdminDashboard /></AdminRoute>,
           children: [
-            { index: true, element: <div>Admin Home</div> },
+            { index: true, element: <Admin/> },
             { path: "instructor-course", element: <InstructorsCourse/> },
             { path: "instructor-course/:id", element: <InstructorSingleCourse /> },
             { path: "users", element: <AllUsers/> },
