@@ -22,6 +22,24 @@ const Menu = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // Preload functions for dashboard components
+  const preloadUserDashboard = () => {
+    import("../../dashboard/UserDashboard");
+  };
+
+  const preloadInstructorDashboard = () => {
+    import("../../dashboard/InstructorDashboard");
+  };
+
+  const preloadAdminDashboard = () => {
+    import("../../dashboard/AdminDashboard");
+  };
+
+  // Preload function for courses (since it's in your menu)
+  const preloadCourses = () => {
+    import("../../pages/courses/Courses");
+  };
+
   // logout function
   const logOut = async () => {
     try {
@@ -59,7 +77,13 @@ const Menu = () => {
     // Student can see My Dashboard
     if (user.role === 'student' || user.role === 'admin') {
       items.push(
-        <Link key="dashboard" to="/dashboard" className={dropdownStyle}>
+        <Link 
+          key="dashboard" 
+          to="/dashboard" 
+          className={dropdownStyle}
+          onMouseEnter={preloadUserDashboard}
+          onFocus={preloadUserDashboard}
+        >
           My Dashboard
         </Link>
       );
@@ -68,7 +92,13 @@ const Menu = () => {
     // Instructor can see Instructor Dashboard
     if (user.role === 'instructor' || user.role === 'admin') {
       items.push(
-        <Link key="instructor-dashboard" to="/instructor-dashboard" className={dropdownStyle}>
+        <Link 
+          key="instructor-dashboard" 
+          to="/instructor-dashboard" 
+          className={dropdownStyle}
+          onMouseEnter={preloadInstructorDashboard}
+          onFocus={preloadInstructorDashboard}
+        >
           Instructor Dashboard
         </Link>
       );
@@ -77,7 +107,13 @@ const Menu = () => {
     // Admin can see Admin Dashboard
     if (user.role === 'admin') {
       items.push(
-        <Link key="admin-dashboard" to="/admin" className={dropdownStyle}>
+        <Link 
+          key="admin-dashboard" 
+          to="/admin" 
+          className={dropdownStyle}
+          onMouseEnter={preloadAdminDashboard}
+          onFocus={preloadAdminDashboard}
+        >
           Admin Dashboard
         </Link>
       );
@@ -115,6 +151,8 @@ const Menu = () => {
                   key={path}
                   to={path}
                   className={`hover:text-white hover:font-bold transition-smooth uppercase text-sm cursor-pointer ${isSticky ? 'text-white' : "text-zinc-600"}`}
+                  onMouseEnter={path === "/courses" ? preloadCourses : undefined}
+                  onFocus={path === "/courses" ? preloadCourses : undefined}
                 >
                   {label}
                 </Link>
@@ -171,6 +209,8 @@ const Menu = () => {
               to={path}
               className="flex hover:font-bold transition-smooth uppercase text-[12px] cursor-pointer"
               onClick={() => setIsOpen(!isOpen)}
+              onMouseEnter={path === "/courses" ? preloadCourses : undefined}
+              onFocus={path === "/courses" ? preloadCourses : undefined}
             >
               {label}
             </Link>
