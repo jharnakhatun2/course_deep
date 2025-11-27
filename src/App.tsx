@@ -58,7 +58,11 @@ const App = () => {
           <Layout />
         </RouteSuspense>
       ),
-      errorElement: <RouteSuspense><ErrorPage /></RouteSuspense>,
+      errorElement: (
+        <RouteSuspense>
+          <ErrorPage />
+        </RouteSuspense>
+      ),
       children: [
         { 
           index: true, 
