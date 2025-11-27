@@ -121,11 +121,11 @@ const UserDashboard: React.FC = () => {
             courseEnrollments={courseEnrollments}
           />
           {/* Sidebar */}
-          <ProfileSidebar />
+          <ProfileSidebar enrollments={courseEnrollments}/>
         </div>
       </div>
-      {/* Single Modal */}
 
+      {/* Single Modal */}
       {selectedEvent && (
         <EventTicket
           event={selectedEvent}
