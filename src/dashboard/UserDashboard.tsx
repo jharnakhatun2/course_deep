@@ -29,7 +29,7 @@ const UserDashboard: React.FC = () => {
   const userEmail = user?.email;
 
   // course enrollment and User Bookings Query (only if email exists)
-  
+
   const {
     data: courseEnrollments,
     isLoading: enrollmentLoading,
@@ -41,10 +41,6 @@ const UserDashboard: React.FC = () => {
     isLoading: bookingLoading,
     isError: bookingError,
   } = useGetUserBookingsQuery(userEmail ?? "", { skip: !userEmail });
-
-  // const courseBookings = userBookings?.filter(
-  //   (booking) => booking.productType === "course"
-  // );
 
   const eventBookings = userBookings?.filter(
     (booking) => booking.productType === "event"
@@ -62,8 +58,8 @@ const UserDashboard: React.FC = () => {
   };
 
   // Loading & Error for Data
-  if ( bookingLoading || enrollmentLoading) return <Loader />;
-  if ( bookingError || enrollmentError || !courseEnrollments || !userBookings)
+  if (bookingLoading || enrollmentLoading) return <Loader />;
+  if (bookingError || enrollmentError || !courseEnrollments || !userBookings)
     return (
       <p className="text-center py-10 text-red-500">Failed to load Data!</p>
     );
@@ -81,32 +77,29 @@ const UserDashboard: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
-            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
-              activeTab === "overview"
+            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${activeTab === "overview"
                 ? "bg-white text-yellow-400"
                 : "bg-white/10 text-zinc-400 hover:bg-white/20 border border-white"
-            }`}
+              }`}
           >
             Overview
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("courses")}
-            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
-              activeTab === "courses"
+            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${activeTab === "courses"
                 ? "bg-white text-yellow-400"
                 : "bg-white/10 text-zinc-400 hover:bg-white/20 "
-            }`}
+              }`}
           >
             My Courses
           </button>
           <button
             onClick={() => setActiveTab("events")}
-            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${
-              activeTab === "events"
+            className={`cursor-pointer px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base whitespace-nowrap border border-white shadow-sm ${activeTab === "events"
                 ? "bg-white text-yellow-400"
                 : "bg-white/10 text-zinc-400 hover:bg-white/20"
-            }`}
+              }`}
           >
             My Events
           </button>
@@ -121,7 +114,7 @@ const UserDashboard: React.FC = () => {
             courseEnrollments={courseEnrollments}
           />
           {/* Sidebar */}
-          <ProfileSidebar enrollments={courseEnrollments}/>
+          <ProfileSidebar enrollments={courseEnrollments} />
         </div>
       </div>
 
