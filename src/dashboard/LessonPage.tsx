@@ -130,7 +130,7 @@ const LessonPage: React.FC = () => {
         {/* Title */}
         <div className="">
           <Breadcrumb items={breadcrumbItems} />
-          <h1 className="font-garamond text-2xl font-semibold text-zinc-600">
+          <h1 className="font-garamond text-xl sm:text-3xl font-semibold text-zinc-600">
             {currentLesson?.title || enrollment.courseTitle}
           </h1>
         </div>

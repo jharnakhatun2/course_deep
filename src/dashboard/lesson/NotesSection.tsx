@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-
-
 import FormattingTolls from "./FormattingTolls";
 import DisplayNotes from "./DisplayNotes";
+import { LuNotebookText } from "react-icons/lu";
 
 interface EditorState {
   bold: boolean;
@@ -12,10 +11,24 @@ interface EditorState {
 }
 
 interface SavedNote {
+  id: string;
   title: string;
   content: string;
   timestamp: string;
 }
+
+const NOTES_STORAGE_KEY = "user_notes";
+
+// Data validation function
+const isValidSavedNote = (note: any): note is SavedNote => {
+  return (
+    note &&
+    typeof note.id === 'string' &&
+    typeof note.title === 'string' &&
+    typeof note.content === 'string' &&
+    typeof note.timestamp === 'string'
+  );
+};
 
 const NotesSection: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -30,10 +43,61 @@ const NotesSection: React.FC = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
 
+  // Load notes from localStorage on component mount
+  useEffect(() => {
+    const loadSavedNotes = () => {
+      try {
+        console.log('📥 Loading notes from localStorage...');
+        const storedNotes = localStorage.getItem(NOTES_STORAGE_KEY);
+        
+        if (storedNotes) {
+          const parsedNotes = JSON.parse(storedNotes);
+          console.log('Parsed notes from storage:', parsedNotes);
+          
+          if (Array.isArray(parsedNotes)) {
+            // Validate each note and filter out invalid ones
+            const validNotes = parsedNotes.filter(isValidSavedNote);
+            console.log('Valid notes after filtering:', validNotes);
+            
+            setSavedNotes(validNotes);
+          } else {
+            console.log('Stored data is not an array, resetting...');
+            setSavedNotes([]);
+          }
+        } else {
+          console.log('No notes found in localStorage');
+          setSavedNotes([]);
+        }
+      } catch (error) {
+        console.error('Error loading notes from localStorage:', error);
+        setSavedNotes([]);
+      }
+    };
+
+    loadSavedNotes();
+  }, []);
+
+  // Save notes to localStorage whenever savedNotes changes
+  useEffect(() => {
+    const saveToStorage = () => {
+      try {
+        console.log('💾 Saving notes to localStorage:', savedNotes);
+        localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(savedNotes));
+        console.log('✅ Save successful');
+      } catch (error) {
+        console.error('Error saving notes to localStorage:', error);
+        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+          alert('Storage is full. Please delete some notes.');
+        }
+      }
+    };
+
+    saveToStorage();
+  }, [savedNotes]);
+
   // Command Execution formatting tools
   const executeCommand = (command: string, value: string = "") => {
     editorRef.current?.focus();
-    // Enhanced list handling
     if (command === "insertUnorderedList" || command === "insertOrderedList") {
       const selection = window.getSelection();
       if (selection && selection.rangeCount > 0) {
@@ -44,7 +108,6 @@ const NotesSection: React.FC = () => {
 
         const element = node as Element;
         if (element) {
-          // If we're in the opposite list type, first break out of it
           if (command === "insertUnorderedList" && element.closest("ol")) {
             document.execCommand("insertOrderedList", false, undefined);
           } else if (command === "insertOrderedList" && element.closest("ul")) {
@@ -57,30 +120,23 @@ const NotesSection: React.FC = () => {
     updateFormatState();
   };
 
-  // Alternative reliable list implementation for formatting tools
   const handleListInsert = (type: "ul" | "ol") => {
     editorRef.current?.focus();
-
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
 
     const range = selection.getRangeAt(0);
-
-    // Check if we're already in a list item
     let listItem = range.commonAncestorContainer as Element;
     while (listItem && listItem.nodeName !== "LI" && listItem.parentNode) {
       listItem = listItem.parentNode as Element;
     }
 
     if (listItem && listItem.nodeName === "LI") {
-      // We're in a list item, toggle the list type
       const currentList = listItem.parentNode as Element;
       if (currentList.nodeName === type.toUpperCase()) {
-        // Same list type, remove list
         document.execCommand("insertUnorderedList", false, undefined);
         document.execCommand("insertOrderedList", false, undefined);
       } else {
-        // Different list type, switch
         if (type === "ul") {
           document.execCommand("insertOrderedList", false, undefined);
           document.execCommand("insertUnorderedList", false, undefined);
@@ -90,14 +146,12 @@ const NotesSection: React.FC = () => {
         }
       }
     } else {
-      // Not in a list, create new list
       if (type === "ul") {
         document.execCommand("insertUnorderedList", false, undefined);
       } else {
         document.execCommand("insertOrderedList", false, undefined);
       }
     }
-
     updateFormatState();
   };
 
@@ -116,7 +170,6 @@ const NotesSection: React.FC = () => {
     }
   };
 
-  // Handle Insert Link for formatting tools
   const insertLink = () => {
     const url = prompt("Enter URL:");
     if (url) {
@@ -124,7 +177,10 @@ const NotesSection: React.FC = () => {
     }
   };
 
-  // Handle Save Note
+  const generateId = (): string => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  };
+
   const saveNote = () => {
     if (!title && !content) {
       alert("Please add a title or content before saving!");
@@ -132,12 +188,17 @@ const NotesSection: React.FC = () => {
     }
 
     const noteData: SavedNote = {
+      id: generateId(),
       title: title || "Untitled Note",
       content: content || "Empty note",
       timestamp: new Date().toISOString(),
     };
 
-    setSavedNotes([noteData, ...savedNotes]);
+    setSavedNotes(prevNotes => [noteData, ...prevNotes]);
+    clearEditor();
+  };
+
+  const clearEditor = () => {
     setTitle("");
     setContent("");
     if (editorRef.current) {
@@ -155,17 +216,25 @@ const NotesSection: React.FC = () => {
     };
   }, []);
 
-  // Edit save data
   const handleEditNote = (index: number) => {
     const noteToEdit = savedNotes[index];
     setTitle(noteToEdit.title);
-    editorRef.current!.innerHTML = noteToEdit.content;
-    setSavedNotes(savedNotes.filter((_, i) => i !== index));
+    setContent(noteToEdit.content);
+    if (editorRef.current) {
+      editorRef.current.innerHTML = noteToEdit.content;
+    }
+    setSavedNotes(prevNotes => prevNotes.filter((_, i) => i !== index));
   };
 
-  // Delete save data
   const handleDeleteNote = (index: number) => {
-    setSavedNotes(savedNotes.filter((_, i) => i !== index));
+    setSavedNotes(prevNotes => prevNotes.filter((_, i) => i !== index));
+  };
+
+  const clearAllNotes = () => {
+    if (window.confirm("Are you sure you want to delete all notes? This action cannot be undone.")) {
+      setSavedNotes([]);
+      localStorage.removeItem(NOTES_STORAGE_KEY);
+    }
   };
 
   const inputStyle =
@@ -176,7 +245,6 @@ const NotesSection: React.FC = () => {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Editor Card */}
         <div className="w-full bg-gray-300/50 border border-gray-300/50 overflow-hidden">
-          {/* Title Input */}
           <div className="px-6 pt-6 space-y-4">
             <input
               type="text"
@@ -190,13 +258,12 @@ const NotesSection: React.FC = () => {
               contentEditable
               onInput={handleInput}
               onKeyUp={updateFormatState}
-              className={`${inputStyle} h-40 overflow-y-auto `}
+              className={`${inputStyle} h-40 overflow-y-auto`}
               data-placeholder="Write Something Awesome..."
               suppressContentEditableWarning={true}
             />
           </div>
 
-          {/* Formatting Toolbar */}
           <div className="px-6 pb-6 flex items-center justify-between gap-4 flex-wrap">
             <FormattingTolls
               executeCommand={executeCommand}
@@ -204,7 +271,6 @@ const NotesSection: React.FC = () => {
               handleListInsert={handleListInsert}
               insertLink={insertLink}
             />
-            {/* Save Button */}
             <button
               onClick={saveNote}
               className="px-6 py-2 mt-3 cursor-pointer font-semibold uppercase text-sm shadow transition-smooth bg-yellow-500 hover:bg-yellow-600 text-zinc-800 hover:text-white/70"
@@ -214,8 +280,26 @@ const NotesSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Saved Notes Section */}
-        <DisplayNotes handleEditNote={handleEditNote} handleDeleteNote={handleDeleteNote} savedNotes={savedNotes} />
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <LuNotebookText className="text-yellow-500" />
+            <h3 className="text-xl text-zinc-700">Saved Notes ({savedNotes.length})</h3>
+          </div>
+          {savedNotes.length > 0 && (
+            <button
+              onClick={clearAllNotes}
+              className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded transition-smooth cursor-pointer"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+
+        <DisplayNotes
+          handleEditNote={handleEditNote}
+          handleDeleteNote={handleDeleteNote}
+          savedNotes={savedNotes}
+        />
       </div>
     </div>
   );

@@ -120,13 +120,12 @@ export const LessonSidebar = ({
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold ${
-                      moduleCompleted
+                    className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold ${moduleCompleted
                         ? "bg-green-500 text-white"
                         : moduleInProgress
-                        ? "bg-yellow-500 text-zinc-800"
-                        : "bg-zinc-500 text-gray-300"
-                    }`}
+                          ? "bg-yellow-500 text-zinc-800"
+                          : "bg-zinc-500 text-gray-300"
+                      }`}
                   >
                     {module.id + 1}
                   </div>
@@ -138,7 +137,7 @@ export const LessonSidebar = ({
                   </div>
                 </div>
                 {isExpanded ? (
-                  <HiMiniChevronUp  className="w-4 h-4 text-gray-400" />
+                  <HiMiniChevronUp className="w-4 h-4 text-gray-400" />
                 ) : (
                   <BiChevronDown className="w-4 h-4 text-gray-400" />
                 )}
@@ -146,9 +145,8 @@ export const LessonSidebar = ({
 
               {/* Module Lessons with smooth height transition */}
               <div
-                className={`transition-smooth ${
-                  isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                }`}
+                className={`transition-smooth ${isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                  }`}
                 style={{
                   overflow: isExpanded ? "visible" : "hidden",
                 }}
@@ -163,39 +161,37 @@ export const LessonSidebar = ({
                       <div
                         key={idx}
                         onClick={() => goToVideo(videoIndex)}
-                        className={`p-2 rounded cursor-pointer transition-smooth hover:bg-white/10 ${
-                          isCurrentVideo
+                        className={`p-2 rounded cursor-pointer transition-smooth hover:bg-white/10 ${isCurrentVideo
                             ? "bg-yellow-500 text-black hover:bg-yellow-500"
                             : isCompleted
-                            ? "text-gray-300"
-                            : "text-gray-400"
-                        }`}
+                              ? "text-gray-300"
+                              : "text-gray-400"
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           <span
-                            className={`w-6 h-6 flex items-center justify-center rounded-full text-xs flex-shrink-0 ${
-                              isCurrentVideo
+                            className={`w-6 h-6 flex items-center justify-center rounded-full text-xs flex-shrink-0 ${isCurrentVideo
                                 ? "bg-black text-yellow-500 font-bold"
                                 : isCompleted
-                                ? "bg-green-500 text-white"
-                                : "bg-zinc-600 text-gray-400"
-                            }`}
+                                  ? "bg-green-500 text-white"
+                                  : "bg-zinc-600 text-gray-400"
+                              }`}
                           >
                             {isCompleted ? "✓" : idx + 1}
                           </span>
-                          <span 
+                          <span
                             className="text-xs flex-1 line-clamp-2"
                             dangerouslySetInnerHTML={{
                               __html: searchQuery
                                 ? video.title.replace(
-                                    new RegExp(`(${searchQuery})`, "gi"),
-                                    '<mark class="bg-yellow-500 text-black">$1</mark>'
-                                  )
+                                  new RegExp(`(${searchQuery})`, "gi"),
+                                  '<mark class="bg-yellow-500 text-black">$1</mark>'
+                                )
                                 : video.title,
                             }}
                           />
                           {isCurrentVideo && (
-                            <IoPlayCircleOutline   className="w-4 h-4 flex-shrink-0" />
+                            <IoPlayCircleOutline className="w-4 h-4 flex-shrink-0" />
                           )}
                         </div>
                       </div>
