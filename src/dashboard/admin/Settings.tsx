@@ -267,7 +267,7 @@ const Settings = () => {
                     <select
                       value={settings.security.sessionTimeout}
                       onChange={(e) => updateSecurity('sessionTimeout', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      className="text-sm w-full px-4 py-2 border border-gray-300  focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none"
                     >
                       <option value="15">15 minutes</option>
                       <option value="30">30 minutes</option>

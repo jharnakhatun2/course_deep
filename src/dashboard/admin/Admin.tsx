@@ -112,7 +112,7 @@ const Admin = () => {
               <button 
                 onClick={handleComprehensiveExport}
                 disabled={isExporting}
-                className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-green-600 hover:bg-green-500 border border-green-600 hover:border-green-500 cursor-pointer shadow-lg hover:shadow transition-smooth flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-400 border border-yellow-500 hover:border-yellow-400 cursor-pointer shadow-lg hover:shadow transition-smooth flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FaFilePdf className="w-4 h-4" />
                 {isExporting ? 'Exporting...' : 'Export Full Report'}
