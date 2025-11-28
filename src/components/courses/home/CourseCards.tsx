@@ -20,6 +20,7 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -28,7 +29,7 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
         },
@@ -37,6 +38,7 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
