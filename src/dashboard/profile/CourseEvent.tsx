@@ -19,8 +19,6 @@ interface CourseEventProps {
 const CourseEvent: FC<CourseEventProps> = ({ events, courseEnrollments, activeTab, onTicketDownload }) => {
   const { data: allEvents } = useGetEventsQuery();
 
-  console.log(courseEnrollments);
-
   return (
     <div className="lg:col-span-2">
       {activeTab === "overview" && (
@@ -81,7 +79,7 @@ const CourseEvent: FC<CourseEventProps> = ({ events, courseEnrollments, activeTa
           <div className="space-y-3">
             {events && events.length > 0 ? (
               events.map((event) => (
-                <EventCardUser key={event._id} event={event} onTicketDownload={onTicketDownload}/>
+                <EventCardUser key={event._id} event={event} onTicketDownload={onTicketDownload} />
               ))
             ) : (
               <p className="text-zinc-400 text-center py-4">

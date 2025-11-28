@@ -1,10 +1,10 @@
 import QuantityInput from "./QuantityInput";
-import { 
-  useRemoveFromCartMutation, 
-  useUpdateCartQuantityMutation 
+import {
+  useRemoveFromCartMutation,
+  useUpdateCartQuantityMutation
 } from "../../features/cart/cartApi";
 import { showSuccessToast, showErrorToast } from "../../ult/toast/toast";
-import type {CartItem as CartItemType} from "../../ult/types/types";
+import type { CartItem as CartItemType } from "../../ult/types/types";
 import type { FC } from "react";
 
 interface CartItemProps {
@@ -12,10 +12,9 @@ interface CartItemProps {
   userEmail?: string;
 }
 
-const CartItem:FC<CartItemProps> = ({ cartItems, userEmail }) => {
+const CartItem: FC<CartItemProps> = ({ cartItems, userEmail }) => {
   const [removeFromCart, { isLoading: isRemoving }] = useRemoveFromCartMutation();
   const [updateQuantity] = useUpdateCartQuantityMutation();
-console.log(cartItems)
   const handleRemove = async (productId: string, type: string) => {
     try {
       await removeFromCart({ productId, type, userEmail }).unwrap();
@@ -39,18 +38,18 @@ console.log(cartItems)
   };
 
   if (cartItems.length === 0) return null;
-  
+
 
   return (
-    <div> 
+    <div>
       {cartItems.map((item) => (
         <div key={`${item.productId}-${item.type}`}>
           <div className="flex items-center justify-between py-3">
             <div className="sm:flex items-center col-span-6 space-x-6">
-              <img 
-                className="w-20" 
-                src={item.image || "/placeholder-image.jpg"} 
-                alt={item.name} 
+              <img
+                className="w-20"
+                src={item.image || "/placeholder-image.jpg"}
+                alt={item.name}
               />
               <div>
                 <h4 className="text-sm pt-1 font-medium">{item.name}</h4>
@@ -63,9 +62,9 @@ console.log(cartItems)
               </div>
             </div>
             <div>
-              <QuantityInput 
+              <QuantityInput
                 initial={item.quantity}
-                onChange={(newQuantity) => 
+                onChange={(newQuantity) =>
                   handleQuantityChange(item.productId, item.type, newQuantity)
                 }
               />

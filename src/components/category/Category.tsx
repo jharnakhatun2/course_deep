@@ -28,21 +28,20 @@ interface CategoryProps {
 const Category: FC<CategoryProps> = ({ courses }) => {
   const navigate = useNavigate();
 
-courses.forEach((course, index) => {
-  if (!course.category || !course.shortDes) {
-    console.warn(`Course ${index} is missing category or description`, course);
-  }
-});
+  courses.forEach((course, index) => {
+    if (!course.category || !course.shortDes) {
+      console.warn(`Course ${index} is missing category or description`, course);
+    }
+  });
 
   // same category name use one one
   const uniqueCategories = Array.from(
-    new Map( courses
+    new Map(courses
       .filter(course => course.category && course.shortDes)
       .map((course: Course) => [course.category, course.shortDes])
     ).entries()
   ).map(([category, shortDes]) => ({ category, shortDes }));
 
-  console.log(uniqueCategories)
 
   return (
     <section className="text-zinc-800 bg-gray-100 py-8 lg:py-12">

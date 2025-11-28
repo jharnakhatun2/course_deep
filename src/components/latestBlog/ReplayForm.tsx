@@ -13,11 +13,7 @@ interface Props {
 
 const ReplyForm: FC<Props> = ({ blogId, comment, onClose }) => {
   const [addReply] = useAddReplyMutation();
-  const { user } = useAuth() // Get current user from cookies
-  console.log(user);
-  console.log(user?.email);
- 
-
+  const { user } = useAuth()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
