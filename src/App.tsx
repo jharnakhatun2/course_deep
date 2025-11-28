@@ -1,54 +1,129 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { lazy, Suspense, type FC, type ReactNode } from "react";
+import { lazy, Suspense, type FC, type ReactNode, useEffect, startTransition } from "react";
 import { ToastContainer } from "react-toastify";
 import ScrollBtn from "./ult/scrollBtn/ScrollBtn";
 import { useCurrentUser } from "./components/auth/useCurrentUser";
 import { AdminRoute, InstructorRoute, StudentRoute } from "./components/route/RoleBasedRoute";
-
-// Global CSS imports
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Loader from "./ult/loader/Loader";
 
-// Lazy-loaded pages (code-splitting)
-const Layout = lazy(() => import("./components/route/Layout"));
-const Home = lazy(() => import("./pages/Home"));
-const About = lazy(() => import("./pages/about/About"));
-const Courses = lazy(() => import("./pages/courses/Courses"));
-const Course = lazy(() => import("./pages/courses/Course"));
-const InstructorProfilePage = lazy(() => import("./pages/instructor/Instructor"));
-const Events = lazy(() => import("./pages/events/Events"));
-const Event = lazy(() => import("./pages/events/Event"));
-const Blogs = lazy(() => import("./pages/blogs/Blogs"));
-const Blog = lazy(() => import("./pages/blogs/Blog"));
-const Login = lazy(() => import("./components/auth/Login"));
-const Terms = lazy(() => import("./pages/Terms"));
-const Privacy = lazy(() => import("./pages/privacy/Privacy"));
-const Cart = lazy(() => import("./components/cart/Cart"));
-const CheckOutWrapper = lazy(() => import("./components/checkout/CheckOutWrapper"));
-const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
-const UserDashboard = lazy(() => import("./dashboard/UserDashboard"));
-const LessonPage = lazy(() => import("./dashboard/LessonPage"));
-const InstructorDashboard = lazy(() => import("./dashboard/InstructorDashboard"));
-const AdminDashboard = lazy(() => import("./dashboard/AdminDashboard"));
-const Settings = lazy(() => import("./dashboard/admin/Settings"));
-const InstructorSingleCourse = lazy(() => import("./dashboard/admin/InstructorSingleCourse"));
-const InstructorsCourse = lazy(() => import("./dashboard/admin/InstructorsCourse"));
-const Admin = lazy(() => import("./dashboard/admin/Admin"));
-const ErrorPage = lazy(() => import("./pages/Error"));
+// Critical CSS only - load immediately
+import "swiper/css";
+import "swiper/css/navigation";
 
-// Create a reusable Suspense wrapper component
+// Lazy load non-critical CSS with error handling
+const loadNonCriticalCSS = () => {
+  if (typeof window !== 'undefined') {
+    import("swiper/css/pagination").catch(() => {});
+    import("slick-carousel/slick/slick.css").catch(() => {});
+    import("slick-carousel/slick/slick-theme.css").catch(() => {});
+  }
+};
+
+// Optimized lazy imports with proper chunk naming
+const Layout = lazy(() => import(/* webpackChunkName: "layout" */ "./components/route/Layout"));
+const Home = lazy(() => import(/* webpackChunkName: "home" */ "./pages/Home"));
+const About = lazy(() => import(/* webpackChunkName: "about" */ "./pages/about/About"));
+const Courses = lazy(() => import(/* webpackChunkName: "courses" */ "./pages/courses/Courses"));
+const Course = lazy(() => import(/* webpackChunkName: "course" */ "./pages/courses/Course"));
+const Login = lazy(() => import(/* webpackChunkName: "auth" */ "./components/auth/Login"));
+const Terms = lazy(() => import(/* webpackChunkName: "legal" */ "./pages/Terms"));
+const Privacy = lazy(() => import(/* webpackChunkName: "legal" */ "./pages/privacy/Privacy"));
+const ErrorPage = lazy(() => import(/* webpackChunkName: "error" */ "./pages/Error"));
+
+// Heavy components - lazy load with prefetch hint
+const InstructorProfilePage = lazy(() => 
+  import(/* webpackChunkName: "instructor" */ "./pages/instructor/Instructor")
+);
+const Events = lazy(() => 
+  import(/* webpackChunkName: "events" */ "./pages/events/Events")
+);
+const Event = lazy(() => 
+  import(/* webpackChunkName: "events" */ "./pages/events/Event")
+);
+const Blogs = lazy(() => 
+  import(/* webpackChunkName: "blogs" */ "./pages/blogs/Blogs")
+);
+const Blog = lazy(() => 
+  import(/* webpackChunkName: "blogs" */ "./pages/blogs/Blog")
+);
+
+// Dashboard chunks - heavy, load only when needed
+const UserDashboard = lazy(() => 
+  import(/* webpackChunkName: "dashboard-user" */ "./dashboard/UserDashboard")
+);
+const LessonPage = lazy(() => 
+  import(/* webpackChunkName: "lesson" */ "./dashboard/LessonPage")
+);
+const InstructorDashboard = lazy(() => 
+  import(/* webpackChunkName: "dashboard-instructor" */ "./dashboard/InstructorDashboard")
+);
+const AdminDashboard = lazy(() => 
+  import(/* webpackChunkName: "dashboard-admin" */ "./dashboard/AdminDashboard")
+);
+
+// Payment chunks
+const Cart = lazy(() => 
+  import(/* webpackChunkName: "payment" */ "./components/cart/Cart")
+);
+const CheckOutWrapper = lazy(() => 
+  import(/* webpackChunkName: "payment" */ "./components/checkout/CheckOutWrapper")
+);
+const PaymentSuccess = lazy(() => 
+  import(/* webpackChunkName: "payment" */ "./pages/PaymentSuccess")
+);
+
+// Admin chunks
+const Settings = lazy(() => 
+  import(/* webpackChunkName: "admin" */ "./dashboard/admin/Settings")
+);
+const InstructorSingleCourse = lazy(() => 
+  import(/* webpackChunkName: "admin" */ "./dashboard/admin/InstructorSingleCourse")
+);
+const InstructorsCourse = lazy(() => 
+  import(/* webpackChunkName: "admin" */ "./dashboard/admin/InstructorsCourse")
+);
+const Admin = lazy(() => 
+  import(/* webpackChunkName: "admin" */ "./dashboard/admin/Admin")
+);
+
+// Create a reusable Suspense wrapper component with optimized fallback
 const RouteSuspense: FC<{ children: ReactNode }> = ({ children }) => (
-  <Suspense fallback={<div><Loader /></div>}>
+  <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader /></div>}>
     {children}
   </Suspense>
 );
 
+// Preload function for critical routes
+const preloadCriticalRoutes = () => {
+  // Preload home and layout immediately after app loads
+  const preloadHome = import(/* webpackChunkName: "home" */ "./pages/Home");
+  const preloadLayout = import(/* webpackChunkName: "layout" */ "./components/route/Layout");
+  
+  return Promise.all([preloadHome, preloadLayout]);
+};
+
 const App = () => {
-  useCurrentUser(); // fetch user on load
+  // Use startTransition for non-urgent updates
+  useCurrentUser();
+
+  // Load non-critical CSS after initial render with optimization
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      startTransition(() => {
+        loadNonCriticalCSS();
+      });
+    }, 3000); // Increased delay to ensure critical content loads first
+    
+    // Preload critical routes
+    const preloadTimer = setTimeout(() => {
+      preloadCriticalRoutes().catch(() => {});
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(preloadTimer);
+    };
+  }, []);
 
   const router = createBrowserRouter([
     {
@@ -161,7 +236,7 @@ const App = () => {
           ) 
         },
 
-        // Student routes
+        // Student routes - heavy, load only when authenticated
         { 
           path: "/cart",
           element: (
@@ -277,7 +352,17 @@ const App = () => {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <ScrollBtn />
     </>
   );

@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
@@ -16,7 +17,6 @@
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
     "file-saver": "^2.0.5",
-    "firebase": "^12.2.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "jszip": "^3.10.1",
