@@ -1,10 +1,15 @@
-import { useRef, type FC } from "react";
+import { useRef, useState, type FC } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import SectionTitle from "../../ult/title/SectionTitle";
-import type { Settings } from "react-slick";
 import LinkText from "../../ult/linkText/LinkText";
 import NextBtn from "../../ult/slideButton/nextBtn";
 import PrevBtn from "../../ult/slideButton/preBtn";
-import Slider from "react-slick";
 import InstructorCard from "./InstructorCard";
 import type { Course, Teacher } from "../../ult/types/types";
 
@@ -13,35 +18,14 @@ interface CourseCardsProps {
 }
 
 const Instructor: FC<CourseCardsProps> = ({ courses }) => {
-  const sliderRef = useRef<Slider | null>(null);
+  const swiperRef = useRef<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const settings: Settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1172,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 769,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+  const handleSlideChange = (swiper: any) => {
+    setActiveIndex(swiper.activeIndex);
   };
 
+  // Extract unique teachers
   const uniqueTeachers: Teacher[] = Array.from(
     new Map(courses.map((c) => [c.teacher.name, c.teacher])).values()
   );
@@ -55,16 +39,23 @@ const Instructor: FC<CourseCardsProps> = ({ courses }) => {
         </span>
         <SectionTitle title="Best Instructors" className="text-zinc-700" />
 
-        {/* buttons + link */}
+        {/* Buttons + Link */}
         <div className="flex justify-between items-center pt-10">
           <div className="flex gap-2">
-            <button onClick={() => sliderRef.current?.slickPrev()}>
-              <PrevBtn />
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={activeIndex === 0}
+            >
+              <PrevBtn isActive={activeIndex !== 0} />
             </button>
-            <button onClick={() => sliderRef.current?.slickNext()}>
-              <NextBtn />
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={activeIndex >= uniqueTeachers.length - 1}
+            >
+              <NextBtn isActive={activeIndex < uniqueTeachers.length - 1} />
             </button>
           </div>
+
           <LinkText
             to="/courses"
             text="Browse All Courses"
@@ -72,11 +63,35 @@ const Instructor: FC<CourseCardsProps> = ({ courses }) => {
           />
         </div>
 
-        {/* Slider */}
+        {/* Swiper Slider */}
         <div className="py-8 mt-4">
-          <Slider ref={sliderRef} {...settings}>
+          <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSlideChange={handleSlideChange}
+            modules={[Navigation, Pagination]}
+            spaceBetween={30}
+            slidesPerView={4} // default for large screens
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+              },
+              480: {
+                slidesPerView: 1,
+              },
+              769: {
+                slidesPerView: 2,
+              },
+              1172: {
+                slidesPerView: 3,
+              },
+              1280: {
+                slidesPerView: 4,
+              },
+            }}
+            className="mySwiper"
+          >
             {uniqueTeachers.map((teacher, index) => (
-              <div key={index} className="px-8">
+              <SwiperSlide key={index}>
                 <InstructorCard
                   name={teacher.name}
                   image={teacher.image || ""}
@@ -84,9 +99,9 @@ const Instructor: FC<CourseCardsProps> = ({ courses }) => {
                   twitter={teacher.socialLinks?.twitter}
                   linkedin={teacher.socialLinks?.linkedin}
                 />
-              </div>
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
         </div>
       </div>
     </section>

@@ -1,5 +1,12 @@
-import React, { useRef } from "react";
-import Slider, { type Settings } from "react-slick";
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import type { Swiper as SwiperType } from "swiper";
+
 import SectionTitle from "../../../ult/title/SectionTitle";
 import bgImage from "../../../assets/img/course-bg.webp";
 import LinkText from "../../../ult/linkText/LinkText";
@@ -13,46 +20,24 @@ interface CourseCardsProps {
 }
 
 const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
-  const sliderRef = useRef<Slider | null>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const settings: Settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+  const handleSlideChange = (swiper: any) => {
+    setActiveIndex(swiper.activeIndex);
   };
+
+  const slidesPerView = Number(swiperRef.current?.params.slidesPerView) || 1;
 
   return (
     <section
-      className="py-8 lg:py-12 bg-fixed bg-cover bg-bottom relative"
+      className="py-8 lg:py-12 bg-scroll lg:bg-fixed bg-cover bg-bottom relative"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/70"></div>
 
-      <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
+      <div className="w-full lg:max-w-7xl mx-auto px-4 relative z-10">
         <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
           Master New Skills With Ease
         </span>
@@ -61,13 +46,22 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
         {/* buttons + link */}
         <div className="flex justify-between items-center">
           <div className="flex gap-2">
-            <button onClick={() => sliderRef.current?.slickPrev()}>
-              <PrevBtn />
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={activeIndex === 0}
+            >
+              <PrevBtn isActive={activeIndex !== 0} />
             </button>
-            <button onClick={() => sliderRef.current?.slickNext()}>
-              <NextBtn />
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={activeIndex >= courses.length - slidesPerView}
+            >
+              <NextBtn
+                isActive={activeIndex < courses.length - slidesPerView}
+              />
             </button>
           </div>
+
           <LinkText
             to="/courses"
             text="Browse All Courses"
@@ -75,13 +69,41 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
           />
         </div>
 
-        {/* Slider */}
-        <div className="py-8">
-          <Slider ref={sliderRef} {...settings}>
+        {/* Swiper Slider */}
+        <div className="w-full py-8">
+          <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSlideChange={handleSlideChange}
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={4} // default for large screens
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+              },
+              480: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+              1280: {
+                slidesPerView: 4,
+              },
+              1440: {
+                slidesPerView: 4,
+              },
+              2560: {
+                slidesPerView: 4,
+              },
+            }}
+            className="mySwiper"
+          >
             {courses.map((course) => (
-              <div key={course._id} className="px-2">
-                {" "}
-                {/* ✅ spacing between slides */}
+              <SwiperSlide key={course._id}>
                 <Card
                   _id={course._id}
                   title={course.name}
@@ -94,9 +116,9 @@ const CourseCards: React.FC<CourseCardsProps> = ({ courses }) => {
                   students={course.studentsEnrolled}
                   price={course.price}
                 />
-              </div>
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
         </div>
       </div>
     </section>

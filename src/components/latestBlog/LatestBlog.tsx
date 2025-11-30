@@ -1,11 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import imgBg from "../../assets/img/blogBg.webp";
 import SectionTitle from "../../ult/title/SectionTitle";
-import type { Settings } from "react-slick";
 import LinkText from "../../ult/linkText/LinkText";
 import NextBtn from "../../ult/slideButton/nextBtn";
 import PrevBtn from "../../ult/slideButton/preBtn";
-import Slider from "react-slick";
 import BlogCard from "./BlogCard";
 import type { BlogPost } from "../../ult/types/types";
 
@@ -14,38 +19,15 @@ interface BlogsProps {
 }
 
 const LatestBlog: React.FC<BlogsProps> = ({ blogs }) => {
-  const sliderRef = useRef<Slider | null>(null);
+  const swiperRef = useRef<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // blogs is BlogPost[]
-  const latestBlogs: BlogPost[] = blogs.slice(0, 4);
-
-  // Settings for slider
-  const settings: Settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+  const handleSlideChange = (swiper: any) => {
+    setActiveIndex(swiper.activeIndex);
   };
+
+  // Take the first 4 blogs
+  const latestBlogs: BlogPost[] = blogs.slice(0, 4);
 
   return (
     <section
@@ -55,39 +37,56 @@ const LatestBlog: React.FC<BlogsProps> = ({ blogs }) => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/70"></div>
 
-      {/* Content wrapper with higher z-index */}
+      {/* Content wrapper */}
       <div className="lg:max-w-7xl mx-auto px-4 relative z-10">
         <span className="mt-5 -mb-1 flex justify-center text-xs uppercase text-yellow-400 text-center">
           Master New Skills With Ease
         </span>
         <SectionTitle title="Latest Blogs" className="text-zinc-100 pb-8" />
 
-        {/* buttons + link */}
+        {/* Buttons + Link */}
         <div className="flex justify-between items-center">
           <div className="flex gap-2">
-            <button onClick={() => sliderRef.current?.slickPrev()}>
-              <PrevBtn />
+            <button onClick={() => swiperRef.current?.slidePrev()} disabled={activeIndex === 0}>
+              <PrevBtn isActive={activeIndex !== 0} />
             </button>
-            <button onClick={() => sliderRef.current?.slickNext()}>
-              <NextBtn />
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={activeIndex === latestBlogs.length - 1}
+            >
+              <NextBtn isActive={activeIndex !== latestBlogs.length - 1} />
             </button>
           </div>
           <LinkText
-            to="/blog"
+            to="/blogs"
             text="Browse All Blogs"
             className="text-white hover:text-yellow-500"
           />
         </div>
 
-        {/* Slider */}
+        {/* Swiper Slider */}
         <div className="py-8">
-          <Slider ref={sliderRef} {...settings}>
+          <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSlideChange={handleSlideChange}
+            modules={[Navigation, Pagination]}
+            spaceBetween={30}
+            slidesPerView={3} // default for large screens
+            breakpoints={{
+              0: { slidesPerView: 1 },
+              480: { slidesPerView: 1 },
+              600: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 3 },
+            }}
+            className="mySwiper"
+          >
             {latestBlogs.map((post) => (
-              <div key={post._id} className="px-4">
+              <SwiperSlide key={post._id}>
                 <BlogCard {...post} />
-              </div>
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
         </div>
       </div>
     </section>
