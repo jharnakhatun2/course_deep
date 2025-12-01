@@ -12,30 +12,41 @@ const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {
   const { user, isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  if (loading) return <Loader />;
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  // Redirect to login if not authenticated
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Check role permissions if specific roles are required
-  if (allowedRoles && !allowedRoles.includes(user.role.toLowerCase())) {
-    // Redirect to appropriate dashboard based on user role
-    let redirectPath = "/";
+  const userRole = user.role.toLowerCase();
 
-    if (user.role === "admin" || user.role === "super_admin") {
-      redirectPath = "/admin";
-    } else if (user.role === "instructor") {
-      redirectPath = "/instructor-dashboard";
-    } else if (user.role === "student") {
-      redirectPath = "/dashboard";
+  // If route has allowedRoles, check authorization
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+
+    // If unauthorized — redirect based on role
+    switch (userRole) {
+      case "admin":
+      case "super_admin":
+        if (!location.pathname.startsWith("/admin")) {
+          return <Navigate to="/admin" replace />;
+        }
+        break;
+
+      case "instructor":
+        if (!location.pathname.startsWith("/instructor-dashboard")) {
+          return <Navigate to="/instructor-dashboard" replace />;
+        }
+        break;
+
+      case "student":
+        if (!location.pathname.startsWith("/dashboard")) {
+          return <Navigate to="/dashboard" replace />;
+        }
+        break;
+
+      default:
+        return <Navigate to="/" replace />;
     }
-
-    return <Navigate to={redirectPath} replace />;
   }
 
   return <>{children}</>;
