@@ -5,14 +5,14 @@ import { useAuth } from "../../hook/useAuth";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
-  allowedRoles?: string[]; 
+  allowedRoles?: string[];
 }
 
 const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {
   const { user, isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
-  
+
   if (loading) {
     return <Loader />;
   }
@@ -23,18 +23,18 @@ const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {
   }
 
   // Check role permissions if specific roles are required
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
+  if (allowedRoles && !allowedRoles.includes(user.role.toLowerCase())) {
     // Redirect to appropriate dashboard based on user role
     let redirectPath = "/";
-    
-    if (user.role === "admin") {
+
+    if (user.role === "super_admin" || user.role === "admin") {
       redirectPath = "/admin";
     } else if (user.role === "instructor") {
       redirectPath = "/instructor-dashboard";
     } else if (user.role === "student") {
       redirectPath = "/dashboard";
     }
-    
+
     return <Navigate to={redirectPath} replace />;
   }
 
