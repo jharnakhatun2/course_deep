@@ -1,6 +1,6 @@
 # 📚 Course Deep — MERN Stack LMS (Production-Ready README)
 
-> **Course Deep** is a modern, full-featured, production-grade Learning Management System (LMS) built using the **MERN stack**. It supports free & paid courses, event booking, role-based authentication (Admin / Instructor / Student), secure Stripe payments, dynamic reviews, blog comments, dashboards, and more — all fully responsive and optimized for real-world usage.
+> **Course Deep** is a modern, full-featured, production-grade Learning Management System (LMS) built using the **MERN stack**. It supports free & paid courses, event booking, role-based authentication (Admin / Instructor / Student), secure Stripe payments, dynamic reviews, blog comments, dashboards, and more. All fully responsive and optimized for real-world usage.
 
 
 
@@ -108,12 +108,14 @@ I ( **Jharna Khatun** ) designed and developed **both frontend and backend** by 
 ```
 client/
 ├─ src/
+│  ├─ app/
+│  ├─ assets/
 │  ├─ components/
+│  ├─ dashboard/
+│  ├─ features/
+│  ├─ hook/
 │  ├─ pages/
-│  ├─ layouts/
-│  ├─ redux/
-│  ├─ utils/
-│  └─ assets/
+│  └─ utils/
 ├─ package.json
 └─ vite.config.ts
 ```
@@ -123,9 +125,8 @@ client/
 ```
 server/
 ├─ app/
-│  ├─ controllers/
 │  ├─ routes/
-│  ├─ middlewares/
+│  ├─ db.js
 │  └─ server.js
 ├─ package.json
 └─ .env
