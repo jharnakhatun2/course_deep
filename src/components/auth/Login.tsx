@@ -16,7 +16,7 @@ const Login: FC = () => {
     email: "",
     password: "",
   });
-  
+
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
@@ -38,9 +38,9 @@ const Login: FC = () => {
   // Sync input fields when toggling between login/register
   useEffect(() => {
     if (newAccount) {
-      setRegisterData(prev => ({ 
-        ...prev, 
-        role: rolePreference || prev.role 
+      setRegisterData(prev => ({
+        ...prev,
+        role: rolePreference || prev.role
       }));
     } else {
       setLoginData({ email: "", password: "" });
@@ -55,7 +55,7 @@ const Login: FC = () => {
   // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     if (newAccount) {
       setRegisterData((prev) => ({ ...prev, [name]: value }));
     } else {
@@ -82,8 +82,14 @@ const Login: FC = () => {
     } else {
       // Navigate based on user role after login
       if (user) {
-        const dashboardPath = user.role === "instructor" ? "/instructor-dashboard" : "/dashboard";
-        navigate(dashboardPath, { replace: true });
+        const role = user.role.toLowerCase();
+        if (role === "admin" || role === "super_admin") {
+          navigate("/admin", { replace: true });
+        } else if (role === "instructor") {
+          navigate("/instructor-dashboard", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       } else {
         navigate(from, { replace: true });
       }
@@ -139,8 +145,15 @@ const Login: FC = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      const dashboardPath = user.role === "instructor" ? "/instructor-dashboard" : "/dashboard";
-      navigate(dashboardPath, { replace: true });
+      const role = user.role.toLowerCase();
+
+      if (role === "admin" || role === "super_admin") {
+        navigate("/admin", { replace: true });
+      } else if (role === "instructor") {
+        navigate("/instructor-dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     }
   }, [user, navigate]);
 
