@@ -12,15 +12,20 @@ interface AllUsersProps {
     filteredUsers: User[];
 }
 
-const AllUsers: FC<AllUsersProps> = ({ filteredUsers}) => {
+const AllUsers: FC<AllUsersProps> = ({ filteredUsers }) => {
     const [deleteUser] = useDeleteUserMutation();
     const [updateUserRole] = useUpdateUserRoleMutation();
 
     const [editId, setEditId] = useState<string | null>(null);
     const [newRole, setNewRole] = useState("");
 
-    
+
     const startEdit = (id: string, currentRole: string) => {
+        const user = filteredUsers.find(u => u._id === id);
+        if (user?.role === "super_admin") {
+            alert("Cannot edit Super Admin!");
+            return;
+        }
         setEditId(id);
         setNewRole(currentRole);
     };
@@ -31,18 +36,28 @@ const AllUsers: FC<AllUsersProps> = ({ filteredUsers}) => {
     };
 
     const saveRole = (id: string) => {
+        const user = filteredUsers.find(u => u._id === id);
+        if (user?.role === "super_admin") {
+            alert("Cannot change role of Super Admin!");
+            setEditId(null);
+            return;
+        }
         updateUserRole({ id, role: newRole });
         setEditId(null);
-        showSuccessToast("User Role Updated Succssfuly!")
+        showSuccessToast("User Role Updated Successfully!");
     };
 
     const handleDelete = (id: string) => {
+        const user = filteredUsers.find(u => u._id === id);
+        if (user?.role === "super_admin") {
+            alert("Cannot delete Super Admin!");
+            return;
+        }
         if (confirm("Are you sure you want to delete this user?")) {
             deleteUser(id);
+            showSuccessToast("User Deleted Successfully!");
         }
-        showSuccessToast("User Deleted Succssfuly!")
     };
-
 
 
     return (
