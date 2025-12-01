@@ -5,7 +5,7 @@ import {
 } from "../../features/auth/authApi";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { LiaEditSolid } from "react-icons/lia";
-import { showSuccessToast } from "../../ult/toast/toast";
+import { showErrorToast, showSuccessToast } from "../../ult/toast/toast";
 import type { User } from "../../ult/types/types";
 
 interface AllUsersProps {
@@ -23,7 +23,7 @@ const AllUsers: FC<AllUsersProps> = ({ filteredUsers }) => {
     const startEdit = (id: string, currentRole: string) => {
         const user = filteredUsers.find(u => u._id === id);
         if (user?.role === "super_admin") {
-            alert("Cannot edit Super Admin!");
+            showErrorToast("Cannot edit Super Admin!");
             return;
         }
         setEditId(id);
@@ -38,7 +38,7 @@ const AllUsers: FC<AllUsersProps> = ({ filteredUsers }) => {
     const saveRole = (id: string) => {
         const user = filteredUsers.find(u => u._id === id);
         if (user?.role === "super_admin") {
-            alert("Cannot change role of Super Admin!");
+            showErrorToast("Cannot change role of Super Admin!");
             setEditId(null);
             return;
         }
@@ -50,7 +50,7 @@ const AllUsers: FC<AllUsersProps> = ({ filteredUsers }) => {
     const handleDelete = (id: string) => {
         const user = filteredUsers.find(u => u._id === id);
         if (user?.role === "super_admin") {
-            alert("Cannot delete Super Admin!");
+            showErrorToast("Cannot delete Super Admin!");
             return;
         }
         if (confirm("Are you sure you want to delete this user?")) {
