@@ -4,7 +4,7 @@ import PrivateRoute from "./PrivateRoute";
 
 // Admin only routes (only admin can access)
 export const AdminRoute: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <PrivateRoute allowedRoles={["admin"]}>
+  <PrivateRoute allowedRoles={["admin", "super_admin"]}>
     {children}
   </PrivateRoute>
 );
