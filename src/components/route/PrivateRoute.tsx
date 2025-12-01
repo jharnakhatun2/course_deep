@@ -27,7 +27,7 @@ const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {
     // Redirect to appropriate dashboard based on user role
     let redirectPath = "/";
 
-    if (user.role === "super_admin" || user.role === "admin") {
+    if (user.role === "admin" || user.role === "super_admin") {
       redirectPath = "/admin";
     } else if (user.role === "instructor") {
       redirectPath = "/instructor-dashboard";
