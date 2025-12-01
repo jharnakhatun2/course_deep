@@ -1,4 +1,4 @@
-# 📚 Course Deep — MERN Stack LMS (Production-Ready README)
+# 📚 Course Deep — MERN Stack LMS Platform
 
 > **Course Deep** is a modern, full-featured, production-grade Learning Management System (LMS) built using the **MERN stack**. It supports free & paid courses, event booking, role-based authentication (Admin / Instructor / Student), secure Stripe payments, dynamic reviews, blog comments, dashboards, and more. All fully responsive and optimized for real-world usage.
 

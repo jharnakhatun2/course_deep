@@ -1,4 +1,4 @@
-import  { useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { PiUploadSimpleThin, PiPlus, PiTrashSimpleLight } from "react-icons/pi";
 import { LiaSave } from "react-icons/lia";
 import type { Contact, CurriculumItem, Lesson, NewInstructorCourse, SocialLinks } from '../ult/types/types';
@@ -54,7 +54,7 @@ const InstructorDashboard: FC = () => {
   const [addInstructorCourse, { isLoading }] = useAddInstructorCourseMutation();
   const [courseData, setCourseData] = useState<NewInstructorCourse>(initialCourseData);
 
-   // Reset form function
+  // Reset form function
   const resetForm = () => {
     setCourseData(initialCourseData);
     setActiveTab('basic'); // Reset to first tab
@@ -177,7 +177,7 @@ const InstructorDashboard: FC = () => {
     try {
       await addInstructorCourse(courseData).unwrap();
       showSuccessToast('Course uploaded successfully!');
-      resetForm(); 
+      resetForm();
     } catch (error) {
       console.error('Failed to upload course:', error);
       showErrorToast('Failed to upload course. Please try again.');
@@ -295,14 +295,20 @@ const InstructorDashboard: FC = () => {
 
                 <div>
                   <label className={lebelStyle}>Category</label>
-                  <input
-                    type="text"
+                  <select
                     name="category"
                     value={courseData.category}
                     onChange={handleInputChange}
                     className={inputStyle}
-                    placeholder="e.g., Frontend"
-                  />
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="Backend">Backend</option>
+                    <option value="Full Stack">Full Stack</option>
+                    <option value="Database">Database</option>
+                    <option value="AI & ML">AI & ML</option>
+                    <option value="Programming Fundamentals">Programming Fundamentals</option>
+                  </select>
                 </div>
 
                 <div>
