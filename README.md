@@ -4,12 +4,11 @@
 
 
 
-## 🔗 Live Demos
+## 🔗 Live Demos & Source Code
 
-* **Frontend Live:** [https://course-deep.vercel.app/](https://course-deep.vercel.app/)
-* **Backend Live:** [https://course-deep-server.vercel.app/](https://course-deep-server.vercel.app/)
-
-
+* **Live Site:** [https://course-deep.vercel.app/](https://course-deep.vercel.app/)
+* **Frontend source code:**  [https://github.com/jharnakhatun2/course_deep](https://github.com/jharnakhatun2/course_deep)
+* **Backend source code:**  [https://github.com/jharnakhatun2/course_deep_server](https://github.com/jharnakhatun2/course_deep_server)
 
 ## ✨ Project Overview
 
